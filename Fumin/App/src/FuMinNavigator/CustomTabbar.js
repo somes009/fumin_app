@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Platform} from 'react-native';
 import Utils from '../../Utils/index';
@@ -29,7 +30,7 @@ export default class MyTabBar extends Component {
       Images.unSelMineIcon,
     ];
 
-    this.arrayTabText = ['成长', '发现', '学堂', '我的'];
+    this.arrayTabText = ['附近', '商城', '任务', '我的'];
     this.refAnimationArray = [];
 
     this.arrayColors = [
@@ -64,7 +65,6 @@ export default class MyTabBar extends Component {
     } else {
       AppStore.shouldAMMapShort = false;
     }
-    this.handleTabAminate(index);
     this.setState({
       selTab: index,
     });

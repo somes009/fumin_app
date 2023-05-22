@@ -35,7 +35,7 @@ class App extends Component {
     content = !global.token ? (
       content
     ) : (
-      <TabNavigator initialRouteName={'LoginNav'} />
+      <TabNavigator initialRouteName={'HomeTabs'} />
     );
     return (
       <RootSiblingParent>

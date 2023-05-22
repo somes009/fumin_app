@@ -45,17 +45,17 @@ export default class LoginIndexPage extends Component {
   componentWillUnmount() {
     clearInterval(this.timerSend);
   }
-  shouldComponentUpdate(np, ns) {
-    if (np.isFocused !== this.props.isFocused && np.isFocused) {
-      CacheStore.get(CacheStoreName.ProtocolUserCheck).then((data) => {
-        if (!data) {
-          this.refPop.openModal();
-        }
-      });
-      return true;
-    }
-    return true;
-  }
+  // shouldComponentUpdate(np, ns) {
+  //   if (np.isFocused !== this.props.isFocused && np.isFocused) {
+  //     CacheStore.get(CacheStoreName.ProtocolUserCheck).then((data) => {
+  //       if (!data) {
+  //         this.refPop.openModal();
+  //       }
+  //     });
+  //     return true;
+  //   }
+  //   return true;
+  // }
 
   handleUserCommitProtocol = () => {
     CacheStore.set(CacheStoreName.ProtocolUserCheck, true);
