@@ -50,7 +50,8 @@
     "moment": "^2.29.1",
     "react-native-smart-refresh": "https://github.com/huguangchen/react-native-smart-refresh.git",
     "react-native-root-toast": "^3.1.2",
-    "teaset": "^0.7.4"
+    "teaset": "^0.7.4",
+    "react-native-wechat-lib": "^1.1.26"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.13.0",

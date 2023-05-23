@@ -71,4 +71,15 @@ U.Toast = ({
   });
 };
 
+U.getLocalImagePathAndroid = (item) => {
+  if (U.isAndroid) {
+    if (item?.indexOf('content://') !== -1) {
+      return item;
+    } else {
+      return 'file://' + item;
+    }
+  }
+  return item;
+};
+
 export default U;
