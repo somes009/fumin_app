@@ -4,7 +4,7 @@ import {FlatList, Text, StyleSheet, View, Platform} from 'react-native';
 import {ApiGet, ApiPost, ApiPostJson} from '../../../Api/RequestTool';
 import Utils from '../../../Utils';
 import EventBus, {EventBusName} from '../../../Api/EventBus';
-import {RefreshAnimateHeader} from 'react-native-smart-refresh';
+// import {RefreshAnimateHeader} from 'react-native-smart-refresh';
 // import NoDataPage from '../../Common/Page/NodataPage';
 // import NoNetwork from '../../Common/Page/NoNetwork';
 import _ from 'lodash';
