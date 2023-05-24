@@ -1,5 +1,8 @@
 import {Platform, Dimensions} from 'react-native';
 import Toast from 'react-native-root-toast';
+import CacheStore from '../Common/CacheStore';
+import EventBus, {EventBusName} from '../Api/EventBus';
+import { ApiPostJson } from '../Api/RequestTool';
 let U = {};
 
 //判断是否安卓
@@ -80,6 +83,34 @@ U.getLocalImagePathAndroid = (item) => {
     }
   }
   return item;
+};
+
+//退出登录
+U.outLogin = (navigation) => {
+  CacheStore.remove('INFO');
+  CacheStore.remove('USERINFO');
+  global.token = undefined;
+  global.userInfo = undefined;
+  global.userId = undefined;
+  U.Toast({
+    text: '退出账号成功',
+  });
+  EventBus.post(EventBusName.OUT_LOGIN);
+  const path = '/app-api/member/auth/logout';
+  const params = {};
+  const onSuccess = () => {};
+  const onFailure = () => {};
+  ApiPostJson({
+    path,
+    params,
+    onSuccess,
+    onFailure,
+    needShowMsg: true,
+  });
+  navigation.reset({
+    index: 0,
+    routes: [{name: 'LoginNav'}],
+  });
 };
 
 export default U;

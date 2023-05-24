@@ -231,8 +231,8 @@ export const ApiPostJsonInner = (
       Accept: 'application/json',
       //json形式
       'Content-Type': 'application/json',
-      'User-Agent': !isAndroid ? 'MindTripiOS' : 'MindTripAndroid',
-      version: APP_VERSION,
+      'tenant-id': 1,
+      Authorization: global.token,
     },
     body: JSON.stringify(paramWithToken),
   };
@@ -243,6 +243,7 @@ export const ApiPostJsonInner = (
   fetch(BASE_URL + path + '?' + strDicToString(onlyToken), fetchOptions)
     .then((response) => response.text())
     .then((responseText) => {
+      console.log(responseText);
       callback?.(JSONBigInt.parse(responseText));
       checkResponse(
         JSONBigInt.parse(responseText),
@@ -305,12 +306,10 @@ const checkResponse = (
   } else if (response?.status === 102) {
     // 需要强制更新
     onFailure?.(response);
-    needShowMsg &&
-      Utils.Toast({text: response?.message || '系统繁忙，请稍后再试'});
+    needShowMsg && Utils.Toast({text: response?.msg || '系统繁忙，请稍后再试'});
   } else {
     onFailure?.(response);
-    needShowMsg &&
-      Utils.Toast({text: response?.message || '系统繁忙，请稍后再试'});
+    needShowMsg && Utils.Toast({text: response?.msg || '系统繁忙，请稍后再试'});
   }
   if (__DEV__ && !unLog) {
     console.log('我是接口response path=', path, JSON.stringify(response));

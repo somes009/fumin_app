@@ -198,9 +198,10 @@ export default class LoginIndexPage extends Component {
   };
   sendCode = () => {
     const {value} = this.state;
-    const path = '/user/code/sendCodeByPhone';
+    const path = '/app-api/member/auth/send-sms-code';
     const params = {
-      phone: value,
+      mobile: value,
+      scene: 4,
     };
     const onSuccess = () => {};
     const onFailure = () => {};
@@ -227,8 +228,13 @@ export default class LoginIndexPage extends Component {
     }, 1000);
   };
   check = () => {
-    const {value, code} = this.state;
-    if (value.length === 11 && code.length === 6) {
+    const {value, code, type, password, isSel} = this.state;
+    console.log(this.checkPassword(password));
+    if (
+      value.length === 11 &&
+      code.length === 4 &&
+      this.checkPassword(password)
+    ) {
       this.setState({
         canLogin: true,
       });
@@ -238,42 +244,28 @@ export default class LoginIndexPage extends Component {
       });
     }
   };
-  handleLogin = () => {
-    const {value, code} = this.state;
-    const path = '/user/appuser/login';
+  handleSignIn = () => {
+    const {value, code, password} = this.state;
+    const {navigation} = this.props;
+    const path = '/app-api/member/auth/regAppUser';
     const params = {
-      name: value,
-      type: 1,
+      mobile: value,
+      password,
       code,
     };
     const onSuccess = (res) => {
       global.userId = res.userId;
-      global.token = res.token;
+      global.token = res.accessToken;
       EventBus.post(EventBusName.ON_LOGIN);
       CacheStore.set('INFO', {
-        token: res.token + '',
+        token: res.accessToken + '',
         userId: res.userId + '',
+        refreshToken: res.refreshToken + '',
         userNickName: res.userNickName + '',
-      }).then(() => {
-        const callback = (res) => {
-          if (res.userNickName || !isAndroid) {
-            this.props.navigation.reset({
-              index: 0,
-              routes: [{name: 'HomeTabs'}],
-            });
-          } else {
-            if (isAndroid) {
-              this.props.navigation.navigate('LoginInfoPage');
-            } else {
-              Utils.setDefultInfo();
-              this.props.navigation.reset({
-                index: 0,
-                routes: [{name: 'HomeTabs'}],
-              });
-            }
-          }
-        };
-        Utils.getUserInfo(callback);
+      });
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'HomeTabs'}],
       });
     };
     const onFailure = () => {};
@@ -293,7 +285,7 @@ export default class LoginIndexPage extends Component {
         text="注册"
         textStyle={styles.loginText}
         containerStyle={styles.buttonShadow}
-        onPress={this.handleLogin}
+        onPress={this.handleSignIn}
         unTouch={!canLogin}
       />
     );

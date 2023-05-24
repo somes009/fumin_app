@@ -6,13 +6,35 @@ import {NativeBaseProvider} from 'native-base';
 import TabNavigator from './App/src/FuMinNavigator/TabNavigator';
 import Utils from './App/Utils';
 import AppStore from './App/Store/AppStore';
+import CacheStore from './App/Common/CacheStore';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: true,
+      show: false,
     };
+  }
+  componentDidMount() {
+    CacheStore.get('INFO').then((info) => {
+      if (!info) {
+        this.setState({
+          show: true,
+        });
+        return;
+      }
+      console.log('用户信息:', info.token, info.userId);
+      global.token = info.token;
+      global.userId = info.userId;
+
+      //强制退出登录
+      // CacheStore.remove('INFO');
+      // global.token = undefined;
+      // global.userId = undefined;
+      this.setState({
+        show: true,
+      });
+    });
   }
   layoutHeader = (e) => {
     console.log('layout Header', this.state.screenHeight);
@@ -32,10 +54,10 @@ class App extends Component {
   render() {
     const {show} = this.state;
     let content = <TabNavigator initialRouteName={'HomeTabs'} />;
-    content = !global.token ? (
+    content = global.token ? (
       content
     ) : (
-      <TabNavigator initialRouteName={'HomeTabs'} />
+      <TabNavigator initialRouteName={'LoginNav'} />
     );
     return (
       <RootSiblingParent>

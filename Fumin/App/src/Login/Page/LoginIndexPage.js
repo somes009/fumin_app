@@ -83,7 +83,7 @@ export default class LoginIndexPage extends Component {
       <XXYJTextinput
         keyboardType="numeric"
         placeholder="请输入验证码"
-        maxLength={6}
+        maxLength={4}
         value={code}
         onChangeText={(text) => {
           this.setState(
@@ -181,9 +181,10 @@ export default class LoginIndexPage extends Component {
   };
   sendCode = () => {
     const {value} = this.state;
-    const path = '/user/code/sendCodeByPhone';
+    const path = '/app-api/member/auth/send-sms-code';
     const params = {
-      phone: value,
+      mobile: value,
+      scene: 1,
     };
     const onSuccess = () => {};
     const onFailure = () => {};
@@ -210,11 +211,12 @@ export default class LoginIndexPage extends Component {
     }, 1000);
   };
   check = () => {
-    const {value, code, type, password} = this.state;
+    const {value, code, type, password, isSel} = this.state;
     if (
       value.length === 11 &&
-      ((type === 1 && code.length === 6) ||
-        (type === 2 && password.length >= 6))
+      ((type === 1 && code.length === 4) ||
+        (type === 2 && password.length >= 6)) &&
+      isSel
     ) {
       this.setState({
         canLogin: true,
@@ -226,46 +228,35 @@ export default class LoginIndexPage extends Component {
     }
   };
   handleLogin = () => {
-    const {value, code, isSel} = this.state;
+    const {value, code, isSel, type, password} = this.state;
+    const {navigation} = this.props;
     if (!isSel) {
       Utils.Toast({
         text: '请先阅读并同意《用户协议》和《隐私政策》',
       });
     }
-    const path = '/user/appuser/login';
-    const params = {
-      name: value,
-      type: 1,
+    const path =
+      type === 1
+        ? '/app-api/member/auth/sms-login' //验证码登陆
+        : '/app-api/member/auth/login'; //密码登录
+    let params = {
+      mobile: value,
       code,
+      password,
     };
     const onSuccess = (res) => {
       global.userId = res.userId;
-      global.token = res.token;
+      global.token = res.accessToken;
       EventBus.post(EventBusName.ON_LOGIN);
       CacheStore.set('INFO', {
-        token: res.token + '',
+        token: res.accessToken + '',
         userId: res.userId + '',
+        refreshToken: res.refreshToken + '',
         userNickName: res.userNickName + '',
-      }).then(() => {
-        const callback = (res) => {
-          if (res.userNickName || !isAndroid) {
-            this.props.navigation.reset({
-              index: 0,
-              routes: [{name: 'HomeTabs'}],
-            });
-          } else {
-            if (isAndroid) {
-              this.props.navigation.navigate('LoginInfoPage');
-            } else {
-              Utils.setDefultInfo();
-              this.props.navigation.reset({
-                index: 0,
-                routes: [{name: 'HomeTabs'}],
-              });
-            }
-          }
-        };
-        Utils.getUserInfo(callback);
+      });
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'HomeTabs'}],
       });
     };
     const onFailure = () => {};
@@ -334,9 +325,12 @@ export default class LoginIndexPage extends Component {
         <TouchableOpacity
           style={styles.loginBottomIn}
           onPress={() => {
-            this.setState({
-              isSel: !isSel,
-            });
+            this.setState(
+              {
+                isSel: !isSel,
+              },
+              this.check,
+            );
           }}
           activeOpacity={1}>
           <View style={styles.selBox}>
