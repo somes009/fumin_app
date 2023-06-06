@@ -1,12 +1,21 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
-
+// import {createStore, applyMiddleware} from 'redux';
 import {RootSiblingParent} from 'react-native-root-siblings';
 import {NativeBaseProvider} from 'native-base';
 import TabNavigator from './App/src/FuMinNavigator/TabNavigator';
 import Utils from './App/Utils';
 import AppStore from './App/Store/AppStore';
 import CacheStore from './App/Common/CacheStore';
+// import {Provider} from 'react-redux';
+// import thunk from 'redux-thunk';
+// import rootReducer from './App/reducers';
+// import {getAllProducts} from './actions';
+
+// const middleware = [thunk];
+// const store = createStore(rootReducer, applyMiddleware(...middleware));
+
+// store.dispatch(getAllProducts());
 
 class App extends Component {
   constructor(props) {
@@ -60,9 +69,9 @@ class App extends Component {
       <TabNavigator initialRouteName={'LoginNav'} />
     );
     return (
+      // <Provider store={store}>
       <RootSiblingParent>
         <NativeBaseProvider>
-          {/* <ColorSchemeProvider> */}
           <View style={styles.contain}>
             {show && (
               <>
@@ -74,9 +83,9 @@ class App extends Component {
               </>
             )}
           </View>
-          {/* </ColorSchemeProvider> */}
         </NativeBaseProvider>
       </RootSiblingParent>
+      // </Provider>
     );
   }
 }

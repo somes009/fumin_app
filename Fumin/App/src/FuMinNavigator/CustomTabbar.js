@@ -8,7 +8,7 @@ import {BOTTOM_TAB_HEIGHT} from '../../Common/Contant';
 import * as Animatable from 'react-native-animatable';
 const isAndroid = Platform.OS === 'android';
 import AppStore from '../../Store/AppStore';
-// import Fonts from '../../../Common/Fonts';
+import Fonts from '../../Common/Fonts';
 import XXYJImage from '../Base/Widget/XXYJImage';
 export default class MyTabBar extends Component {
   constructor(props) {
@@ -147,12 +147,11 @@ export default class MyTabBar extends Component {
                     style={[styles.viewLottieLoop]}
                     imageAssetsFolder={'images'}
                   />
-                  {index === 3 && !!msgCount && <View style={styles.dian} />}
                 </View>
                 <Text
                   style={[
                     styles.tabText,
-                    {color: selTab === index ? '#000' : '#CACACA'},
+                    {color: selTab === index ? '#FF9B00' : '#000000'},
                   ]}>
                   {this.arrayTabText?.[index]}
                 </Text>
@@ -167,8 +166,8 @@ export default class MyTabBar extends Component {
 
 const styles = StyleSheet.create({
   viewLottieLoop: {
-    width: Utils.properWidth(25),
-    height: Utils.properWidth(23),
+    width: Utils.properWidth(21),
+    height: Utils.properWidth(21),
   },
   dian: {
     position: 'absolute',
@@ -191,17 +190,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: BOTTOM_TAB_HEIGHT,
     width: '100%',
-    paddingTop: Utils.properWidth(4),
+    paddingTop: Utils.properWidth(5),
     justifyContent: 'space-between',
-    paddingHorizontal: Utils.properWidth(40),
+    paddingHorizontal: Utils.properWidth(30),
+    borderTopColor: '#E9E9E9',
+    borderTopWidth: 1,
     // borderRadius: 31,
     overflow: 'hidden',
     // backgroundColor: 'rgba(247, 247, 247, 0.8)',
   },
   tabText: {
     fontSize: Utils.properWidth(10),
-    lineHeight: Utils.properWidth(14),
-    // fontFamily: Fonts.PingFangSC_Medium,
+    lineHeight: Utils.properWidth(15),
     marginTop: 3,
   },
   tabBox: {
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: '100%',
     alignItems: 'center',
-    paddingBottom: Utils.properWidth(30),
+    // paddingBottom: Utils.properWidth(30),
     backgroundColor: '#fff',
   },
   absolute: {

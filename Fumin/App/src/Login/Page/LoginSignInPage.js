@@ -229,7 +229,6 @@ export default class LoginIndexPage extends Component {
   };
   check = () => {
     const {value, code, type, password, isSel} = this.state;
-    console.log(this.checkPassword(password));
     if (
       value.length === 11 &&
       code.length === 4 &&
@@ -265,7 +264,7 @@ export default class LoginIndexPage extends Component {
       });
       navigation.reset({
         index: 0,
-        routes: [{name: 'HomeTabs'}],
+        routes: [{name: 'LoginNav'}],
       });
     };
     const onFailure = () => {};

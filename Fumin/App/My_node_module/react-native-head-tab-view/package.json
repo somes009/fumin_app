@@ -1,0 +1,68 @@
+{
+  "_args": [
+    [
+      "react-native-head-tab-view@2.1.7",
+      "/Users/xinxiyouji/Desktop/AlsoMe_project/MindTrip_App"
+    ]
+  ],
+  "_from": "react-native-head-tab-view@2.1.7",
+  "_id": "react-native-head-tab-view@2.1.7",
+  "_inBundle": false,
+  "_integrity": "sha1-F2u0EotmkE7o2pGS2KH7A0ht9XU=",
+  "_location": "/react-native-head-tab-view",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "react-native-head-tab-view@2.1.7",
+    "name": "react-native-head-tab-view",
+    "escapedName": "react-native-head-tab-view",
+    "rawSpec": "2.1.7",
+    "saveSpec": null,
+    "fetchSpec": "2.1.7"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npm.taobao.org/react-native-head-tab-view/download/react-native-head-tab-view-2.1.7.tgz",
+  "_spec": "2.1.7",
+  "_where": "/Users/xinxiyouji/Desktop/AlsoMe_project/MindTrip_App",
+  "author": {
+    "name": "yu zou",
+    "email": "zouyu123007@163.com"
+  },
+  "bugs": {
+    "url": "https://github.com/zyslife/react-native-head-tab-view/issues"
+  },
+  "description": "Tab view component for React Native",
+  "homepage": "https://github.com/zyslife/react-native-head-tab-view#readme",
+  "keywords": [
+    "react-native-component",
+    "react-component",
+    "react-native",
+    "ios",
+    "android",
+    "tab",
+    "swipe",
+    "scrollable",
+    "tabview",
+    "head",
+    "stick",
+    "scrollview"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "react-native-head-tab-view",
+  "peerDependencies": {
+    "@react-native-community/viewpager": "^4.2.1",
+    "react-native-gesture-handler": "^1.6.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zyslife/react-native-head-tab-view.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "2.1.7"
+}

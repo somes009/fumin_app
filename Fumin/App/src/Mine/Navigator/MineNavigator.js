@@ -1,5 +1,14 @@
 import * as React from 'react';
 import MineIndexPage from '../Page/MineIndexPage';
+import MineOrderPage from '../Page/MineOrderPage';
+import MineFansPage from '../Page/MineFansPage';
+import MineSetUpPage from '../Page/MineSetUpPage';
+import MineOrderScorePage from '../Page/MineOrderScorePage';
+import MinePlaceListPage from '../Page/MinePlaceListPage';
+import MineShopPage from '../Page/MineShopPage';
+import MineContributeScorePage from '../Page/MineContributeScorePage';
+import MineCartPage from '../Page/MineCartPage';
+import MineCreatePlacePage from '../Page/MineCreatePlacePage';
 import {Platform} from 'react-native';
 import {
   NavigationContainer,
@@ -28,6 +37,123 @@ const MineIndexPageWithNavigation = (props) => {
     />
   );
 };
+const MineOrderPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineOrderPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const MineFansPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineFansPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const MineSetUpPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineSetUpPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const MineOrderScorePageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineOrderScorePage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const MinePlaceListPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MinePlaceListPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const MineShopPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineShopPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const MineContributeScorePageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineContributeScorePage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const MineCartPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineCartPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const MineCreatePlacePageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineCreatePlacePage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
 
 export const MineInnerNavigator = ({initialRouteName}) => (
   <Stack.Navigator
@@ -45,6 +171,69 @@ export const MineInnerNavigator = ({initialRouteName}) => (
     <Stack.Screen
       name="MineIndexPage"
       component={MineIndexPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineOrderPage"
+      component={MineOrderPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineFansPage"
+      component={MineFansPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineSetUpPage"
+      component={MineSetUpPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineOrderScorePage"
+      component={MineOrderScorePageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MinePlaceListPage"
+      component={MinePlaceListPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineShopPage"
+      component={MineShopPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineContributeScorePage"
+      component={MineContributeScorePageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineCartPage"
+      component={MineCartPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineCreatePlacePage"
+      component={MineCreatePlacePageWithNavigation}
       options={{
         header: () => null,
       }}

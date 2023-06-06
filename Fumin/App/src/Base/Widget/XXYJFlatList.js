@@ -15,7 +15,7 @@ class XXYJFlatList extends Component {
   constructor(props) {
     super(props);
     this.pageSize = props.pageSize || 10;
-    this.currentPage = 1;
+    this.pageNo = 1;
     this.state = {
       refreshing: false,
       arrayDataSource: [],
@@ -162,7 +162,7 @@ class XXYJFlatList extends Component {
     }
 
     const params = {
-      currentPage: this.currentPage,
+      pageNo: this.pageNo,
       pageSize: this.pageSize,
       ...requestParams,
     };
@@ -173,14 +173,14 @@ class XXYJFlatList extends Component {
         ? responseData || []
         : responseData?.[key] || [];
       list = [...list];
-      // if (this.currentPage === 1) {
+      // if (this.pageNo === 1) {
       //   this.createRealm(list);
       // }
       if (list.length < this.pageSize) {
         this.setState({isEnd: true});
       }
       let {arrayDataSource} = this.state;
-      if (this.currentPage === 1) {
+      if (this.pageNo === 1) {
         arrayDataSource = [];
       }
       let arrayTemp = Utils.getPageData(arrayDataSource, list, this.isRefresh);
@@ -221,7 +221,7 @@ class XXYJFlatList extends Component {
       refreshing: true,
       isEnd: false,
     });
-    this.currentPage = 1;
+    this.pageNo = 1;
     this.isRefresh = true;
     // request
     this.requestForList();
@@ -231,7 +231,7 @@ class XXYJFlatList extends Component {
     if (isEnd || refreshing) {
       return;
     }
-    this.currentPage += 1;
+    this.pageNo += 1;
     this.isRefresh = false;
     // request
     this.requestForList();
@@ -239,7 +239,7 @@ class XXYJFlatList extends Component {
 
   checkIsHelpOver = () => {
     const {arrayDataSource} = this.state;
-    if (arrayDataSource.length < this.pageSize * this.currentPage) {
+    if (arrayDataSource.length < this.pageSize * this.pageNo) {
       return true;
     }
     return false;

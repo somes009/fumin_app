@@ -1,17 +1,14 @@
 import * as React from 'react';
 import IndexPage from '../Page/IndexPage';
-import {View, StyleSheet, Text, TouchableOpacity, Platform} from 'react-native';
+import ShopDetailPage from '../Page/ShopDetailPage';
+import {Platform} from 'react-native';
 import {
   NavigationContainer,
   useNavigationState,
   useIsFocused,
 } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {
-  TransitionPresets,
-  TransitionSpecs,
-  CardStyleInterpolators,
-} from '@react-navigation/stack';
+import {TransitionSpecs, CardStyleInterpolators} from '@react-navigation/stack';
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -25,6 +22,19 @@ const IndexPageWithNavigation = (props) => {
   const insets = useSafeAreaInsets();
   return (
     <IndexPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const ShopDetailPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <ShopDetailPage
       {...props}
       routesLength={routesLength}
       safeAreaInsets={insets}
@@ -49,6 +59,13 @@ export const IndexInnerNavigator = ({initialRouteName}) => (
     <Stack.Screen
       name="IndexPage"
       component={IndexPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="ShopDetailPage"
+      component={ShopDetailPageWithNavigation}
       options={{
         header: () => null,
       }}
