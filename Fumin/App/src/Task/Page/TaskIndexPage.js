@@ -52,11 +52,12 @@ export default class TaskIndexPage extends Component {
         activeOpacity={1}
         style={styles.isEndBox}
         onPress={onPress}>
-        <Text style={styles.isEndBtnText}>去观看</Text>
+        <Text style={styles.isEndBtnText}>已完成</Text>
       </TouchableOpacity>
     );
   };
   renderBox = ({topNum, numTitle}) => {
+    const {navigation} = this.props;
     return (
       <View style={styles.taskBox}>
         <View style={styles.topBox}>
@@ -69,7 +70,11 @@ export default class TaskIndexPage extends Component {
         <View style={styles.bottomBox}>
           <View style={styles.bottomTop}>
             <Text style={styles.goSeeText}>去观看6条广告（0/6）</Text>
-            {this.goSeeButton(() => {})}
+            {this.goSeeButton(() => {
+              navigation.navigate('TaskNav', {
+                screen: 'TaskListPage',
+              });
+            })}
           </View>
           <Text style={styles.dayText}>已连续释放**天</Text>
         </View>

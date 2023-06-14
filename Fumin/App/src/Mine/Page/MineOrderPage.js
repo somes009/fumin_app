@@ -25,14 +25,17 @@ export default class MineOrderPage extends Component {
       {name: '待使用'},
     ];
   }
-  
+
   renderList = (item, index) => {
-    return(
-      <View key={index}  style={{
-        width: Utils.getScreenSize().width,
-      }}></View>
-    )
-  }
+    return (
+      <View
+        key={index}
+        style={{
+          width: Utils.getScreenSize().width,
+        }}
+      />
+    );
+  };
   render() {
     const {navigation, safeAreaInsets} = this.props;
     return (

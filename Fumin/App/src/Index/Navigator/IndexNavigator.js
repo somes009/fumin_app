@@ -1,6 +1,7 @@
 import * as React from 'react';
 import IndexPage from '../Page/IndexPage';
 import ShopDetailPage from '../Page/ShopDetailPage';
+import ProductDetailPage from '../Page/ProductDetailPage';
 import {Platform} from 'react-native';
 import {
   NavigationContainer,
@@ -42,6 +43,19 @@ const ShopDetailPageWithNavigation = (props) => {
     />
   );
 };
+const ProductDetailPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <ProductDetailPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
 
 export const IndexInnerNavigator = ({initialRouteName}) => (
   <Stack.Navigator
@@ -66,6 +80,13 @@ export const IndexInnerNavigator = ({initialRouteName}) => (
     <Stack.Screen
       name="ShopDetailPage"
       component={ShopDetailPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="ProductDetailPage"
+      component={ProductDetailPageWithNavigation}
       options={{
         header: () => null,
       }}

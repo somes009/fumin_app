@@ -1,5 +1,6 @@
 import * as React from 'react';
 import TaskIndexPage from '../Page/TaskIndexPage';
+import TaskListPage from '../Page/TaskListPage';
 import {Platform} from 'react-native';
 import {
   NavigationContainer,
@@ -28,6 +29,19 @@ const TaskIndexPageWithNavigation = (props) => {
     />
   );
 };
+const TaskListPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <TaskListPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
 
 export const TaskInnerNavigator = ({initialRouteName}) => (
   <Stack.Navigator
@@ -45,6 +59,13 @@ export const TaskInnerNavigator = ({initialRouteName}) => (
     <Stack.Screen
       name="TaskIndexPage"
       component={TaskIndexPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="TaskListPage"
+      component={TaskListPageWithNavigation}
       options={{
         header: () => null,
       }}

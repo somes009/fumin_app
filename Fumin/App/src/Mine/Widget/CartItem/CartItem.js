@@ -95,9 +95,9 @@ export default class GoodItem extends React.Component {
             <Text style={styles.price}>¥888</Text>
           </View>
         </View>
-        <TouchableOpacity activeOpacity={1} style={styles.delBox}>
+        {/* <TouchableOpacity activeOpacity={1} style={styles.delBox}>
           <Text style={styles.delText}>-</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }

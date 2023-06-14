@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CartList from '../Widget/CartList/CartList';
@@ -5,6 +6,7 @@ import XXYJHeader from '../../Base/Widget/XXYJHeader';
 import XXYJBanner from '../../Base/Widget/XXYJBanner';
 import Fonts from '../../../Common/Fonts';
 import XXYJButton from '../../Base/Widget/XXYJButton';
+import {ApiPostJson} from '../../../Api/RequestTool';
 // 组件样式
 var styles = StyleSheet.create({
   container: {
@@ -78,6 +80,15 @@ var styles = StyleSheet.create({
     fontFamily: Fonts.PingFangSC_Regular,
     color: '#fff',
   },
+  setBox: {
+    position: 'absolute',
+    right: 23,
+  },
+  setText: {
+    fontSize: 15,
+    lineHeight: 21,
+    fontFamily: Fonts.PingFangSC_Regular,
+  },
 });
 class MineCartPage extends React.Component {
   constructor(props) {
@@ -87,6 +98,7 @@ class MineCartPage extends React.Component {
       type: 0, // 0非管理；1管理
       isSelAll: 0,
       price: 0,
+      selPayList: [],
       list: [
         {
           title: 'shibook旗舰店',
@@ -132,6 +144,42 @@ class MineCartPage extends React.Component {
       ],
     };
   }
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData = () => {
+    const path = '/app-api/trade/cart/myCartList';
+    const params = {
+      // objType: 1,
+    };
+    const onSuccess = (res) => {
+      this.setState({
+        data: res,
+        price: res.allAmount,
+      });
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
+  selItem = (id) => {
+    const {selPayList} = this.state;
+    const path = '/app-api/trade/cart/updateCartSelected';
+    const params = {
+      id,
+    };
+    const onSuccess = (res) => {
+      this.getData();
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
 
   handleBuy = () => {};
 
@@ -144,7 +192,7 @@ class MineCartPage extends React.Component {
 
   render() {
     const {navigation, safeAreaInsets} = this.props;
-    const {count, price, isSelAll, list} = this.state;
+    const {count, price, isSelAll, list, type} = this.state;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         <XXYJHeader
@@ -152,8 +200,28 @@ class MineCartPage extends React.Component {
           onLeftPress={() => {
             navigation.goBack();
           }}
+          rightChildren={
+            <TouchableOpacity
+              style={styles.setBox}
+              activeOpacity={1}
+              onPress={() => {
+                this.setState({
+                  type: type ? 0 : 1,
+                });
+              }}>
+              <Text
+                style={[
+                  styles.setText,
+                  {
+                    color: type ? '#FF9B00' : '#000',
+                  },
+                ]}>
+                {!!type && '退出'}管理
+              </Text>
+            </TouchableOpacity>
+          }
         />
-        <CartList cartList={list} />
+        <CartList type={type} cartList={list} />
         <View style={styles.BottomBox}>
           <TouchableOpacity
             activeOpacity={1}
@@ -167,11 +235,15 @@ class MineCartPage extends React.Component {
             <Text style={styles.selAllText}>全选</Text>
           </TouchableOpacity>
           <View style={styles.bottomRight}>
-            <Text style={styles.priceTitle}>合计：</Text>
-            <Text style={styles.price}>¥{price}</Text>
+            {!type && (
+              <>
+                <Text style={styles.priceTitle}>合计：</Text>
+                <Text style={styles.price}>¥{price}</Text>
+              </>
+            )}
             <XXYJButton
               darkShadowColor="#99C6BB"
-              text="结算"
+              text={type ? '删除' : '结算'}
               textStyle={styles.buyBtnText}
               containerStyle={styles.buyButton}
               onPress={this.handleBuy}

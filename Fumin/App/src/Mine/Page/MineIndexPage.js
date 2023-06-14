@@ -20,11 +20,14 @@ export default class MineIndexPage extends Component {
     this.state = {
       data: {},
       showYqm: false,
+      selPayList: [],
+      selDelList: [],
     };
   }
   componentDidMount() {
     this.getData();
   }
+
   getData = () => {
     const path = '/app-api/member/auth/myPageDetail';
     const params = {
@@ -44,12 +47,13 @@ export default class MineIndexPage extends Component {
 
   renderInfo = () => {
     const {navigation} = this.props;
+    const {data} = this.state;
     return (
       <View style={[styles.infoBox]}>
         <View style={styles.infoBoxLeft}>
-          <XXYJImage style={styles.userImg} />
+          <XXYJImage source={{uri: data.avatar}} style={styles.userImg} />
           <View style={styles.userinfoLeft}>
-            <Text style={styles.username}>昵称</Text>
+            <Text style={styles.username}>{data?.nickname || '昵称'}</Text>
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
@@ -57,7 +61,7 @@ export default class MineIndexPage extends Component {
                   screen: 'MineFansPage',
                 });
               }}>
-              <Text style={styles.userfans}>粉丝 0</Text>
+              <Text style={styles.userfans}>粉丝 {data?.fsCount}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -68,12 +72,12 @@ export default class MineIndexPage extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              // navigation.navigate('MineNav', {
-              //   screen: 'MineCartPage',
-              // });
               navigation.navigate('MineNav', {
-                screen: 'MineSetUpPage',
+                screen: 'MineCartPage',
               });
+              // navigation.navigate('MineNav', {
+              //   screen: 'MineSetUpPage',
+              // });
             }}
             activeOpacity={0.8}
             style={styles.setUpBox}>
@@ -107,10 +111,11 @@ export default class MineIndexPage extends Component {
 
   renderAsset = () => {
     const {navigation} = this.props;
+    const {data} = this.state;
     const list = [
       {
         name: '订单值',
-        count: 0,
+        count: data?.myZcList?.[0]?.zhi,
         fun: () => {
           navigation.navigate('MineNav', {
             screen: 'MineOrderScorePage',
@@ -119,7 +124,7 @@ export default class MineIndexPage extends Component {
       },
       {
         name: '贡献值',
-        count: 0,
+        count: data?.myZcList?.[1]?.zhi,
         fun: () => {
           navigation.navigate('MineNav', {
             screen: 'MineContributeScorePage',
@@ -128,17 +133,17 @@ export default class MineIndexPage extends Component {
       },
       {
         name: '福豆',
-        count: 0,
+        count: data?.myZcList?.[2]?.zhi,
         fun: () => {},
       },
       {
         name: '红包',
-        count: 0,
+        count: data?.myZcList?.[3]?.zhi,
         fun: () => {},
       },
       {
         name: '红包金',
-        count: 0,
+        count: data?.myZcList?.[4]?.zhi,
         fun: () => {},
       },
     ];

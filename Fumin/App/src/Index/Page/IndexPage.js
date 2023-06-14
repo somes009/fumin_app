@@ -1,7 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  PermissionsAndroid,
+} from 'react-native';
 import XXYJFlatList from '../../Base/Widget/XXYJFlatList';
 import IndexRenderItem from '../Widget/IndexRenderItem';
 import XXYJImage from '../../Base/Widget/XXYJImage';
@@ -9,16 +15,55 @@ import Fonts from '../../../Common/Fonts';
 import XXYJBanner from '../../Base/Widget/XXYJBanner';
 import Geo from '../../../Api/Geo';
 import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
+import Geolocation from '@react-native-community/geolocation';
+import Utils from '../../../Utils';
 export default class IndexPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   componentDidMount() {
-    const res = Geo.getCityByLocation();
-    console.log('xxcxcxcxcxcxcxcxcxx', res);
-    this.getPlace();
+    // const res = Geo.getCityByLocation();
+    // console.log('xxcxcxcxcxcxcxcxcxx', res);
+    // this.requestLocationPermission();
+    // this.getPlace();
   }
+  requestLocationPermission = () => {
+    // if (Utils.isAndroid) {
+    //   const granted = PermissionsAndroid.request(
+    //     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    //     {
+    //       title: 'Location Permission',
+    //       message: 'App needs access to your location',
+    //       buttonNeutral: 'Ask Me Later',
+    //       buttonNegative: 'Cancel',
+    //       buttonPositive: 'OK',
+    //     },
+    //   );
+    //   console.log(PermissionsAndroid.RESULTS.GRANTED);
+    //   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    //     console.log('Location permission granted');
+    //   } else {
+    //     console.log('Location permission denied');
+    //   }
+    // } else {
+    //   console.log('Location permission granted');
+    // }
+    // this.getLocation();
+  };
+  getLocation = () => {
+    console.log(Geolocation);
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const {latitude, longitude} = position.coords;
+        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+      },
+      (error) => {
+        console.log(error);
+      },
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+    );
+  };
   getPlace = () => {
     const path = '/app-api/system/area/auth/tree';
     // const path = '/admin-api/system/area/get-by-ip';
@@ -30,13 +75,15 @@ export default class IndexPage extends Component {
         data: res,
       });
     };
-    ApiGet({
+    const onFailure = (err) => {};
+    ApiPostJson({
       path,
       params,
       onSuccess,
+      onFailure,
     });
   };
-  renderItem = (item, index) => {
+  renderItem = ({item, index}) => {
     const {navigation} = this.props;
     return (
       <IndexRenderItem
@@ -44,12 +91,12 @@ export default class IndexPage extends Component {
         onPress={() => {
           navigation.navigate('IndexNav', {
             screen: 'ShopDetailPage',
+            params: {
+              shopId: item.id,
+            },
           });
         }}
-        item={{
-          title:
-            '门店1门店1门店1门店1门店1门店1门店1门店1门店1门店1门店1门店1门店1门店1门店1门店1门店1',
-        }}
+        item={item}
       />
     );
   };
@@ -92,12 +139,26 @@ export default class IndexPage extends Component {
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         {this.renderTop()}
         {this.renderBanner()}
-        {this.renderItem()}
-        {this.renderItem()}
-        {this.renderItem()}
-        {this.renderItem()}
-        {this.renderItem()}
-        {this.renderItem()}
+        <XXYJFlatList
+          ref={(ref) => (this.refCourse = ref)}
+          isApiPostJson
+          style={{flex: 1}}
+          // isApiPostJson={false}
+          //  responseKey={'history'}
+          requestPath="/app-api/product/merchant/auth/selectNearbyBusiness"
+          requestParams={
+            {
+              // latitude: '39.983424',
+              // longitude: '116.322987',
+            }
+          }
+          keyExtractor={(item) => item?.id}
+          renderItem={this.renderItem}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: 20,
+          }}
+        />
       </View>
     );
   }

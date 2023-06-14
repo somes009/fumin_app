@@ -65,6 +65,7 @@ export default class XXYJTabView extends Component {
       underTabComponent,
       onTabViewScroll,
       underlineStyle,
+      unTabList,
     } = this.props;
     const noHeader = unHeader && !isAndroid;
     return (

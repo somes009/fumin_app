@@ -76,7 +76,7 @@ export default class LoginIndexPage extends Component {
       <XXYJTextinput
         keyboardType="numeric"
         placeholder="请输入验证码"
-        maxLength={6}
+        maxLength={4}
         value={code}
         onChangeText={(text) => {
           this.setState(

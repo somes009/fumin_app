@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 //商品列表
 
 'use strict';
@@ -79,8 +80,7 @@ class CartList extends React.Component {
   };
   //渲染列表
   renderListView() {
-    const {cartList} = this.props;
-    console.log(cartList);
+    const {cartList, type} = this.props;
     let nullList = (
       <View style={styles.nullCartTips}>
         <Text>当前购物车为空</Text>

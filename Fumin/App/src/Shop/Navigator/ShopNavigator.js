@@ -1,5 +1,6 @@
 import * as React from 'react';
 import ShopIndexPage from '../Page/ShopIndexPage';
+import ShopBuyPage from '../Page/ShopBuyPage';
 import {Platform} from 'react-native';
 import {
   NavigationContainer,
@@ -28,6 +29,19 @@ const ShopIndexPageWithNavigation = (props) => {
     />
   );
 };
+const ShopBuyPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <ShopBuyPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
 
 export const ShopInnerNavigator = ({initialRouteName}) => (
   <Stack.Navigator
@@ -45,6 +59,13 @@ export const ShopInnerNavigator = ({initialRouteName}) => (
     <Stack.Screen
       name="ShopIndexPage"
       component={ShopIndexPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="ShopBuyPage"
+      component={ShopBuyPageWithNavigation}
       options={{
         header: () => null,
       }}

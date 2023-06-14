@@ -72,10 +72,10 @@ export const ApiGetInner = (
     method: 'Get',
     headers: {
       Accept: 'application/json',
+      Authorization: 'Bearer ' + global.token,
+      version: APP_VERSION,
       //表单
       'Content-Type': 'application/x-www-form-pathencoded',
-      version: APP_VERSION,
-      Authorization: 'Bearer ' + global.token,
     },
   };
   if (__DEV__ && !unLog) {
@@ -149,12 +149,12 @@ export const ApiPostInner = (
     method: 'POST',
     headers: {
       Accept: 'application/json',
-      //表单
-      'Content-Type': 'application/x-www-form-pathencoded',
-      version: APP_VERSION,
-      Authorization: 'Bearer ' + global.token,
+      // Authorization: 'Bearer ' + global.token,
+      //json形式
+      'Content-Type': 'application/json',
+      'tenant-id': 1,
     },
-    body: paramWithToken,
+    body: JSON.stringify(paramWithToken),
   };
   if (__DEV__ && !unLog) {
     console.log('我是接口地址', BASE_URL + path);

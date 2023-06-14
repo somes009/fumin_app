@@ -6,17 +6,17 @@ import Fonts from '../../../Common/Fonts';
 const IndexRenderItem = ({item, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.item}>
-      <XXYJImage style={styles.img} />
+      <XXYJImage source={{uri: item.logo}} style={styles.img} />
       <View style={styles.rightBox}>
         <Text style={styles.name} numberOfLines={2}>
-          {item.title}
+          {item.name}
         </Text>
         <View style={styles.bottomBox}>
           <View style={styles.placeBox}>
             <XXYJImage style={styles.placeIcon} />
-            <Text style={styles.placeText}>佛山游乐园</Text>
+            <Text style={styles.placeText}>{item.address}</Text>
           </View>
-          <Text style={styles.distance}>0.3km</Text>
+          <Text style={styles.distance}>{item.distance}km</Text>
         </View>
       </View>
     </TouchableOpacity>

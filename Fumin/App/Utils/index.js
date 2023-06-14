@@ -19,6 +19,15 @@ Utils.checkPhone = (phone) => {
   return true;
 };
 
+Utils.formatNumberToBai = (num) => {
+  if (num > 100) {
+    let hundreds = Math.floor(num / 100) * 100;
+    return hundreds.toString() + '+';
+  } else {
+    return num.toString();
+  }
+};
+
 //获取手机屏幕尺寸
 Utils.getScreenSize = () => {
   let width = Dimensions.get('window').width;
@@ -133,6 +142,6 @@ Utils.copyText = (text) => {
   Utils.Toast({
     text: '已复制到剪贴板',
   });
-}
+};
 
 export default Utils;
