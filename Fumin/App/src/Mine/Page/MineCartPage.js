@@ -99,22 +99,17 @@ class MineCartPage extends React.Component {
       isSelAll: 0,
       price: 0,
       selPayList: [],
+      selDelList: [],
       list: [
         {
           title: 'shibook旗舰店',
           list: [
             {
+              id: 1,
               name: '2023盒装高档91件套取',
             },
             {
-              name: '2023盒装高档91件套取',
-            },
-          ],
-        },
-        {
-          title: 'shibook旗舰店',
-          list: [
-            {
+              id: 2,
               name: '2023盒装高档91件套取',
             },
           ],
@@ -123,6 +118,7 @@ class MineCartPage extends React.Component {
           title: 'shibook旗舰店',
           list: [
             {
+              id: 3,
               name: '2023盒装高档91件套取',
             },
           ],
@@ -131,12 +127,24 @@ class MineCartPage extends React.Component {
           title: 'shibook旗舰店',
           list: [
             {
+              id: 4,
+              name: '2023盒装高档91件套取',
+            },
+          ],
+        },
+        {
+          title: 'shibook旗舰店',
+          list: [
+            {
+              id: 5,
               name: '2023盒装高档91件套取',
             },
             {
+              id: 6,
               name: '2023盒装高档91件套取',
             },
             {
+              id: 7,
               name: '2023盒装高档91件套取',
             },
           ],
@@ -192,7 +200,8 @@ class MineCartPage extends React.Component {
 
   render() {
     const {navigation, safeAreaInsets} = this.props;
-    const {count, price, isSelAll, list, type} = this.state;
+    const {count, price, isSelAll, list, type, selDelList, selPayList} =
+      this.state;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         <XXYJHeader
@@ -221,7 +230,11 @@ class MineCartPage extends React.Component {
             </TouchableOpacity>
           }
         />
-        <CartList type={type} cartList={list} />
+        <CartList
+          selList={type ? selDelList : selPayList}
+          type={type}
+          cartList={list}
+        />
         <View style={styles.BottomBox}>
           <TouchableOpacity
             activeOpacity={1}

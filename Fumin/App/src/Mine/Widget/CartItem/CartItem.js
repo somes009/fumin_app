@@ -81,7 +81,7 @@ export default class GoodItem extends React.Component {
     }
   }
   render() {
-    const {item} = this.props;
+    const {item, handleSel} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.leftBox}>

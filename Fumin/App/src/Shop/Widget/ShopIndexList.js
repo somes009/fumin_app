@@ -97,6 +97,7 @@ export default class MineOrderPage extends Component {
             onPress={() => {
               navigation.navigate('IndexNav', {
                 screen: 'ProductDetailPage',
+                params: {id: 1},
               });
             }}
           />
@@ -104,6 +105,7 @@ export default class MineOrderPage extends Component {
             onPress={() => {
               navigation.navigate('IndexNav', {
                 screen: 'ProductDetailPage',
+                params: {id: 1},
               });
             }}
           />
@@ -111,6 +113,7 @@ export default class MineOrderPage extends Component {
             onPress={() => {
               navigation.navigate('IndexNav', {
                 screen: 'ProductDetailPage',
+                params: {id: 1},
               });
             }}
           />
@@ -118,6 +121,7 @@ export default class MineOrderPage extends Component {
             onPress={() => {
               navigation.navigate('IndexNav', {
                 screen: 'ProductDetailPage',
+                params: {id: 1},
               });
             }}
           />

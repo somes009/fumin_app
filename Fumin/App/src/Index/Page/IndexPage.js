@@ -15,7 +15,7 @@ import Fonts from '../../../Common/Fonts';
 import XXYJBanner from '../../Base/Widget/XXYJBanner';
 import Geo from '../../../Api/Geo';
 import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import Utils from '../../../Utils';
 export default class IndexPage extends Component {
   constructor(props) {
@@ -27,32 +27,28 @@ export default class IndexPage extends Component {
     // console.log('xxcxcxcxcxcxcxcxcxx', res);
     // this.requestLocationPermission();
     // this.getPlace();
+    this.getLocation();
   }
   requestLocationPermission = () => {
-    // if (Utils.isAndroid) {
-    //   const granted = PermissionsAndroid.request(
-    //     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    //     {
-    //       title: 'Location Permission',
-    //       message: 'App needs access to your location',
-    //       buttonNeutral: 'Ask Me Later',
-    //       buttonNegative: 'Cancel',
-    //       buttonPositive: 'OK',
-    //     },
-    //   );
-    //   console.log(PermissionsAndroid.RESULTS.GRANTED);
-    //   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //     console.log('Location permission granted');
-    //   } else {
-    //     console.log('Location permission denied');
-    //   }
-    // } else {
-    //   console.log('Location permission granted');
-    // }
-    // this.getLocation();
+    const granted = PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Location Permission',
+        message: 'App needs access to your location',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      },
+    );
+    console.log(PermissionsAndroid.RESULTS.GRANTED);
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('Location permission granted');
+      this.getLocation();
+    } else {
+      console.log('Location permission denied');
+    }
   };
   getLocation = () => {
-    console.log(Geolocation);
     Geolocation.getCurrentPosition(
       (position) => {
         const {latitude, longitude} = position.coords;
@@ -61,27 +57,8 @@ export default class IndexPage extends Component {
       (error) => {
         console.log(error);
       },
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 1000},
     );
-  };
-  getPlace = () => {
-    const path = '/app-api/system/area/auth/tree';
-    // const path = '/admin-api/system/area/get-by-ip';
-    const params = {
-      // objType: 1,
-    };
-    const onSuccess = (res) => {
-      this.setState({
-        data: res,
-      });
-    };
-    const onFailure = (err) => {};
-    ApiPostJson({
-      path,
-      params,
-      onSuccess,
-      onFailure,
-    });
   };
   renderItem = ({item, index}) => {
     const {navigation} = this.props;

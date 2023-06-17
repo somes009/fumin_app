@@ -10,12 +10,29 @@ import {
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
+import {ApiPostJson} from '../../../Api/RequestTool';
 export default class TaskIndexPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.getData();
+  }
+  getData = () => {
+    const path = '/app-api/advertising/auth/selectMyQuest';
+    const params = {};
+    const onSuccess = (res) => {
+      this.setState({
+        data: res,
+      });
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
   renderCanTouch = (text, onPress) => {
     return (
       <TouchableOpacity

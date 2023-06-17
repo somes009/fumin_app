@@ -72,12 +72,12 @@ export default class MineIndexPage extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('MineNav', {
-                screen: 'MineCartPage',
-              });
               // navigation.navigate('MineNav', {
-              //   screen: 'MineSetUpPage',
+              //   screen: 'MineCartPage',
               // });
+              navigation.navigate('MineNav', {
+                screen: 'MineSetUpPage',
+              });
             }}
             activeOpacity={0.8}
             style={styles.setUpBox}>
@@ -129,22 +129,37 @@ export default class MineIndexPage extends Component {
           navigation.navigate('MineNav', {
             screen: 'MineContributeScorePage',
           });
+          navigation.navigate('MineNav', {
+            screen: 'MineFuDouPage',
+          });
         },
       },
       {
         name: '福豆',
         count: data?.myZcList?.[2]?.zhi,
-        fun: () => {},
+        fun: () => {
+          navigation.navigate('MineNav', {
+            screen: 'MineFuDouPage',
+          });
+        },
       },
       {
         name: '红包',
         count: data?.myZcList?.[3]?.zhi,
-        fun: () => {},
+        fun: () => {
+          navigation.navigate('MineNav', {
+            screen: 'MineHongBaoPage',
+          });
+        },
       },
       {
         name: '红包金',
         count: data?.myZcList?.[4]?.zhi,
-        fun: () => {},
+        fun: () => {
+          navigation.navigate('MineNav', {
+            screen: 'MineHongBaoJinPage',
+          });
+        },
       },
     ];
     return (

@@ -12,7 +12,7 @@ import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
 import XXYJHeader from '../../Base/Widget/XXYJHeader';
 import XXYJTextInput from '../../Base/Widget/XXYJTextinput';
-import MinePlaceListItem from '../Widget/MinePlaceListItem';
+import PlacePicker from '../Widget/PlacePicker/index';
 import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
 
 export default class MineCreatePlacePage extends Component {
@@ -23,9 +23,37 @@ export default class MineCreatePlacePage extends Component {
       phone: '',
       place1: '',
       place2: '',
+      placeList: [],
+      cityList: [],
+      quList: [],
+      placeId: '',
+      cityId: '',
+      quId: '',
     };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.getPlace();
+  }
+  getPlace = () => {
+    const path = '/app-api/system/area/auth/tree';
+    // const path = '/admin-api/system/area/get-by-ip';
+    const params = {
+      // objType: 1,
+    };
+    const onSuccess = (res) => {
+      console.log(res);
+      this.setState({
+        placeList: res,
+      });
+    };
+    const onFailure = (err) => {};
+    ApiGet({
+      path,
+      params,
+      onSuccess,
+      onFailure,
+    });
+  };
   renderPhone = () => {
     const {phone} = this.state;
     return (
@@ -119,11 +147,15 @@ export default class MineCreatePlacePage extends Component {
     );
   };
   handleCreate = () => {
-    const {name, phone, place1, place2} = this.state;
+    const {name, phone, place1, place2, quId} = this.state;
     const path = '/app-api/member/address/create';
     const params = {
       name,
       mobile: phone,
+      areaId: quId,
+      detailAddress: place2,
+      defaulted: 1,
+      postCode: 258000,
     };
     const onSuccess = (res) => {
       this.setState({
@@ -138,6 +170,7 @@ export default class MineCreatePlacePage extends Component {
   };
   render() {
     const {navigation, safeAreaInsets} = this.props;
+    const {placeList, cityList, quList} = this.state;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         <XXYJHeader
@@ -158,6 +191,39 @@ export default class MineCreatePlacePage extends Component {
           style={styles.addBtn}>
           <Text style={styles.addText}>完成</Text>
         </TouchableOpacity>
+        {!!placeList.length && (
+          <PlacePicker
+            onLocationChange={(type, id) => {
+              if (type === 1) {
+                for (let i in placeList) {
+                  if (placeList[i].id === id) {
+                    this.setState({
+                      placeId: id,
+                      cityList: placeList[i].children,
+                    });
+                  }
+                }
+              } else if (type === 2) {
+                for (let i in cityList) {
+                  if (cityList[i].id === id) {
+                    this.setState({
+                      cityId: id,
+                      quList: cityList[i].children,
+                    });
+                  }
+                }
+              } else {
+                console.log(id);
+                this.setState({
+                  quId: id,
+                });
+              }
+            }}
+            provinces={placeList}
+            cities={cityList}
+            districts={quList}
+          />
+        )}
       </View>
     );
   }

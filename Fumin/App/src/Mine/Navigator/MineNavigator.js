@@ -9,6 +9,9 @@ import MineShopPage from '../Page/MineShopPage';
 import MineContributeScorePage from '../Page/MineContributeScorePage';
 import MineCartPage from '../Page/MineCartPage';
 import MineCreatePlacePage from '../Page/MineCreatePlacePage';
+import MineFuDouPage from '../Page/MineFuDouPage';
+import MineHongBaoPage from '../Page/MineHongBaoPage';
+import MineHongBaoJinPage from '../Page/MineHongBaoJinPage';
 import {Platform} from 'react-native';
 import {
   NavigationContainer,
@@ -154,6 +157,45 @@ const MineCreatePlacePageWithNavigation = (props) => {
     />
   );
 };
+const MineFuDouPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineFuDouPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const MineHongBaoPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineHongBaoPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const MineHongBaoJinPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineHongBaoJinPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
 
 export const MineInnerNavigator = ({initialRouteName}) => (
   <Stack.Navigator
@@ -234,6 +276,27 @@ export const MineInnerNavigator = ({initialRouteName}) => (
     <Stack.Screen
       name="MineCreatePlacePage"
       component={MineCreatePlacePageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineFuDouPage"
+      component={MineFuDouPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineHongBaoPage"
+      component={MineHongBaoPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineHongBaoJinPage"
+      component={MineHongBaoJinPageWithNavigation}
       options={{
         header: () => null,
       }}
