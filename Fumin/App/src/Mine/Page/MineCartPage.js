@@ -7,6 +7,7 @@ import XXYJBanner from '../../Base/Widget/XXYJBanner';
 import Fonts from '../../../Common/Fonts';
 import XXYJButton from '../../Base/Widget/XXYJButton';
 import {ApiPostJson} from '../../../Api/RequestTool';
+import Utils from '../../../Utils';
 // 组件样式
 var styles = StyleSheet.create({
   container: {
@@ -94,62 +95,13 @@ class MineCartPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 143,
+      count: 0,
       type: 0, // 0非管理；1管理
       isSelAll: 0,
       price: 0,
       selPayList: [],
       selDelList: [],
-      list: [
-        {
-          title: 'shibook旗舰店',
-          list: [
-            {
-              id: 1,
-              name: '2023盒装高档91件套取',
-            },
-            {
-              id: 2,
-              name: '2023盒装高档91件套取',
-            },
-          ],
-        },
-        {
-          title: 'shibook旗舰店',
-          list: [
-            {
-              id: 3,
-              name: '2023盒装高档91件套取',
-            },
-          ],
-        },
-        {
-          title: 'shibook旗舰店',
-          list: [
-            {
-              id: 4,
-              name: '2023盒装高档91件套取',
-            },
-          ],
-        },
-        {
-          title: 'shibook旗舰店',
-          list: [
-            {
-              id: 5,
-              name: '2023盒装高档91件套取',
-            },
-            {
-              id: 6,
-              name: '2023盒装高档91件套取',
-            },
-            {
-              id: 7,
-              name: '2023盒装高档91件套取',
-            },
-          ],
-        },
-      ],
+      list: [],
     };
   }
   componentDidMount() {
@@ -165,6 +117,8 @@ class MineCartPage extends React.Component {
       this.setState({
         data: res,
         price: res.allAmount,
+        list: res.list,
+        count: res.list?.length || 0,
       });
     };
     ApiPostJson({
@@ -190,6 +144,23 @@ class MineCartPage extends React.Component {
   };
 
   handleBuy = () => {};
+
+  handleDel = (ids) => {
+    const {selPayList} = this.state;
+    const path = '/app-api/trade/cart/deleteMyCartCount';
+    const params = {
+      ids,
+    };
+    const onSuccess = (res) => {
+      Utils.Toast({text: '删除成功'});
+      this.getData();
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
 
   handleSelAll = () => {
     const {isSelAll} = this.state;
@@ -234,6 +205,8 @@ class MineCartPage extends React.Component {
           selList={type ? selDelList : selPayList}
           type={type}
           cartList={list}
+          handleSel={this.selItem}
+          handleDel={this.handleDel}
         />
         <View style={styles.BottomBox}>
           <TouchableOpacity
@@ -251,7 +224,7 @@ class MineCartPage extends React.Component {
             {!type && (
               <>
                 <Text style={styles.priceTitle}>合计：</Text>
-                <Text style={styles.price}>¥{price}</Text>
+                <Text style={styles.price}>¥{price / 100}</Text>
               </>
             )}
             <XXYJButton

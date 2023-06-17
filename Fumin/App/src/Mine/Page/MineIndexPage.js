@@ -72,12 +72,12 @@ export default class MineIndexPage extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              // navigation.navigate('MineNav', {
-              //   screen: 'MineCartPage',
-              // });
               navigation.navigate('MineNav', {
-                screen: 'MineSetUpPage',
+                screen: 'MineCartPage',
               });
+              // navigation.navigate('MineNav', {
+              //   screen: 'MineSetUpPage',
+              // });
             }}
             activeOpacity={0.8}
             style={styles.setUpBox}>

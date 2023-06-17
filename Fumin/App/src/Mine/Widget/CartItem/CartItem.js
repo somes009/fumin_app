@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 //单个商品坑位
 //doc组件生命周期： http://reactjs.cn/react/docs/working-with-the-browser.html#component-lifecycle
 
@@ -81,23 +82,35 @@ export default class GoodItem extends React.Component {
     }
   }
   render() {
-    const {item, handleSel} = this.props;
+    const {item, handleSel, handleDel} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.leftBox}>
-          <TouchableOpacity activeOpacity={1} style={styles.unSelCri} />
+          <TouchableOpacity
+            activeOpacity={1}
+            style={[
+              styles.unSelCri,
+              {
+                backgroundColor: item.isSelected ? '#FF9B00' : '#fff',
+              },
+            ]}
+            onPress={handleSel?.bind(this, item.supId)}
+          />
           <XXYJImage style={styles.img} />
           <View style={styles.infoBox}>
             <Text numberOfLines={1} style={styles.name}>
-              {item.name}
+              {item.spuName}
             </Text>
-            <Text style={styles.size}>规格</Text>
-            <Text style={styles.price}>¥888</Text>
+            <Text style={styles.size}>x{item.count}</Text>
+            <Text style={styles.price}>¥{item.amount / 100}</Text>
           </View>
         </View>
-        {/* <TouchableOpacity activeOpacity={1} style={styles.delBox}>
+        <TouchableOpacity
+          onPress={handleDel.bind(this, [item.spuId])}
+          activeOpacity={1}
+          style={styles.delBox}>
           <Text style={styles.delText}>-</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
     );
   }

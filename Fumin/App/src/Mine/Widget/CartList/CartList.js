@@ -80,7 +80,7 @@ class CartList extends React.Component {
   };
   //渲染列表
   renderListView() {
-    const {cartList, type} = this.props;
+    const {cartList, type, handleSel, handleDel} = this.props;
     let nullList = (
       <View style={styles.nullCartTips}>
         <Text>当前购物车为空</Text>
@@ -93,15 +93,26 @@ class CartList extends React.Component {
           return (
             <View key={index} style={styles.box}>
               <View style={styles.boxTop}>
-                <TouchableOpacity activeOpacity={1} style={styles.unSelCri} />
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={styles.unSelCri}
+                  onPress={handleSel.bind(this, item.pmId)}
+                />
                 <TouchableOpacity activeOpacity={1} style={styles.goShopBox}>
-                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.title}>{item.pmName}</Text>
                   <XXYJImage style={styles.toRight} />
                 </TouchableOpacity>
               </View>
               <View style={styles.list}>
-                {item.list.map((data, i) => {
-                  return <CartItem item={data} key={i} />;
+                {item?.spuList?.map((data, i) => {
+                  return (
+                    <CartItem
+                      handleSel={handleSel}
+                      handleDel={handleDel}
+                      item={data}
+                      key={i}
+                    />
+                  );
                 })}
               </View>
             </View>
