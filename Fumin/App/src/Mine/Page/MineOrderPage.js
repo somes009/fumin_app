@@ -12,6 +12,9 @@ import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
 import XXYJHeader from '../../Base/Widget/XXYJHeader';
 import XXYJAnimatableTabView from '../../Base/Widget/XXYJAnimatableTabView';
+import MineObligationItem from '../Widget/MineObligationItem';
+import MineWaitSendItem from '../Widget/MineWaitSendItem';
+import MineIsEndItem from '../Widget/MineIsEndItem';
 
 export default class MineOrderPage extends Component {
   constructor(props) {
@@ -27,13 +30,29 @@ export default class MineOrderPage extends Component {
   }
 
   renderList = (item, index) => {
+    const {navigation} = this.props;
     return (
       <View
         key={index}
         style={{
           width: Utils.getScreenSize().width,
-        }}
-      />
+          alignItems: 'center',
+        }}>
+        {index === 0 && (
+          <>
+            <MineObligationItem
+              onPress={() => {
+                navigation.navigate('MineOrderDetailPage');
+              }}
+            />
+            <MineWaitSendItem />
+            <MineIsEndItem />
+          </>
+        )}
+        {index === 1 && <MineObligationItem />}
+        {index === 2 && <MineWaitSendItem />}
+        {index === 3 && <MineIsEndItem />}
+      </View>
     );
   };
   render() {
@@ -51,7 +70,7 @@ export default class MineOrderPage extends Component {
           lineStyle={styles.tabLine}
           tabList={this.tagList}
           data={this.tagList}
-          unScroll
+          // unScroll
           renderItem={this.renderList}
           activeTextStyle={{
             color: '#FF9B00',
