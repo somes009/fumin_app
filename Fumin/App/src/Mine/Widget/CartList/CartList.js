@@ -16,6 +16,7 @@ import {
 import CartItem from '../CartItem/CartItem';
 import XXYJImage from '../../../Base/Widget/XXYJImage';
 import Fonts from '../../../../Common/Fonts';
+import Images from '../../../../Images';
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 // 组件样式
 var styles = StyleSheet.create({
@@ -66,7 +67,6 @@ var styles = StyleSheet.create({
   toRight: {
     width: 7,
     height: 11,
-    backgroundColor: '#eee',
     marginLeft: 1,
   },
 });
@@ -100,7 +100,10 @@ class CartList extends React.Component {
                 />
                 <TouchableOpacity activeOpacity={1} style={styles.goShopBox}>
                   <Text style={styles.title}>{item.pmName}</Text>
-                  <XXYJImage style={styles.toRight} />
+                  <XXYJImage
+                    source={Images.toRightGray}
+                    style={styles.toRight}
+                  />
                 </TouchableOpacity>
               </View>
               <View style={styles.list}>

@@ -7,12 +7,14 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
 import XXYJImage from '../../Base/Widget/XXYJImage';
 import XXYJBanner from '../../Base/Widget/XXYJBanner';
 import {ApiPostJson} from '../../../Api/RequestTool';
+import Images from '../../../Images';
 
 export default class MineIndexPage extends Component {
   constructor(props) {
@@ -22,10 +24,12 @@ export default class MineIndexPage extends Component {
       showYqm: false,
       selPayList: [],
       selDelList: [],
+      banners: [],
     };
   }
   componentDidMount() {
     this.getData();
+    this.getBanner();
   }
 
   getData = () => {
@@ -36,6 +40,22 @@ export default class MineIndexPage extends Component {
     const onSuccess = (res) => {
       this.setState({
         data: res,
+      });
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
+  getBanner = () => {
+    const path = '/app-api/advertising/auth/getAdvertisingList';
+    const params = {
+      type: 1,
+    };
+    const onSuccess = (res) => {
+      this.setState({
+        banners: res.list,
       });
     };
     ApiPostJson({
@@ -81,7 +101,7 @@ export default class MineIndexPage extends Component {
             }}
             activeOpacity={0.8}
             style={styles.setUpBox}>
-            <XXYJImage style={styles.setUpImg} />
+            <Image source={Images.mineSetIcon} style={styles.setUpImg} />
             <Text style={styles.setUpText}>设置</Text>
           </TouchableOpacity>
         </View>
@@ -91,7 +111,11 @@ export default class MineIndexPage extends Component {
   handlePressBanner = () => {};
 
   renderBanner = () => {
+    const {banners} = this.state;
     const bannerList = [{pic: '1'}, {pic: '1'}, {pic: '1'}];
+    if (!banners.length) {
+      return;
+    }
     return (
       <XXYJBanner
         style={{marginTop: 19}}
@@ -100,7 +124,7 @@ export default class MineIndexPage extends Component {
         loop
         autoplay
         autoplayInterval={5000}
-        imgs={bannerList}
+        imgs={banners}
         onPress={this.handlePressBanner}
         itemStyle={{
           backgroundColor: '#eee',
@@ -176,7 +200,10 @@ export default class MineIndexPage extends Component {
                 <Text style={styles.assetNum}>{item.count}</Text>
                 <View style={styles.assetBottom}>
                   <Text style={styles.assetName}>{item.name}</Text>
-                  <XXYJImage style={styles.assetToRight} />
+                  <XXYJImage
+                    style={styles.assetToRight}
+                    source={Images.toRightGray}
+                  />
                 </View>
               </TouchableOpacity>
             );
@@ -190,7 +217,7 @@ export default class MineIndexPage extends Component {
     const list = [
       {
         name: '待付款',
-        img: 0,
+        img: Images.waitPayIcon,
         fun: () => {
           navigation.navigate('MineNav', {
             screen: 'MineOrderPage',
@@ -199,22 +226,22 @@ export default class MineIndexPage extends Component {
       },
       {
         name: '待发货',
-        img: 0,
+        img: Images.waitSendIcon,
         fun: () => {},
       },
       {
-        name: '待收货',
-        img: 0,
+        name: '已完成',
+        img: Images.isEndIcon,
         fun: () => {},
       },
       {
         name: '待使用',
-        img: 0,
+        img: Images.waitUseIcon,
         fun: () => {},
       },
       {
         name: '售后/退款',
-        img: 0,
+        img: Images.shouhouIcon,
         fun: () => {},
       },
     ];
@@ -229,7 +256,7 @@ export default class MineIndexPage extends Component {
                 key={index}
                 onPress={item.fun}
                 activeOpacity={1}>
-                <XXYJImage style={styles.orderImg} />
+                <XXYJImage source={item.img} style={styles.orderImg} />
                 <View style={styles.assetBottom}>
                   <Text style={styles.assetName}>{item.name}</Text>
                 </View>
@@ -296,7 +323,7 @@ export default class MineIndexPage extends Component {
                       },
                 ]}>
                 <Text style={styles.bottomName}>{item.name}</Text>
-                <XXYJImage style={styles.bottomToRight} />
+                <XXYJImage style={styles.bottomToRight} source={Images.toRightOrange} />
               </View>
             </TouchableOpacity>
           );
@@ -422,7 +449,6 @@ const styles = StyleSheet.create({
   setUpImg: {
     width: 23,
     height: 22,
-    backgroundColor: '#eee',
   },
   setUpText: {
     marginTop: 5,
@@ -477,12 +503,10 @@ const styles = StyleSheet.create({
     width: 7,
     height: 11,
     marginLeft: 3,
-    backgroundColor: '#eee',
   },
   orderImg: {
     width: 21,
     height: 21,
-    backgroundColor: '#eee',
   },
   bottomBox: {
     width: 340,
@@ -513,7 +537,6 @@ const styles = StyleSheet.create({
   bottomToRight: {
     width: 7,
     height: 11,
-    backgroundColor: '#eee',
   },
   mark: {
     position: 'absolute',
