@@ -3,9 +3,11 @@
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import XXYJImage from '../../Base/Widget/XXYJImage';
+import XXYJListSelPop from '../../Base/Widget/XXYJListSelPop';
 import Fonts from '../../../Common/Fonts';
 import Utils from '../../../Utils';
 const MineObligationItem = ({onPress, item}) => {
+  let refCancel = {};
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.item}>
       <View style={styles.titleBox}>
@@ -33,7 +35,12 @@ const MineObligationItem = ({onPress, item}) => {
       </View>
       <Text style={styles.needPrice}>需付款：￥1199</Text>
       <View style={styles.buttons}>
-        <TouchableOpacity activeOpacity={1} style={styles.button}>
+        <TouchableOpacity
+          onPress={() => {
+            refCancel.openModal();
+          }}
+          activeOpacity={1}
+          style={styles.button}>
           <Text style={styles.buttonText}>取消订单</Text>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={1} style={styles.button}>
@@ -43,6 +50,40 @@ const MineObligationItem = ({onPress, item}) => {
           <Text style={styles.buttonText}>继续付款</Text>
         </TouchableOpacity>
       </View>
+      <XXYJListSelPop
+        ref={(ref) => (refCancel = ref)}
+        title="取消订单"
+        smlTitle="请选择取消订单原因"
+        list={[
+          {
+            id: 1,
+            name: '价格有点贵',
+          },
+          {
+            id: 2,
+            name: '余额不足',
+          },
+          {
+            id: 3,
+            name: '收货地址拍错',
+          },
+          {
+            id: 4,
+            name: '规格/款式/数量拍错',
+          },
+          {
+            id: 5,
+            name: '暂时不需要了',
+          },
+          {
+            id: 6,
+            name: '其他',
+          },
+        ]}
+        handle={(id) => {
+          console.log(id);
+        }}
+      />
     </TouchableOpacity>
   );
 };

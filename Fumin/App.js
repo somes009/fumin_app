@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 // import {createStore, applyMiddleware} from 'redux';
 import {RootSiblingParent} from 'react-native-root-siblings';
 import {NativeBaseProvider} from 'native-base';
@@ -22,6 +22,7 @@ class App extends Component {
     super(props);
     this.state = {
       show: false,
+      isStart: true,
     };
   }
   componentDidMount() {
@@ -44,6 +45,12 @@ class App extends Component {
         show: true,
       });
     });
+    this.startTimeout = setTimeout(() => {
+      clearTimeout(this.startTimeout);
+      this.setState({
+        isStart: false,
+      });
+    }, 3000);
   }
   layoutHeader = (e) => {
     console.log('layout Header', this.state.screenHeight);
@@ -60,14 +67,26 @@ class App extends Component {
       });
     }
   };
+
+  renderStartPage = () => {
+    return (
+      <View style={styles.startBox}>
+        <Text>开屏页</Text>
+      </View>
+    );
+  };
+
   render() {
-    const {show} = this.state;
+    const {show, isStart} = this.state;
     let content = <TabNavigator initialRouteName={'HomeTabs'} />;
     content = global.token ? (
       content
     ) : (
       <TabNavigator initialRouteName={'LoginNav'} />
     );
+    if (isStart) {
+      return this.renderStartPage();
+    }
     return (
       // <Provider store={store}>
       <RootSiblingParent>
@@ -96,6 +115,12 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     backgroundColor: '#fff',
+  },
+  startBox: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
