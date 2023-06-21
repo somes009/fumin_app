@@ -33,6 +33,18 @@ export default class TaskIndexPage extends Component {
       onSuccess,
     });
   };
+  shifang = (type) => {
+    const path = '/app-api/advertising/auth/userMissionRewardRelease';
+    const params = {type};
+    const onSuccess = (res) => {
+      this.getData();
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
   renderCanTouch = (text, onPress) => {
     return (
       <TouchableOpacity

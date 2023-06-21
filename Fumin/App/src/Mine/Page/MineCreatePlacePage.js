@@ -182,7 +182,39 @@ export default class MineCreatePlacePage extends Component {
         <View style={styles.infoList}>
           {this.renderName()}
           {this.renderPhone()}
-          {this.renderPlace1()}
+          {/* {this.renderPlace1()} */}
+          {!!placeList.length && (
+            <PlacePicker
+              onLocationChange={(type, id) => {
+                if (type === 1) {
+                  for (let i in placeList) {
+                    if (placeList[i].id === id) {
+                      this.setState({
+                        placeId: id,
+                        cityList: placeList[i].children,
+                      });
+                    }
+                  }
+                } else if (type === 2) {
+                  for (let i in cityList) {
+                    if (cityList[i].id === id) {
+                      this.setState({
+                        cityId: id,
+                        quList: cityList[i].children,
+                      });
+                    }
+                  }
+                } else {
+                  this.setState({
+                    quId: id,
+                  });
+                }
+              }}
+              provinces={placeList}
+              cities={cityList}
+              districts={quList}
+            />
+          )}
           {this.renderPlace2()}
         </View>
         <TouchableOpacity
@@ -191,39 +223,6 @@ export default class MineCreatePlacePage extends Component {
           style={styles.addBtn}>
           <Text style={styles.addText}>完成</Text>
         </TouchableOpacity>
-        {!!placeList.length && (
-          <PlacePicker
-            onLocationChange={(type, id) => {
-              if (type === 1) {
-                for (let i in placeList) {
-                  if (placeList[i].id === id) {
-                    this.setState({
-                      placeId: id,
-                      cityList: placeList[i].children,
-                    });
-                  }
-                }
-              } else if (type === 2) {
-                for (let i in cityList) {
-                  if (cityList[i].id === id) {
-                    this.setState({
-                      cityId: id,
-                      quList: cityList[i].children,
-                    });
-                  }
-                }
-              } else {
-                console.log(id);
-                this.setState({
-                  quId: id,
-                });
-              }
-            }}
-            provinces={placeList}
-            cities={cityList}
-            districts={quList}
-          />
-        )}
       </View>
     );
   }

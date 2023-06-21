@@ -9,7 +9,6 @@ const LocationPicker = ({provinces, cities, districts, onLocationChange}) => {
   const [selectedDistrictId, setSelectedDistrictId] = useState(null);
 
   const handleProvinceChange = (provinceId) => {
-    console.log(provinceId);
     setSelectedProvinceId(provinceId);
     setSelectedCityId(null);
     setSelectedDistrictId(null);

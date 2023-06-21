@@ -82,7 +82,9 @@ export default class GoodItem extends React.Component {
     }
   }
   render() {
-    const {item, handleSel, handleDel} = this.props;
+    const {item, handleSel, handleDel, type, selDelList, handleSelDel} =
+      this.props;
+    const isSel = type ? selDelList.includes(item.cartId) : item.isSelected;
     return (
       <View style={styles.container}>
         <View style={styles.leftBox}>
@@ -91,10 +93,14 @@ export default class GoodItem extends React.Component {
             style={[
               styles.unSelCri,
               {
-                backgroundColor: item.isSelected ? '#FF9B00' : '#fff',
+                backgroundColor: isSel ? '#FF9B00' : '#fff',
               },
             ]}
-            onPress={handleSel?.bind(this, item.supId)}
+            onPress={
+              type
+                ? handleSelDel?.bind(this, item.cartId)
+                : handleSel?.bind(this, item.cartId, 1)
+            }
           />
           <XXYJImage style={styles.img} />
           <View style={styles.infoBox}>
@@ -106,7 +112,7 @@ export default class GoodItem extends React.Component {
           </View>
         </View>
         <TouchableOpacity
-          onPress={handleDel.bind(this, [item.spuId])}
+          onPress={handleDel.bind(this, [item.cartId])}
           activeOpacity={1}
           style={styles.delBox}>
           <Text style={styles.delText}>-</Text>

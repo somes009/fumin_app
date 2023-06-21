@@ -86,18 +86,29 @@ export default class MineIndexPage extends Component {
           </View>
         </View>
         <View style={styles.infoBoxRight}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('MineNav', {
+                screen: 'MineCartPage',
+              });
+            }}
+            activeOpacity={0.8}
+            style={styles.changeTypeBox}>
+            <XXYJImage style={styles.changeTypeImg} />
+            <Text style={styles.changeTypeText}>购物车</Text>
+          </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.8} style={styles.changeTypeBox}>
             <XXYJImage style={styles.changeTypeImg} />
             <Text style={styles.changeTypeText}>切换身份</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('MineNav', {
-                screen: 'MineCartPage',
-              });
               // navigation.navigate('MineNav', {
-              //   screen: 'MineSetUpPage',
+              //   screen: 'MineCartPage',
               // });
+              navigation.navigate('MineNav', {
+                screen: 'MineSetUpPage',
+              });
             }}
             activeOpacity={0.8}
             style={styles.setUpBox}>
@@ -323,7 +334,10 @@ export default class MineIndexPage extends Component {
                       },
                 ]}>
                 <Text style={styles.bottomName}>{item.name}</Text>
-                <XXYJImage style={styles.bottomToRight} source={Images.toRightOrange} />
+                <XXYJImage
+                  style={styles.bottomToRight}
+                  source={Images.toRightOrange}
+                />
               </View>
             </TouchableOpacity>
           );

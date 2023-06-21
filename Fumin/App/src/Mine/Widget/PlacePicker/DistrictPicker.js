@@ -18,11 +18,20 @@ const DistrictPicker = ({districts, onDistrictChange, cityId}) => {
   }, [districts, cityId]);
 
   return (
-    <Picker
-      items={filteredDistricts}
-      onValueChange={onDistrictChange}
-      placeholder="请选择区县"
-    />
+    <>
+      {!!filteredDistricts.length && (
+        <Picker
+          items={filteredDistricts}
+          onValueChange={onDistrictChange}
+          placeholder="请选择区县"
+        />
+      )}
+    </>
+    // <Picker
+    //   items={filteredDistricts}
+    //   onValueChange={onDistrictChange}
+    //   placeholder="请选择区县"
+    // />
   );
 };
 

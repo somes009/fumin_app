@@ -18,16 +18,16 @@ export default class MyTabBar extends Component {
       msgCount: 0,
     };
     this.arrayTabJson = [
-      Images.selGrowIcon,
-      Images.selFindIcon,
-      Images.selMineCrouseIcon,
-      Images.selMineIcon,
+      Images.indexIsIselIcon,
+      Images.shopIsSelIcon,
+      Images.taskIsSelIcon,
+      Images.mineIsSelIcon,
     ];
     this.arrayTabJsonW = [
-      Images.unSelGrowIcon,
-      Images.unSelFindIcon,
-      Images.unSelMineCourseIcon,
-      Images.unSelMineIcon,
+      Images.indexUnSelIcon,
+      Images.shopUnSelIcon,
+      Images.taskUnSelIcon,
+      Images.mineUnSelIcon,
     ];
 
     this.arrayTabText = ['附近', '商城', '任务', '我的'];
@@ -136,22 +136,27 @@ export default class MyTabBar extends Component {
                 style={{
                   alignItems: 'center',
                 }}>
-                <View style={{position: 'relative'}}>
+                <View
+                  style={[
+                    styles.imgBox,
+                    {
+                      backgroundColor: isFocused ? '#FF9B00' : '#fff',
+                    },
+                  ]}>
                   <XXYJImage
                     resizeMode="contain"
-                    source={{
-                      uri: isFocused
+                    source={
+                      isFocused
                         ? this.arrayTabJson?.[index]
-                        : this.arrayTabJsonW?.[index],
-                    }}
-                    style={[styles.viewLottieLoop]}
-                    imageAssetsFolder={'images'}
+                        : this.arrayTabJsonW?.[index]
+                    }
+                    style={[isFocused ? styles.isSel : styles.viewLottieLoop]}
                   />
                 </View>
                 <Text
                   style={[
                     styles.tabText,
-                    {color: selTab === index ? '#FF9B00' : '#000000'},
+                    {color: isFocused ? '#FF9B00' : '#000000'},
                   ]}>
                   {this.arrayTabText?.[index]}
                 </Text>
@@ -168,6 +173,17 @@ const styles = StyleSheet.create({
   viewLottieLoop: {
     width: Utils.properWidth(21),
     height: Utils.properWidth(21),
+  },
+  isSel: {
+    width: Utils.properWidth(17),
+    height: Utils.properWidth(17),
+  },
+  imgBox: {
+    width: Utils.properWidth(23),
+    height: Utils.properWidth(23),
+    borderRadius: Utils.properWidth(12),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   dian: {
     position: 'absolute',

@@ -1,20 +1,49 @@
-import React, {useState} from 'react';
+import React, {Component, useState} from 'react';
+import {Text} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
-const Picker = ({items, onValueChange, placeholder}) => {
-  const [selectedValue, setSelectedValue] = useState(null);
+export default class Picker extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedValue: props?.items[0]?.value || 0,
+    };
+  }
 
-  return (
-    <RNPickerSelect
-      value={selectedValue}
-      onValueChange={(value) => {
-        setSelectedValue(value);
-        onValueChange(value);
-      }}
-      items={items}
-      placeholder={{label: placeholder, value: null}}
-    />
-  );
-};
+  render() {
+    const {items, onValueChange, placeholder} = this.props;
+    const {selectedValue} = this.state;
+    return (
+      <>
+        <RNPickerSelect
+          value={selectedValue}
+          onValueChange={(value) => {
+            onValueChange(value);
+            this.setState({
+              selectedValue: value,
+            });
+          }}
+          items={items}
+          placeholder={{label: placeholder, value: null}}
+        />
+      </>
+    );
+  }
+}
+// const Picker = ({items, onValueChange, placeholder}) => {
+//   const [selectedValue, setSelectedValue] = useState(null);
+//   console.log(selectedValue);
+//   return (
+//     <RNPickerSelect
+//       value={selectedValue}
+//       onValueChange={(value) => {
+//         onValueChange(value);
+//         setSelectedValue(value);
+//       }}
+//       items={items}
+//       placeholder={{label: placeholder, value: null}}
+//     />
+//   );
+// };
 
-export default Picker;
+// export default Picker;

@@ -11,12 +11,30 @@ import {
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
 import XXYJHeader from '../../Base/Widget/XXYJHeader';
+import {ApiPostJson} from '../../../Api/RequestTool';
 export default class TaskListPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      type: props.route.params.type,
+    };
   }
   componentDidMount() {}
+  getList = () => {
+    const {} = this.state;
+    const path = '/app-api/advertising/auth/getAdvertisingList';
+    const params = {};
+    const onSuccess = (res) => {
+      this.setState({
+        list: res.list,
+      });
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
   goSeeButton = (onPress) => {
     return (
       <TouchableOpacity

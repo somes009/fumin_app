@@ -114,11 +114,18 @@ class MineCartPage extends React.Component {
       // objType: 1,
     };
     const onSuccess = (res) => {
+      let count = 0;
+      const list = res.list || [];
+      for (let i in list) {
+        for (let j in list[i].spuList) {
+          count++;
+        }
+      }
       this.setState({
         data: res,
         price: res.allAmount,
         list: res.list,
-        count: res.list?.length || 0,
+        count: count || 0,
       });
     };
     ApiPostJson({
@@ -127,11 +134,12 @@ class MineCartPage extends React.Component {
       onSuccess,
     });
   };
-  selItem = (id) => {
+  selItem = (id, type) => {
     const {selPayList} = this.state;
     const path = '/app-api/trade/cart/updateCartSelected';
     const params = {
       id,
+      type,
     };
     const onSuccess = (res) => {
       this.getData();
@@ -164,8 +172,34 @@ class MineCartPage extends React.Component {
 
   handleSelAll = () => {
     const {isSelAll} = this.state;
+    const path = '/app-api/trade/cart/updateCartSelected';
+    const params = {
+      type: 3,
+    };
+    const onSuccess = (res) => {
+      this.setState({
+        isSelAll: !isSelAll,
+      });
+      this.getData();
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
+
+  handleSelDel = (id) => {
+    const {selDelList} = this.state;
+    const list = [...selDelList];
+    console.log(list, list.includes(id), id);
+    if (list.includes(id)) {
+      list.splice(list.indexOf(id), 1);
+    } else {
+      list.push(id);
+    }
     this.setState({
-      isSelAll: !isSelAll,
+      selDelList: list,
     });
   };
 
@@ -185,6 +219,11 @@ class MineCartPage extends React.Component {
               style={styles.setBox}
               activeOpacity={1}
               onPress={() => {
+                if (type) {
+                  this.setState({
+                    selDelList: [],
+                  });
+                }
                 this.setState({
                   type: type ? 0 : 1,
                 });
@@ -207,6 +246,8 @@ class MineCartPage extends React.Component {
           cartList={list}
           handleSel={this.selItem}
           handleDel={this.handleDel}
+          selDelList={selDelList}
+          handleSelDel={this.handleSelDel}
         />
         <View style={styles.BottomBox}>
           <TouchableOpacity
@@ -232,7 +273,9 @@ class MineCartPage extends React.Component {
               text={type ? '删除' : '结算'}
               textStyle={styles.buyBtnText}
               containerStyle={styles.buyButton}
-              onPress={this.handleBuy}
+              onPress={
+                type ? this.handleDel.bind(this, selDelList) : this.handleBuy
+              }
               unTouch={!price}
             />
           </View>

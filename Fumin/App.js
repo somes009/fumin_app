@@ -84,9 +84,9 @@ class App extends Component {
     ) : (
       <TabNavigator initialRouteName={'LoginNav'} />
     );
-    if (isStart) {
-      return this.renderStartPage();
-    }
+    // if (isStart) {
+    //   return this.renderStartPage();
+    // }
     return (
       // <Provider store={store}>
       <RootSiblingParent>

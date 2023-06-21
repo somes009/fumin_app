@@ -23,11 +23,7 @@ export default class IndexPage extends Component {
     this.state = {};
   }
   componentDidMount() {
-    // const res = Geo.getCityByLocation();
-    // console.log('xxcxcxcxcxcxcxcxcxx', res);
-    // this.requestLocationPermission();
-    // this.getPlace();
-    this.getLocation();
+    this.requestLocationPermission();
   }
   requestLocationPermission = () => {
     const granted = PermissionsAndroid.request(
@@ -40,24 +36,29 @@ export default class IndexPage extends Component {
         buttonPositive: 'OK',
       },
     );
+    this.getLocation();
     console.log(PermissionsAndroid.RESULTS.GRANTED);
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       console.log('Location permission granted');
-      this.getLocation();
     } else {
       console.log('Location permission denied');
     }
   };
   getLocation = () => {
+    const config = {
+      enableHighAccuracy: false,
+      timeout: 2000,
+      maximumAge: 3600000,
+    };
+
     Geolocation.getCurrentPosition(
-      (position) => {
-        const {latitude, longitude} = position.coords;
-        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+      (info) => {
+        console.log('info', info);
+        // const {latitude, longitude} = info.coords;
+        global.coords = info.coords;
       },
-      (error) => {
-        console.log(error);
-      },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 1000},
+      (error) => console.log('ERROR', error),
+      config,
     );
   };
   renderItem = ({item, index}) => {

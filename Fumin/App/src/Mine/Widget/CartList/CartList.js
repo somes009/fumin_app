@@ -54,6 +54,13 @@ var styles = StyleSheet.create({
     borderColor: '#6D7278',
     marginRight: 10,
   },
+  isSelCri: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    marginRight: 10,
+    backgroundColor: '#FF9B00',
+  },
   goShopBox: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -78,9 +85,11 @@ class CartList extends React.Component {
   _keyExtractor = (item, index) => {
     return typeof item.id === 'number' ? String(item.id) : item.id;
   };
+
   //渲染列表
   renderListView() {
-    const {cartList, type, handleSel, handleDel} = this.props;
+    const {cartList, type, handleSel, handleDel, selDelList, handleSelDel} =
+      this.props;
     let nullList = (
       <View style={styles.nullCartTips}>
         <Text>当前购物车为空</Text>
@@ -90,13 +99,29 @@ class CartList extends React.Component {
       <AnimatedFlatList
         data={cartList}
         renderItem={({item, index}) => {
+          let isSel = true;
+          if (type) {
+            for (let i in item.spuList) {
+              if (!selDelList.includes(item.spuList[i].cartId)) {
+                isSel = false;
+                break;
+              }
+            }
+          } else {
+            for (let i in item.spuList) {
+              if (!item.spuList[i].isSelected) {
+                isSel = false;
+                break;
+              }
+            }
+          }
           return (
             <View key={index} style={styles.box}>
               <View style={styles.boxTop}>
                 <TouchableOpacity
                   activeOpacity={1}
-                  style={styles.unSelCri}
-                  onPress={handleSel.bind(this, item.pmId)}
+                  style={isSel ? styles.isSelCri : styles.unSelCri}
+                  onPress={handleSel.bind(this, item.pmId, 2)}
                 />
                 <TouchableOpacity activeOpacity={1} style={styles.goShopBox}>
                   <Text style={styles.title}>{item.pmName}</Text>
@@ -114,6 +139,9 @@ class CartList extends React.Component {
                       handleDel={handleDel}
                       item={data}
                       key={i}
+                      selDelList={selDelList}
+                      type={type}
+                      handleSelDel={handleSelDel}
                     />
                   );
                 })}

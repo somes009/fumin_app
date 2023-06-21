@@ -111,6 +111,14 @@ export default class ShopDetailPage extends Component {
                         key={index}
                         item={item}
                         navigation={navigation}
+                        onPress={() => {
+                          this.setState(
+                            {
+                              id: item.spuId,
+                            },
+                            this.getData,
+                          );
+                        }}
                       />
                     );
                   })}
