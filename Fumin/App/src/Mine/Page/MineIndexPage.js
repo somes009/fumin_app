@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 import {
   View,
@@ -13,10 +14,13 @@ import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
 import XXYJImage from '../../Base/Widget/XXYJImage';
 import XXYJBanner from '../../Base/Widget/XXYJBanner';
+import CommonButtonsPopUp from '../../Base/Widget/CommonButtonsPopUp';
 import {ApiPostJson} from '../../../Api/RequestTool';
 import Images from '../../../Images';
+import {mapDispatchToProps, mapStateToProps} from '../../store/actionCreators';
+import EventBus, {EventBusName} from '../../../Api/EventBus';
 
-export default class MineIndexPage extends Component {
+class MineIndexPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,8 +32,9 @@ export default class MineIndexPage extends Component {
     };
   }
   componentDidMount() {
-    this.getData();
-    this.getBanner();
+    // console.log(this.props);
+    // this.getData();
+    // this.getBanner();
   }
 
   getData = () => {
@@ -65,6 +70,34 @@ export default class MineIndexPage extends Component {
     });
   };
 
+  openChange = () => {
+    this.refPop.openModal({
+      title: '',
+      list: [
+        {
+          text: '切换理事',
+          color: '#0091FF',
+          fun: () => {
+            EventBus.post(EventBusName.CHANGE_USER_TYPE, {
+              userType: 2,
+            });
+            this.refPop.closeModal();
+          },
+        },
+        {
+          text: '切换用户',
+          color: '#0091FF',
+          fun: () => {
+            EventBus.post(EventBusName.CHANGE_USER_TYPE, {
+              userType: 1,
+            });
+            this.refPop.closeModal();
+          },
+        },
+      ],
+    });
+  };
+
   renderInfo = () => {
     const {navigation} = this.props;
     const {data} = this.state;
@@ -73,7 +106,10 @@ export default class MineIndexPage extends Component {
         <View style={styles.infoBoxLeft}>
           <XXYJImage source={{uri: data.avatar}} style={styles.userImg} />
           <View style={styles.userinfoLeft}>
-            <Text style={styles.username}>{data?.nickname || '昵称'}</Text>
+            <Text style={styles.username}>
+              {data?.nickname || '昵称'}
+              {this.props.userType + ''}
+            </Text>
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
@@ -97,7 +133,10 @@ export default class MineIndexPage extends Component {
             <XXYJImage style={styles.changeTypeImg} />
             <Text style={styles.changeTypeText}>购物车</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.8} style={styles.changeTypeBox}>
+          <TouchableOpacity
+            onPress={this.openChange}
+            activeOpacity={0.8}
+            style={styles.changeTypeBox}>
             <XXYJImage style={styles.changeTypeImg} />
             <Text style={styles.changeTypeText}>切换身份</Text>
           </TouchableOpacity>
@@ -393,10 +432,13 @@ export default class MineIndexPage extends Component {
           </View>
         </ScrollView>
         {showYqm && this.renderYqm()}
+        <CommonButtonsPopUp ref={(ref) => (this.refPop = ref)} />
       </View>
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(MineIndexPage);
 
 const styles = StyleSheet.create({
   container: {

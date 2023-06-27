@@ -6,6 +6,7 @@ import {DeviceEventEmitter} from 'react-native';
  */
 export const EventBusName = {
   ON_LOGIN: 'on_login',
+  CHANGE_USER_TYPE: 'change_user_type',
 };
 export default class EventBus {
   /**

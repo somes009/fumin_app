@@ -10,6 +10,7 @@ const Common = {
   indexIsIselIcon: require('./Common/indexIsIselIcon.png'),
   mineUnSelIcon: require('./Common/mineUnSelIcon.png'),
   mineIsSelIcon: require('./Common/mineIsSelIcon.png'),
+  toBottomBlack: require('./Common/toBottomBlack.png'),
 };
 const Mine = {
   isEndIcon: require('./Mine/isEndIcon.png'),

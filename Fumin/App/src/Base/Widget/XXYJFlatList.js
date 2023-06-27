@@ -5,7 +5,7 @@ import {ApiGet, ApiPost, ApiPostJson} from '../../../Api/RequestTool';
 import Utils from '../../../Utils';
 import EventBus, {EventBusName} from '../../../Api/EventBus';
 // import {RefreshAnimateHeader} from 'react-native-smart-refresh';
-// import NoDataPage from '../../Common/Page/NodataPage';
+import NoDataPage from './NodataPage';
 // import NoNetwork from '../../Common/Page/NoNetwork';
 import _ from 'lodash';
 import XXYJImage from './XXYJImage';
@@ -368,7 +368,7 @@ class XXYJFlatList extends Component {
           }
           ListHeaderComponent={ListHeaderComponent}
           ListEmptyComponent={
-            this.state.show ? ListEmptyComponent || <View /> : null
+            this.state.show ? ListEmptyComponent || <NoDataPage /> : null
           }
           style={style}
           numColumns={numColumns || 1}

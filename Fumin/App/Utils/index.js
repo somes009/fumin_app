@@ -5,6 +5,8 @@ import EventBus, {EventBusName} from '../Api/EventBus';
 import {ApiPostJson} from '../Api/RequestTool';
 import _ from 'lodash';
 import Clipboard from '@react-native-community/clipboard';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {uploadImg} from './AliyunTools';
 
 let Utils = {};
 
@@ -17,6 +19,24 @@ Utils.checkPhone = (phone) => {
     return false;
   }
   return true;
+};
+
+//上传图片
+Utils.upLoadImg = (success, fail) => {
+  const option = {
+    mediaType: 'photo',
+  };
+  const callback = ({assets: [{uri}]}) => {
+    if (uri) {
+      uploadImg(uri, (uri) => {
+        success?.(uri);
+      });
+    } else {
+      fail?.();
+      Utils.Toast({text: '获取图片失败'});
+    }
+  };
+  launchImageLibrary(option, callback);
 };
 
 Utils.formatNumberToBai = (num) => {

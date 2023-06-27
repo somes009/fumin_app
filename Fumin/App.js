@@ -4,10 +4,13 @@ import {StyleSheet, Text, View} from 'react-native';
 import {RootSiblingParent} from 'react-native-root-siblings';
 import {NativeBaseProvider} from 'native-base';
 import TabNavigator from './App/src/FuMinNavigator/TabNavigator';
+import SHNavigator from './App/src/SHNavigator/TabNavigator';
 import Utils from './App/Utils';
 import AppStore from './App/Store/AppStore';
 import CacheStore from './App/Common/CacheStore';
-// import {Provider} from 'react-redux';
+import {Provider} from 'react-redux';
+import store from './App/src/store';
+import EventBus, {EventBusName} from './App/Api/EventBus';
 // import thunk from 'redux-thunk';
 // import rootReducer from './App/reducers';
 // import {getAllProducts} from './actions';
@@ -23,9 +26,15 @@ class App extends Component {
     this.state = {
       show: false,
       isStart: true,
+      userType: 1,
     };
   }
   componentDidMount() {
+    EventBus.bind(EventBusName.CHANGE_USER_TYPE, ({userType}) => {
+      this.setState({
+        userType,
+      });
+    });
     CacheStore.get('INFO').then((info) => {
       if (!info) {
         this.setState({
@@ -77,34 +86,31 @@ class App extends Component {
   };
 
   render() {
-    const {show, isStart} = this.state;
-    let content = <TabNavigator initialRouteName={'HomeTabs'} />;
-    content = global.token ? (
-      content
-    ) : (
-      <TabNavigator initialRouteName={'LoginNav'} />
-    );
+    const {show, isStart, userType} = this.state;
+    const Nav = userType === 1 ? TabNavigator : SHNavigator;
+    let content = <Nav initialRouteName={'HomeTabs'} />;
+    content = global.token ? content : <Nav initialRouteName={'LoginNav'} />;
     // if (isStart) {
     //   return this.renderStartPage();
     // }
     return (
-      // <Provider store={store}>
-      <RootSiblingParent>
-        <NativeBaseProvider>
-          <View style={styles.contain}>
-            {show && (
-              <>
-                <View
-                  onLayout={({nativeEvent: e}) => this?.layoutHeader(e)}
-                  style={styles.containIn}>
-                  {content}
-                </View>
-              </>
-            )}
-          </View>
-        </NativeBaseProvider>
-      </RootSiblingParent>
-      // </Provider>
+      <Provider store={store}>
+        <RootSiblingParent>
+          <NativeBaseProvider>
+            <View style={styles.contain}>
+              {show && (
+                <>
+                  <View
+                    onLayout={({nativeEvent: e}) => this?.layoutHeader(e)}
+                    style={styles.containIn}>
+                    {content}
+                  </View>
+                </>
+              )}
+            </View>
+          </NativeBaseProvider>
+        </RootSiblingParent>
+      </Provider>
     );
   }
 }

@@ -31,15 +31,14 @@ class XXYJHeader extends Component {
     const Cutton = isAndroid ? Neomorph : View;
     return (
       <View style={[styles.header, headerStyle]}>
-        <Cutton
-          darkShadowColor="#CCD6D4"
+        <View
           style={[styles.neomorph, styles.leftBtn, leftBtnStyle]}>
           <TouchableOpacity
             style={styles.in}
             activeOpacity={1}
             onPress={onLeftPress}>
             {!leftText && (
-              <XXYJImage source={Images.commonBack} style={styles.backImg} />
+              <XXYJImage source={Images.backBlack} style={styles.backImg} />
             )}
             {!!leftText && (
               <Text
@@ -49,7 +48,7 @@ class XXYJHeader extends Component {
               </Text>
             )}
           </TouchableOpacity>
-        </Cutton>
+        </View>
         <Text numberOfLines={1} style={[styles.title, titleStyle]}>
           {title}
         </Text>
@@ -115,15 +114,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   neomorph: {
-    shadowOffset: {width: isAndroid ? 1 : 0, height: isAndroid ? 1 : 0},
-    shadowRadius: 6,
     borderRadius: 17.5,
     width: 35,
     height: 35,
-    shadowOpacity: 0.5,
     backgroundColor: '#fff',
-    elevation: 10,
-    shadowColor: '#CCD6D4',
     position: 'absolute',
   },
   leftBtn: {
@@ -133,8 +127,8 @@ const styles = StyleSheet.create({
     right: 12.5,
   },
   backImg: {
-    width: 9,
-    height: 16,
+    width: 7,
+    height: 13,
   },
   in: {
     width: '100%',

@@ -13,7 +13,6 @@ import IndexRenderItem from '../Widget/IndexRenderItem';
 import XXYJImage from '../../Base/Widget/XXYJImage';
 import Fonts from '../../../Common/Fonts';
 import XXYJBanner from '../../Base/Widget/XXYJBanner';
-import Geo from '../../../Api/Geo';
 import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
 import Geolocation from 'react-native-geolocation-service';
 import Utils from '../../../Utils';
@@ -130,6 +129,9 @@ export default class IndexPage extends Component {
               // longitude: '116.322987',
             }
           }
+          handleRefresh={() => {
+            this.getLocation();
+          }}
           keyExtractor={(item) => item?.id}
           renderItem={this.renderItem}
           showsVerticalScrollIndicator={false}

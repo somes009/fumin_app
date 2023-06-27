@@ -28,6 +28,7 @@
     "@react-navigation/bottom-tabs": "^5.11.6",
     "@react-navigation/native": "^5.7.6",
     "@react-navigation/stack": "^5.9.3",
+    "aliyun-oss-react-native": "^1.0.0-alpha.7",
     "apisauce": "^2.0.1",
     "json-bigint": "^1.0.0",
     "lodash": "^4.17.21",
@@ -44,6 +45,7 @@
     "react-native-gesture-handler": "^1.8.0",
     "react-native-head-tab-view": "file:./App/My_node_module/react-native-head-tab-view",
     "react-native-http-cache": "^0.2.0",
+    "react-native-image-picker": "^5.6.0",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-modal": "^12.0.3",
     "react-native-neomorph-shadows": "^1.1.2",
@@ -57,6 +59,8 @@
     "react-native-video": "^5.1.1",
     "react-native-wechat-lib": "^1.1.26",
     "react-navigation": "^4.4.3",
+    "react-redux": "^8.1.0",
+    "redux": "^4.2.1",
     "teaset": "^0.7.4"
   },
   "devDependencies": {
