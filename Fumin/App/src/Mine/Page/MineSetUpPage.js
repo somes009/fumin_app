@@ -42,6 +42,7 @@ export default class MineSetUpPage extends Component {
   //清除缓存
   clearCache = () => {
     CacheManager.clearCache();
+    Utils.Toast({text: '已清除缓存'});
     this.setState({
       cacheSize: '0M',
     });

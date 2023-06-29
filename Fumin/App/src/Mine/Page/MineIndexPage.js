@@ -33,8 +33,8 @@ class MineIndexPage extends Component {
   }
   componentDidMount() {
     // console.log(this.props);
-    // this.getData();
-    // this.getBanner();
+    this.getData();
+    this.getBanner();
   }
 
   getData = () => {
@@ -106,10 +106,7 @@ class MineIndexPage extends Component {
         <View style={styles.infoBoxLeft}>
           <XXYJImage source={{uri: data.avatar}} style={styles.userImg} />
           <View style={styles.userinfoLeft}>
-            <Text style={styles.username}>
-              {data?.nickname || '昵称'}
-              {this.props.userType + ''}
-            </Text>
+            <Text style={styles.username}>{data?.nickname || '昵称'}</Text>
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {

@@ -30,8 +30,6 @@ export default class MineShopPage extends Component {
             navigation.goBack();
           }}
         />
-        <MineShopItem />
-        <MineShopItem />
         <XXYJFlatList
           ref={(ref) => (this.refCourse = ref)}
           isApiPostJson
