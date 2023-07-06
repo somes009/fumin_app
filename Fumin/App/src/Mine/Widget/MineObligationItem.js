@@ -12,8 +12,8 @@ const MineObligationItem = ({onPress, item}) => {
     <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.item}>
       <View style={styles.titleBox}>
         <TouchableOpacity activeOpacity={1} style={styles.shopNameBox}>
-          <Text style={styles.shopName}>shibook旗舰店</Text>
-          <XXYJImage style={styles.toRight} />
+          <Text style={styles.shopName}>{item?.pmName}</Text>
+          <XXYJImage source={{uri: item?.spuLogo}} style={styles.toRight} />
         </TouchableOpacity>
         <Text style={styles.state}>等待买家付款</Text>
       </View>
@@ -22,9 +22,9 @@ const MineObligationItem = ({onPress, item}) => {
         <View style={styles.infoRight}>
           <View style={styles.righrTop}>
             <Text numberOfLines={2} style={styles.productName}>
-              2023盒装高档91件套取
+              {item?.spuName}
             </Text>
-            <Text style={styles.price}>￥1199</Text>
+            <Text style={styles.price}>￥{item?.spuPrice / 100}</Text>
           </View>
           <Text style={styles.size}>x1</Text>
         </View>
@@ -33,7 +33,7 @@ const MineObligationItem = ({onPress, item}) => {
         <Text style={styles.warpText1}>付款后</Text>
         <Text style={styles.warpText2}>**天内发货</Text>
       </View>
-      <Text style={styles.needPrice}>需付款：￥1199</Text>
+      <Text style={styles.needPrice}>需付款：￥{item?.spuPrice / 100}</Text>
       <View style={styles.buttons}>
         <TouchableOpacity
           onPress={() => {

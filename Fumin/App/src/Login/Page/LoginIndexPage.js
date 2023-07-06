@@ -41,6 +41,13 @@ export default class LoginIndexPage extends Component {
         this.refPop.openModal();
       }
     });
+    Utils.getCacheStore({storeName: 'lastPhone'}).then((data) => {
+      if (data) {
+        this.setState({
+          value: data,
+        });
+      }
+    });
   }
   componentWillUnmount() {
     clearInterval(this.timerSend);
@@ -245,6 +252,7 @@ export default class LoginIndexPage extends Component {
       password,
     };
     const onSuccess = (res) => {
+      Utils.setCacheStore({storeName: 'lastPhone', data: value});
       global.userId = res.userId;
       global.token = res.accessToken;
       EventBus.post(EventBusName.ON_LOGIN);

@@ -32,7 +32,6 @@ export default class XXYJSelPayWayPopUp extends Component {
     this.refAndroid = {};
   }
   openModal = () => {
-    // this.setState({handlePay, selType, price});
     isAndroid ? this.refAndroid.handleShow() : this.refIos.handleShow();
   };
 
@@ -96,7 +95,7 @@ export default class XXYJSelPayWayPopUp extends Component {
               text="确认交易"
               containerStyle={styles.patBtn}
               textStyle={{fontSize: 17}}
-              onPress={this.state.handlePay}
+              onPress={this.props.handlePay}
             />
           </View>
         </View>

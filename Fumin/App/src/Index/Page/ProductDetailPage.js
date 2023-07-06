@@ -17,6 +17,7 @@ import XXYJImage from '../../Base/Widget/XXYJImage';
 import XXYJSelPayWayPopUp from '../../Base/Widget/XXYJSelPayWayPopUp';
 import SelProductPopUp from '../../Base/Widget/SelProductPopUp';
 import ProductDetailItem from '../Widget/ProductDetailItem';
+import Alipay from '@uiw/react-native-alipay';
 
 export default class ShopDetailPage extends Component {
   constructor(props) {
@@ -32,6 +33,18 @@ export default class ShopDetailPage extends Component {
   componentDidMount() {
     this.getData();
   }
+  handleAliPay = (payInfo, callback) => {
+    async function aliPay(aliCB) {
+      // 支付宝端支付
+      // payInfo 是后台拼接好的支付参数
+      // return_url=
+      const resule = await Alipay.alipay(payInfo);
+      // const resule = await Alipay.alipay('alipay_sdk=alipay-sdk-java-dynamicVersionNo&app_id=2021001166608171&biz_content=%7B%22body%22%3A%22%E5%95%86%E5%93%81%E8%AF%A6%E6%83%85%22%2C%22out_trade_no%22%3A%2220210207153414T99T2%22%2C%22passback_params%22%3A%220%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22subject%22%3A%22%E5%95%86%E5%93%81%E5%90%8D%E7%A7%B0%22%2C%22total_amount%22%3A%2218.0%22%7D&charset=utf-8&format=json&method=alipay.trade.app.pay&notify_url=http%3A%2F%2Fpsptest.alsome.net.cn%2Fv1%2Falipay%2Fnotifyalipay&sign_type=RSA2&timestamp=2021-06-03+15%3A57%3A51&version=1.0&sign=Y07UGOyjpJHJQXh2IYrGF6ztuF5eXx1i3nGYSCYQYP%2B0GImwsxBSpsEoFQcmhFfA8VlWA2EXNc%2F5ZH%2FyQWUaG21W6ibdWWhU9rE%2BF3gvmRZchWh87TDaQexc%2FIZ46SuY%2FWGKXteBxjaeOygaXIt4kSUj%2B4GKAb7r10xDmyGdNK5ojBnuzyoeelojPv95m9iLIH0BA9olC%2FUnqqA9wstZJXcdLhMGC6wtfMIIHbCnjyebn%2BPOgYsGX0Dk6Y%2BJDuwAm9U6lbxPVK6IKO2VGU3IN6hfFHcCzJck1pkw0zf8Oc2LHQmTBaYhLbaXzVU%2BY95i61MwLuCL3mDQen76usY6%2Bw%3D%3D');
+      console.log('alipay:resule-->>>', resule);
+      aliCB(resule);
+    }
+    aliPay(callback);
+  };
   getData = () => {
     let {id} = this.state;
     const path = '/app-api/product/merchant/auth/getProductMerchantSpuDetail';
@@ -46,6 +59,22 @@ export default class ShopDetailPage extends Component {
     };
     const onFailure = () => {};
     ApiPostJson({path, params, onSuccess, onFailure});
+  };
+
+  handleBuy = () => {
+    const callback = (res) => {
+      if (res.resultStatus === '9000') {
+        Utils.Toast({text: '支付成功'});
+        // getData?.();
+      } else {
+        Utils.Toast({text: '支付失败'});
+      }
+      console.log(res);
+    };
+    this.handleAliPay(
+      'alipay_root_cert_sn=687b59193f3f462dd5336e5abf83c5d8_02941eef3187dddf3d3b83462e1dfcf6&alipay_sdk=alipay-sdk-java-dynamicVersionNo&app_cert_sn=129d4d2ebf3c2883f9064c0a397080aa&app_id=2021003199665941&biz_content=%7B%22out_trade_no%22%3A%2220230627171438808291%22%2C%22passback_params%22%3A%221%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22subject%22%3A%22%E6%B5%8B%E8%AF%95%E5%A4%9A%E5%9B%BE%E7%89%87%22%2C%22timeout_express%22%3A%2230m%22%2C%22total_amount%22%3A%221231%22%7D&charset=UTF-8&format=json&method=alipay.trade.app.pay&notify_url=http%3A%2F%2Fndstest.mindtrip.com%2Fpay%2Fv2%2Falipay%2Fnotifyalipay&sign=cmRGTH2amAAN1ikKPfoPRhHkznCU5SuVhZ0alyl86LwofFrfo1VdybI%2BFQVmDGe0%2F36zrdd0UhEDktR2pQn2BRtw2yWKAJukcPGRy5wafEB%2BrLgknmAuZsNSl%2BH1Fh2EAidHZvn63OgTqk5qGtB8psRIzyPz1YqZfl3FGTha1n%2B9sfoqeJKYIoxEjDAy9xS%2FozWwlOwl09TOlRRt75ErT0BnN8rfxyRG6BZVWrqDzk2P7SF7jpkii3jYrXlUkOeF6J9XvmmGBYjl6DZmLOvAWH4OA1O9pqdVWDNDv%2F0vwZgfRuI%2FUcLedTOge%2B6PU%2FdXOmZvLtcC%2BAQc%2FAMCyv5KuQ%3D%3D&sign_type=RSA2&timestamp=2023-06-27+17%3A14%3A38&version=1.0',
+      callback,
+    );
   };
   renderPlaceBox = () => {
     const {data} = this.state;
@@ -143,7 +172,10 @@ export default class ShopDetailPage extends Component {
             <Text style={styles.buyText}>立即购买</Text>
           </TouchableOpacity>
         </View>
-        <XXYJSelPayWayPopUp ref={(ref) => (this.refSelPay = ref)} />
+        <XXYJSelPayWayPopUp
+          handlePay={this.handleBuy}
+          ref={(ref) => (this.refSelPay = ref)}
+        />
         <SelProductPopUp
           handleBuy={() => {
             this.refSelProduct.closeModal();

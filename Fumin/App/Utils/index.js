@@ -10,6 +10,18 @@ import {uploadImg} from './AliyunTools';
 
 let Utils = {};
 
+//获取本地缓存
+Utils.getCacheStore = ({storeName}) => {
+  return CacheStore.get(storeName);
+};
+//创建/更新本地缓存
+Utils.setCacheStore = ({storeName, data}) => {
+  CacheStore.set(storeName, data);
+};
+//删除本地缓存
+Utils.delCacheStore = ({storeName}) => {
+  CacheStore.remove(storeName);
+};
 //判断是否安卓
 Utils.isAndroid = Platform.OS === 'android';
 

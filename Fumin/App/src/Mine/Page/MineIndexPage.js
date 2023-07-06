@@ -268,23 +268,47 @@ class MineIndexPage extends Component {
         fun: () => {
           navigation.navigate('MineNav', {
             screen: 'MineOrderPage',
+            params: {
+              status: 1,
+            },
           });
         },
       },
       {
         name: '待发货',
         img: Images.waitSendIcon,
-        fun: () => {},
+        fun: () => {
+          navigation.navigate('MineNav', {
+            screen: 'MineOrderPage',
+            params: {
+              status: 2,
+            },
+          });
+        },
       },
       {
         name: '已完成',
         img: Images.isEndIcon,
-        fun: () => {},
+        fun: () => {
+          navigation.navigate('MineNav', {
+            screen: 'MineOrderPage',
+            params: {
+              status: 3,
+            },
+          });
+        },
       },
       {
         name: '待使用',
         img: Images.waitUseIcon,
-        fun: () => {},
+        fun: () => {
+          navigation.navigate('MineNav', {
+            screen: 'MineOrderPage',
+            params: {
+              status: 4,
+            },
+          });
+        },
       },
       {
         name: '售后/退款',
@@ -463,8 +487,6 @@ const styles = StyleSheet.create({
     width: 66,
     height: 66,
     borderRadius: 33,
-    borderColor: '#979797',
-    borderWidth: 1,
   },
   userinfoLeft: {
     marginLeft: 15,

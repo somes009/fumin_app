@@ -22,17 +22,17 @@ import {
 } from '@react-navigation/stack';
 
 import ShShopIndexPage from '../ShShop/Page/ShShopIndexPage';
-import MineIndexPage from '../Mine/Page/MineIndexPage';
+import ShMineIndexPage from '../ShMine/Page/ShMineIndexPage';
 import ShProductListPage from '../ShProduct/Page/ShProductListPage';
-import TaskIndexPage from '../Task/Page/TaskIndexPage';
+import ShOrderIndexPage from '../ShOrder/Page/ShOrderIndexPage';
 const isAndroid = Platform.OS === 'android';
 import {SingleManager} from '../../SingleManager/SingleManager';
 // navigator
 import {LoginInnerNavigator} from '../Login/Navigator/LoginNavigator';
-import {MineInnerNavigator} from '../Mine/Navigator/MineNavigator';
+import {ShMineInnerNavigator} from '../ShMine/Navigator/ShMineNavigator';
 import {ShShopInnerNavigator} from '../ShShop/Navigator/ShShopNavigator';
 import {ShProductInnerNavigator} from '../ShProduct/Navigator/ShProductNavigator';
-import {TaskInnerNavigator} from '../Task/Navigator/TaskNavigator';
+import {ShOrderInnerNavigator} from '../ShOrder/Navigator/ShOrderNavigator';
 
 import CustomTabbar from './CustomTabbar';
 
@@ -58,7 +58,7 @@ const ShShopIndexPageWithNavigation = (props) => {
     />
   );
 };
-const MineIndexPageWithNavigation = (props) => {
+const ShMineIndexPageWithNavigation = (props) => {
   const isFocused = useIsFocused();
   const routesLength = useNavigationState((state) => state.routes.length);
   const insets = useSafeAreaInsets();
@@ -66,7 +66,7 @@ const MineIndexPageWithNavigation = (props) => {
   const tabBarHeight = useBottomTabBarHeight();
   SingleManager.tabHeight = tabBarHeight;
   return (
-    <MineIndexPage
+    <ShMineIndexPage
       {...props}
       routesLength={routesLength}
       safeAreaInsets={insets}
@@ -92,7 +92,7 @@ const ShProductListPageWithNavigation = (props) => {
     />
   );
 };
-const TaskIndexPageWithNavigation = (props) => {
+const ShOrderIndexPageWithNavigation = (props) => {
   const isFocused = useIsFocused();
   const routesLength = useNavigationState((state) => state.routes.length);
   const insets = useSafeAreaInsets();
@@ -100,7 +100,7 @@ const TaskIndexPageWithNavigation = (props) => {
   const tabBarHeight = useBottomTabBarHeight();
   SingleManager.tabHeight = tabBarHeight;
   return (
-    <TaskIndexPage
+    <ShOrderIndexPage
       {...props}
       routesLength={routesLength}
       safeAreaInsets={insets}
@@ -165,8 +165,8 @@ function HomeTabs() {
         }}
       />
       <Tab.Screen
-        name="Task"
-        component={TaskIndexPageWithNavigation}
+        name="ShOrder"
+        component={ShOrderIndexPageWithNavigation}
         options={{
           showLabel: false,
           tabBarIcon: ({focused, color, size}) => {
@@ -180,8 +180,8 @@ function HomeTabs() {
         }}
       />
       <Tab.Screen
-        name="Mine"
-        component={MineIndexPageWithNavigation}
+        name="ShMine"
+        component={ShMineIndexPageWithNavigation}
         options={{
           showLabel: false,
           tabBarIcon: ({focused, color, size}) => {
@@ -233,15 +233,15 @@ const TabNavigatorInner = ({initialRouteName}) => {
         }}
       />
       <Stack.Screen
-        name="TaskNav"
-        component={TaskInnerNavigator}
+        name="ShOrderNav"
+        component={ShOrderInnerNavigator}
         options={{
           header: () => null,
         }}
       />
       <Stack.Screen
-        name="MineNav"
-        component={MineInnerNavigator}
+        name="ShMineNav"
+        component={ShMineInnerNavigator}
         options={{
           header: () => null,
         }}

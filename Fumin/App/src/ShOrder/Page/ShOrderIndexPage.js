@@ -11,25 +11,22 @@ import {
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
 import XXYJHeader from '../../Base/Widget/XXYJHeader';
-// import XXYJAnimatableTabView from '../../Base/Widget/XXYJMyTabView';
 import XXYJAnimatableTabView from '../../Base/Widget/XXYJAnimatableTabView';
-import MineObligationItem from '../Widget/MineObligationItem';
-import MineWaitSendItem from '../Widget/MineWaitSendItem';
-import MineIsEndItem from '../Widget/MineIsEndItem';
-import XXYJFlatList from '../../Base/Widget/XXYJFlatList';
+// import MineObligationItem from '../Widget/MineObligationItem';
+// import MineWaitSendItem from '../Widget/MineWaitSendItem';
+// import MineIsEndItem from '../Widget/MineIsEndItem';
 
-export default class MineOrderPage extends Component {
+export default class ShOrderIndexPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      status: props.route?.params?.status || 0,
-    };
+    this.state = {};
     this.tagList = [
       {name: '全部'},
-      {name: '待付款'},
       {name: '待发货'},
+      {name: '待付款'},
       {name: '已完成'},
-      {name: '待使用'},
+      {name: '售后中'},
+      {name: '待核销'},
     ];
   }
 
@@ -42,7 +39,7 @@ export default class MineOrderPage extends Component {
           width: Utils.getScreenSize().width,
           alignItems: 'center',
         }}>
-        {index === 0 && (
+        {/* {index === 0 && (
           <>
             <MineObligationItem
               onPress={() => {
@@ -53,55 +50,22 @@ export default class MineOrderPage extends Component {
             <MineIsEndItem />
           </>
         )}
-        {index === 1 && (
-          <XXYJFlatList
-            ref={(ref) => (this.refCourse = ref)}
-            isApiPostJson
-            style={{flex: 1}}
-            //  responseKey={'history'}
-            requestPath="/app-api/trade/order/selectMyorderList"
-            requestParams={{
-              status: 10,
-            }}
-            keyExtractor={(item) => item?.id}
-            renderItem={({item}) => {
-              return <MineObligationItem item={item} />;
-            }}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingBottom: 20,
-            }}
-          />
-        )}
+        {index === 1 && <MineObligationItem />}
         {index === 2 && <MineWaitSendItem />}
-        {index === 3 && (
-          <MineIsEndItem
-            onPress={() => {
-              navigation.navigate('MineOrderDetailPage');
-            }}
-          />
-        )}
+        {index === 3 && <MineIsEndItem />} */}
       </View>
     );
   };
   render() {
-    const {navigation, safeAreaInsets, route} = this.props;
-    const {status} = this.state;
+    const {navigation, safeAreaInsets} = this.props;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJHeader
-          title={'我的订单'}
-          onLeftPress={() => {
-            navigation.goBack();
-          }}
-        />
         <XXYJAnimatableTabView
-          tabItemStyle={{width: Utils.getScreenSize().width / 5}}
+          tabItemStyle={{width: Utils.getScreenSize().width / 6}}
           lineStyle={styles.tabLine}
           tabList={this.tagList}
           data={this.tagList}
           // unScroll
-          firstTag={status}
           renderItem={this.renderList}
           activeTextStyle={{
             color: '#FF9B00',

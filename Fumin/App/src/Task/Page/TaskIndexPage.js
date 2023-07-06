@@ -14,7 +14,9 @@ import {ApiPostJson} from '../../../Api/RequestTool';
 export default class TaskIndexPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      data: {},
+    };
   }
   componentDidMount() {
     this.getData();
@@ -24,7 +26,7 @@ export default class TaskIndexPage extends Component {
     const params = {};
     const onSuccess = (res) => {
       this.setState({
-        data: res,
+        data: res.info,
       });
     };
     ApiPostJson({
@@ -85,8 +87,9 @@ export default class TaskIndexPage extends Component {
       </TouchableOpacity>
     );
   };
-  renderBox = ({topNum, numTitle}) => {
+  renderBox = ({topNum, numTitle, needLook, isLook, continuous}) => {
     const {navigation} = this.props;
+    const isEnd = needLook <= isLook;
     return (
       <View style={styles.taskBox}>
         <View style={styles.topBox}>
@@ -98,20 +101,25 @@ export default class TaskIndexPage extends Component {
         </View>
         <View style={styles.bottomBox}>
           <View style={styles.bottomTop}>
-            <Text style={styles.goSeeText}>去观看6条广告（0/6）</Text>
-            {this.goSeeButton(() => {
-              navigation.navigate('TaskNav', {
-                screen: 'TaskListPage',
-              });
-            })}
+            <Text style={styles.goSeeText}>
+              去观看{needLook}条广告（{isLook}/{needLook}）
+            </Text>
+            {isEnd
+              ? this.isEndButton()
+              : this.goSeeButton(() => {
+                  navigation.navigate('TaskNav', {
+                    screen: 'TaskListPage',
+                  });
+                })}
           </View>
-          <Text style={styles.dayText}>已连续释放**天</Text>
+          <Text style={styles.dayText}>已连续释放{continuous}天</Text>
         </View>
       </View>
     );
   };
   render() {
     const {navigation, safeAreaInsets} = this.props;
+    const {data} = this.state;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         <ScrollView
@@ -122,20 +130,31 @@ export default class TaskIndexPage extends Component {
               alignItems: 'center',
             }}>
             {this.renderBox({
-              topNum: 3642.22,
+              topNum: data.orderNum,
               numTitle: '订单值',
+              needLook: data.onAdCount,
+              isLook: data.onLookAdCount,
+              continuous: data.onReleaseDay,
             })}
             {this.renderBox({
-              topNum: '0.00',
+              topNum: data.degreeContribution,
               numTitle: '贡献度',
+              needLook: data.dcAdCount,
+              isLook: data.dcLookAdCount,
+              continuous: data.dcReleaseDay,
             })}
             {this.renderBox({
-              topNum: 36142.22,
+              topNum: data.redEnvelope,
               numTitle: '红包金',
+              needLook: data.reAdCount,
+              isLook: data.reLookAdCount,
+              continuous: data.reReleaseDay,
             })}
             {this.renderBox({
-              topNum: 36342.22,
+              topNum: data.balance,
               numTitle: '金额',
+              isLook: data.blookAdCount,
+              continuous: data.breleaseDay,
             })}
           </View>
         </ScrollView>
