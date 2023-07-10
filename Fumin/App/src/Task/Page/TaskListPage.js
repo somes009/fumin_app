@@ -16,7 +16,7 @@ export default class TaskListPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: props.route.params.type,
+      type: props.route?.params?.type,
     };
   }
   componentDidMount() {}

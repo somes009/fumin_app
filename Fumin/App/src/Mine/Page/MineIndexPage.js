@@ -313,7 +313,14 @@ class MineIndexPage extends Component {
       {
         name: '售后/退款',
         img: Images.shouhouIcon,
-        fun: () => {},
+        fun: () => {
+          navigation.navigate('MineNav', {
+            screen: 'MineOrderPage',
+            params: {
+              // status: 1,
+            },
+          });
+        },
       },
     ];
     return (
@@ -358,22 +365,22 @@ class MineIndexPage extends Component {
           });
         },
       },
-      {
-        name: '申请理事',
-        fun: () => {},
-      },
-      {
-        name: '申请经理',
-        fun: () => {},
-      },
-      {
-        name: '我要开店',
-        fun: () => {},
-      },
-      {
-        name: '我要投诉',
-        fun: () => {},
-      },
+      // {
+      //   name: '申请理事',
+      //   fun: () => {},
+      // },
+      // {
+      //   name: '申请经理',
+      //   fun: () => {},
+      // },
+      // {
+      //   name: '我要开店',
+      //   fun: () => {},
+      // },
+      // {
+      //   name: '我要投诉',
+      //   fun: () => {},
+      // },
     ];
     return (
       <View style={styles.bottomBox}>

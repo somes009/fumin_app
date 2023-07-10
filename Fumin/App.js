@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 // import {createStore, applyMiddleware} from 'redux';
+// import 'react-native-reanimated';
 import {RootSiblingParent} from 'react-native-root-siblings';
 import {NativeBaseProvider} from 'native-base';
 import TabNavigator from './App/src/FuMinNavigator/TabNavigator';

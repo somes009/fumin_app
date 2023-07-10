@@ -13,12 +13,13 @@ import Fonts from '../../../Common/Fonts';
 import XXYJHeader from '../../Base/Widget/XXYJHeader';
 import XXYJTextInput from '../../Base/Widget/XXYJTextinput';
 import PlacePicker from '../Widget/PlacePicker/index';
-import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
+import {ApiGet, ApiPostJson, ApiPut} from '../../../Api/RequestTool';
 
 export default class MineCreatePlacePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: props.route?.params?.id,
       name: '',
       phone: '',
       place1: '',
@@ -33,6 +34,7 @@ export default class MineCreatePlacePage extends Component {
   }
   componentDidMount() {
     this.getPlace();
+    this.getData();
   }
   getPlace = () => {
     const path = '/app-api/system/area/auth/tree';
@@ -44,6 +46,33 @@ export default class MineCreatePlacePage extends Component {
       console.log(res);
       this.setState({
         placeList: res,
+      });
+    };
+    const onFailure = (err) => {};
+    ApiGet({
+      path,
+      params,
+      onSuccess,
+      onFailure,
+    });
+  };
+  getData = () => {
+    const {id} = this.state;
+    if (!id) {
+      return;
+    }
+    const path = '/app-api/member/address/get';
+    // const path = '/admin-api/system/area/get-by-ip';
+    const params = {
+      id,
+    };
+    const onSuccess = (res) => {
+      console.log(res);
+      this.setState({
+        name: res.name,
+        phone: res.mobile,
+        place2: res.detailAddress,
+        quId: res.areaId,
       });
     };
     const onFailure = (err) => {};
@@ -147,8 +176,11 @@ export default class MineCreatePlacePage extends Component {
     );
   };
   handleCreate = () => {
-    const {name, phone, place1, place2, quId} = this.state;
-    const path = '/app-api/member/address/create';
+    const {name, phone, place1, place2, quId, id} = this.state;
+    const API = id ? ApiPut : ApiPostJson;
+    const path = id
+      ? '/app-api/member/address/update'
+      : '/app-api/member/address/create';
     const params = {
       name,
       mobile: phone,
@@ -156,13 +188,13 @@ export default class MineCreatePlacePage extends Component {
       detailAddress: place2,
       defaulted: 1,
       postCode: 258000,
+      id,
     };
     const onSuccess = (res) => {
-      this.setState({
-        data: res,
-      });
+      const {navigation} = this.props;
+      navigation.goBack();
     };
-    ApiPostJson({
+    API({
       path,
       params,
       onSuccess,

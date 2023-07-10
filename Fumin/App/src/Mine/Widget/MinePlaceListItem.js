@@ -3,25 +3,28 @@ import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import XXYJImage from '../../Base/Widget/XXYJImage';
 import Fonts from '../../../Common/Fonts';
-const MinePlaceListItem = () => {
+const MinePlaceListItem = ({item, navigation}) => {
   return (
-    <View style={styles.item}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('MineCreatePlacePage', {
+          id: item.id,
+        })
+      }
+      activeOpacity={1}
+      style={styles.item}>
       <View style={styles.leftBox}>
         <XXYJImage style={styles.img} />
         <View style={styles.infoBox}>
           <View style={styles.infoTop}>
-            <Text style={styles.name}>李晓丹</Text>
-            <Text style={styles.phone}>1567898765</Text>
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.phone}>{item.mobile}</Text>
           </View>
-          <Text style={styles.place}>
-            河北省 石家庄市 长安区 胜利北街道义南路菜鸟驿站
-          </Text>
+          <Text style={styles.place}>{item.detailAddress}</Text>
         </View>
       </View>
-      <TouchableOpacity activeOpacity={1}>
-        <XXYJImage style={styles.changeIcon} />
-      </TouchableOpacity>
-    </View>
+      <XXYJImage style={styles.changeIcon} />
+    </TouchableOpacity>
   );
 };
 export default MinePlaceListItem;

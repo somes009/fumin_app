@@ -58,14 +58,14 @@ export default class MineSetUpPage extends Component {
           navigation.navigate('MinePlaceListPage');
         },
       },
-      {
-        name: '修改密码',
-        fun: () => {},
-      },
-      {
-        name: '帮助中心',
-        fun: () => {},
-      },
+      // {
+      //   name: '修改密码',
+      //   fun: () => {},
+      // },
+      // {
+      //   name: '帮助中心',
+      //   fun: () => {},
+      // },
       {
         name: '清除缓存' + cacheSize,
         fun: this.clearCache,

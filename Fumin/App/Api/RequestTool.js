@@ -259,6 +259,86 @@ export const ApiPostJsonInner = (
       console.log(error);
     });
 };
+export const ApiPut = ({
+  path: path,
+  params,
+  onSuccess,
+  onFailure,
+  callback,
+  needShowMsg = true,
+  unLog,
+}) => {
+  return CacheStore.get('INFO').then((info) => {
+    if (!global.token || !global.userId) {
+      if (!info) {
+        global.token = undefined;
+        global.userId = undefined;
+      } else {
+        global.token = info.token;
+        global.userId = info.userId;
+      }
+    }
+    return ApiPutInner(
+      path,
+      params,
+      onSuccess,
+      onFailure,
+      callback,
+      needShowMsg,
+      unLog,
+    );
+  });
+};
+export const ApiPutInner = (
+  path,
+  params,
+  onSuccess,
+  onFailure,
+  callback,
+  needShowMsg,
+  unLog,
+) => {
+  // global.token = 'bb0116596500478b8253980eef9d1911';
+  const paramWithToken = {
+    token: global.token,
+    ...params,
+  };
+  const onlyToken = {
+    token: global.token,
+  };
+  var fetchOptions = {
+    method: 'PUT',
+    headers: {
+      Authorization: 'Bearer ' + global.token,
+      Accept: 'application/json',
+      //json形式
+      'Content-Type': 'application/json',
+      'tenant-id': 1,
+    },
+    body: JSON.stringify(paramWithToken),
+  };
+  if (__DEV__ && !unLog) {
+    console.log('我是接口地址', BASE_URL + path);
+    console.log('我是接口传参', paramWithToken);
+  }
+  fetch(BASE_URL + path + '?' + strDicToString(onlyToken), fetchOptions)
+    .then((response) => response.text())
+    .then((responseText) => {
+      console.log(responseText);
+      callback?.(JSONBigInt.parse(responseText));
+      checkResponse(
+        JSONBigInt.parse(responseText),
+        onSuccess,
+        onFailure,
+        needShowMsg,
+        unLog,
+        path,
+      );
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 
 export const ApipostForm = (path, params, onSuccess, onFailure, callback) => {
   const paramWithToken = {
