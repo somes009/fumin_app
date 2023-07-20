@@ -14,7 +14,7 @@ import _ from 'lodash';
 import Utils from '.';
 import {Platform} from 'react-native';
 const isAndroid = Platform.OS === 'android';
-const BUCKET_NAME = 'alsome';
+const BUCKET_NAME = 'Fumin';
 const END_POINT = 'oss-cn-beijing.aliyuncs.com';
 const OBJECT_KEY = 'xinxie2.0';
 const OBJECT_KEY_AMSHOW = 'amshowApp';
@@ -129,7 +129,7 @@ export default class AliyunTools {
         });
     });
   }
-  static AlsomeUpload(filePath, uploadProgress, fileType, objectKey) {
+  static FuminUpload(filePath, uploadProgress, fileType, objectKey) {
     const tempObject = objectKey || 'mindtrip';
     const FILE_URL = `https://gats-test.oss-cn-beijing.aliyuncs.com/${tempObject}/`;
     const funcProgress = (progress) => {
@@ -186,7 +186,7 @@ export default class AliyunTools {
 export const uploadImg = (img, successCB) => {
   console.log('img', Utils.getLocalImagePathAndroid(img));
   ModalIndicator.show('正在上传图片, 请稍后...');
-  AliyunTools.AlsomeUpload(Utils.getLocalImagePathAndroid(img))
+  AliyunTools.FuminUpload(Utils.getLocalImagePathAndroid(img))
     .then((uri) => {
       ModalIndicator.hide();
       console.log('aliyun oss upload', uri);
@@ -199,7 +199,7 @@ export const uploadImg = (img, successCB) => {
 export const uploadVoice = (voice, successCB) => {
   console.log('img', Utils.getLocalImagePathAndroid(voice));
   ModalIndicator.show('正在上传图片, 请稍后...');
-  AliyunTools.AlsomeUpload(
+  AliyunTools.FuminUpload(
     Utils.getLocalImagePathAndroid(voice),
     () => {},
     '.aac',

@@ -5,7 +5,7 @@
 'use strict';
 import React from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import XXYJImage from '../../../Base/Widget/XXYJImage';
+import FMImage from '../../../Base/Widget/FMImage';
 import Fonts from '../../../../Common/Fonts';
 
 // 组件样式
@@ -102,7 +102,7 @@ export default class GoodItem extends React.Component {
                 : handleSel?.bind(this, item.cartId, 1)
             }
           />
-          <XXYJImage style={styles.img} />
+          <FMImage style={styles.img} />
           <View style={styles.infoBox}>
             <Text numberOfLines={1} style={styles.name}>
               {item.spuName}

@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
-import XXYJAnimatableTabView from '../../Base/Widget/XXYJAnimatableTabView';
-import XXYJBanner from '../../Base/Widget/XXYJBanner';
+import FMHeader from '../../Base/Widget/FMHeader';
+import FMAnimatableTabView from '../../Base/Widget/FMAnimatableTabView';
+import FMBanner from '../../Base/Widget/FMBanner';
 import ShopIndexItem from './ShopIndexItem';
 
 export default class MineOrderPage extends Component {
@@ -26,7 +26,7 @@ export default class MineOrderPage extends Component {
   renderBanner = () => {
     const bannerList = [{pic: '1'}, {pic: '1'}, {pic: '1'}];
     return (
-      <XXYJBanner
+      <FMBanner
         style={{marginTop: 19}}
         itemWidth={343}
         height={104}

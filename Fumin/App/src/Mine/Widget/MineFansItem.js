@@ -2,12 +2,12 @@
 //课程item
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
 const MineFansItem = () => {
   return (
     <TouchableOpacity activeOpacity={1} style={styles.item}>
-      <XXYJImage style={styles.img} />
+      <FMImage style={styles.img} />
       <View style={styles.rightBox}>
         <Text style={styles.name}>胖胖哥暖暖种草</Text>
         <View style={styles.rightBottom}>

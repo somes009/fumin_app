@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, FlatList} from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
+import FMHeader from '../../Base/Widget/FMHeader';
 import MinePlaceListItem from '../Widget/MinePlaceListItem';
 import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
 
@@ -13,6 +13,8 @@ export default class MinePlaceListPage extends Component {
     super(props);
     this.state = {
       list: [],
+      changePlace: props.route?.params?.changePlace,
+      type: props.route?.params?.type || 1, //1 地址列表 2 商品页选择地址
     };
   }
   componentDidMount() {
@@ -43,10 +45,10 @@ export default class MinePlaceListPage extends Component {
   };
   render() {
     const {navigation, safeAreaInsets} = this.props;
-    const {list} = this.state;
+    const {list, type, changePlace} = this.state;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJHeader
+        <FMHeader
           title="收货地址"
           onLeftPress={() => {
             navigation.goBack();
@@ -55,11 +57,20 @@ export default class MinePlaceListPage extends Component {
         <FlatList
           data={list}
           renderItem={({item, index}) => {
+            let onPress;
+            if (type === 2) {
+              onPress = (data) => {
+                changePlace(data);
+                navigation.goBack();
+              };
+            }
+            console.log(type);
             return (
               <MinePlaceListItem
                 navigation={navigation}
                 item={item}
                 key={index}
+                onPress={onPress}
               />
             );
           }}

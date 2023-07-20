@@ -5,12 +5,12 @@ import {View, StyleSheet, Text, Platform, BackHandler} from 'react-native';
 import Images from '../../../Images';
 import {ApiPostJson} from '../../../Api/RequestTool';
 import CacheStore, {CacheStoreName} from '../../../Common/CacheStore';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import {ScrollView} from 'react-native-gesture-handler';
 import Utils from '../../../Utils';
-import XXYJButton from '../../Base/Widget/XXYJButton';
-import XXYJTextinput from '../../Base/Widget/XXYJTextinput';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
+import FMButton from '../../Base/Widget/FMButton';
+import FMTextinput from '../../Base/Widget/FMTextinput';
+import FMHeader from '../../Base/Widget/FMHeader';
 import EventBus, {EventBusName} from '../../../Api/EventBus';
 const isAndroid = Platform.OS === 'android';
 export default class LoginIndexPage extends Component {
@@ -73,7 +73,7 @@ export default class LoginIndexPage extends Component {
   renderCodeInput = () => {
     const {code, isSend, sec} = this.state;
     return (
-      <XXYJTextinput
+      <FMTextinput
         keyboardType="numeric"
         placeholder="请输入验证码"
         maxLength={4}
@@ -91,7 +91,7 @@ export default class LoginIndexPage extends Component {
         needBorder
         placeholderStyle={styles.placeholderStyle}
         rightComponent={
-          <XXYJButton
+          <FMButton
             text={isSend ? sec + 's' : '发送'}
             textStyle={styles.send}
             containerStyle={styles.sendBox}
@@ -106,7 +106,7 @@ export default class LoginIndexPage extends Component {
   renderPasswordInput = () => {
     const {password} = this.state;
     return (
-      <XXYJTextinput
+      <FMTextinput
         placeholder="请输入密码"
         maxLength={20}
         value={password}
@@ -128,7 +128,7 @@ export default class LoginIndexPage extends Component {
   renderQrcodeInput = () => {
     const {qrcode} = this.state;
     return (
-      <XXYJTextinput
+      <FMTextinput
         placeholder="请输入邀请码（选填）"
         maxLength={6}
         value={qrcode}
@@ -151,7 +151,7 @@ export default class LoginIndexPage extends Component {
     const {code, value, isSend, sec} = this.state;
     return (
       <View style={styles.in}>
-        <XXYJTextinput
+        <FMTextinput
           keyboardType="numeric"
           placeholder="请输入手机号"
           maxLength={11}
@@ -291,7 +291,7 @@ export default class LoginIndexPage extends Component {
   renderLogin = () => {
     const {canLogin} = this.state;
     return (
-      <XXYJButton
+      <FMButton
         darkShadowColor="#99C6BB"
         text="注册"
         textStyle={styles.loginText}
@@ -334,7 +334,7 @@ export default class LoginIndexPage extends Component {
     const {safeAreaInsets, navigation} = this.props;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJHeader
+        <FMHeader
           onLeftPress={() => {
             navigation.goBack();
           }}

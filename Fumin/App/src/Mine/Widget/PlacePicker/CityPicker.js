@@ -3,7 +3,7 @@
 import React, {useState, useEffect} from 'react';
 import Picker from './Picker';
 
-const CityPicker = ({cities, onCityChange, provinceId, selectedProvinceId}) => {
+const CityPicker = ({cities, onCityChange, provinceId, id}) => {
   const [filteredCities, setFilteredCities] = useState([]);
 
   useEffect(() => {
@@ -16,13 +16,12 @@ const CityPicker = ({cities, onCityChange, provinceId, selectedProvinceId}) => {
   }, [cities, provinceId]);
   return (
     <>
-      {!!filteredCities.length && (
-        <Picker
-          items={filteredCities}
-          onValueChange={onCityChange}
-          placeholder="请选择城市"
-        />
-      )}
+      <Picker
+        items={filteredCities}
+        onValueChange={onCityChange}
+        placeholder="请选择城市"
+        id={id}
+      />
     </>
   );
 };

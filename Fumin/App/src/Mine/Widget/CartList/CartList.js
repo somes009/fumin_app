@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import CartItem from '../CartItem/CartItem';
-import XXYJImage from '../../../Base/Widget/XXYJImage';
+import FMImage from '../../../Base/Widget/FMImage';
 import Fonts from '../../../../Common/Fonts';
 import Images from '../../../../Images';
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
@@ -125,7 +125,7 @@ class CartList extends React.Component {
                 />
                 <TouchableOpacity activeOpacity={1} style={styles.goShopBox}>
                   <Text style={styles.title}>{item.pmName}</Text>
-                  <XXYJImage
+                  <FMImage
                     source={Images.toRightGray}
                     style={styles.toRight}
                   />

@@ -8,17 +8,15 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
 } from 'react-native';
-import XXYJFlatList from '../../Base/Widget/XXYJFlatList';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
-import XXYJBanner from '../../Base/Widget/XXYJBanner';
-import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
+import {ApiPostJson} from '../../../Api/RequestTool';
 import Utils from '../../../Utils';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
-import XXYJTextInput from '../../Base/Widget/XXYJTextinput';
+import FMHeader from '../../Base/Widget/FMHeader';
+import FMTextInput from '../../Base/Widget/FMTextinput';
 import _ from 'lodash';
 import Images from '../../../Images';
-import XXYJButton from '../../Base/Widget/XXYJButton';
+import FMButton from '../../Base/Widget/FMButton';
 export default class ShProductAddPage extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +32,24 @@ export default class ShProductAddPage extends Component {
       price: '',
     };
   }
+
+  async requestCarmeraPermission() {
+    try {
+      const granted = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      ]);
+      // 返回值为一个 object，key 为各权限名称，值为PermissionsAndroid.RESULTS
+      const allPermissionsGranted = Object.values(granted).every(
+        (result) => result === PermissionsAndroid.RESULTS.GRANTED,
+      );
+      if (allPermissionsGranted) {
+      }
+    } catch (err) {}
+  }
   componentDidMount() {
+    this.requestCarmeraPermission();
     const {id} = this.state;
     if (id) {
       this.getData();
@@ -68,7 +83,7 @@ export default class ShProductAddPage extends Component {
           <Text style={styles.title}>商品名称</Text>
           <Text style={styles.xing}>*</Text>
         </View>
-        <XXYJTextInput
+        <FMTextInput
           placeholder="请输入商品名称"
           value={name}
           onChangeText={(text) => {
@@ -92,7 +107,7 @@ export default class ShProductAddPage extends Component {
         <View style={styles.titleBox}>
           <Text style={styles.title}>规格型号</Text>
         </View>
-        <XXYJTextInput
+        <FMTextInput
           placeholder="请输入规格型号"
           maxLength={11}
           value={type}
@@ -153,10 +168,7 @@ export default class ShProductAddPage extends Component {
         </View>
         <TouchableOpacity style={styles.classifyBox}>
           <Text style={styles.classify}>食品</Text>
-          <XXYJImage
-            source={Images.toBottomBlack}
-            style={styles.toBottomBlack}
-          />
+          <FMImage source={Images.toBottomBlack} style={styles.toBottomBlack} />
         </TouchableOpacity>
       </View>
     );
@@ -208,7 +220,7 @@ export default class ShProductAddPage extends Component {
           <Text style={styles.title}>库存数量</Text>
           <Text style={styles.xing}>*</Text>
         </View>
-        <XXYJTextInput
+        <FMTextInput
           placeholder="请输入库存数量"
           value={count}
           onChangeText={(text) => {
@@ -273,7 +285,7 @@ export default class ShProductAddPage extends Component {
           <Text style={styles.title}>销售价</Text>
           <Text style={styles.xing}>*</Text>
         </View>
-        <XXYJTextInput
+        <FMTextInput
           placeholder="请输入销售价"
           value={price}
           onChangeText={(text) => {
@@ -314,7 +326,7 @@ export default class ShProductAddPage extends Component {
     const {navigation, safeAreaInsets} = this.props;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJHeader
+        <FMHeader
           title="填写信息"
           onLeftPress={() => {
             navigation.goBack();
@@ -328,7 +340,7 @@ export default class ShProductAddPage extends Component {
         {this.renderCount()}
         {this.renderExpenseType()}
         {this.renderPrice()}
-        <XXYJButton
+        <FMButton
           text="完成"
           textStyle={styles.add}
           containerStyle={styles.addBox}

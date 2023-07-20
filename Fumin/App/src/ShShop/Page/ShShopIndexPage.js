@@ -11,11 +11,11 @@ import {
 import Images from '../../../Images';
 import {ApiPostJson} from '../../../Api/RequestTool';
 import Utils from '../../../Utils';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
+import FMHeader from '../../Base/Widget/FMHeader';
 import Fonts from '../../../Common/Fonts';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import ShopDetailItem from '../Widget/ShopDetailItem';
-import XXYJFlatList from '../../Base/Widget/XXYJFlatList';
+import FMFlatList from '../../Base/Widget/FMFlatList';
 export default class ShShopIndexPage extends Component {
   constructor(props) {
     super(props);
@@ -47,7 +47,7 @@ export default class ShShopIndexPage extends Component {
     const {data} = this.state;
     return (
       <View style={styles.infoBox}>
-        <XXYJImage source={{uri: data.logo}} style={styles.img} />
+        <FMImage source={{uri: data.logo}} style={styles.img} />
         <View style={styles.infoRight}>
           <Text style={styles.title}>{data.name}</Text>
           <Text numberOfLines={2} style={styles.desc}>
@@ -92,8 +92,8 @@ export default class ShShopIndexPage extends Component {
 
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJImage source={{uri: data.bgImg}} style={styles.topImg} />
-        {/* <XXYJHeader
+        <FMImage source={{uri: data.bgImg}} style={styles.topImg} />
+        {/* <FMHeader
           safeAreaInsets={safeAreaInsets}
           title={''}
           onLeftPress={() => {
@@ -112,7 +112,7 @@ export default class ShShopIndexPage extends Component {
               <View style={styles.main}>
                 {this.renderInfo()}
                 {this.renderTab()}
-                <XXYJFlatList
+                <FMFlatList
                   ref={(ref) => (this.refCourse = ref)}
                   isApiPostJson
                   style={{flex: 1, width: Utils.getScreenSize().width}}

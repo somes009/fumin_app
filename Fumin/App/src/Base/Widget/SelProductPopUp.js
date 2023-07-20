@@ -12,12 +12,12 @@ import {
 import Utils from '../../../Utils';
 import Images from '../../../Images';
 const isAndroid = Platform.OS === 'android';
-import XXYJActionSheet from './XXYJActionSheet';
-import XXYJButton from './XXYJButton';
+import FMActionSheet from './FMActionSheet';
+import FMButton from './FMButton';
 import Fonts from '../../../Common/Fonts';
-import XXYJImage from './XXYJImage';
+import FMImage from './FMImage';
 
-export default class XXYJSelPayWayPopUp extends Component {
+export default class FMSelPayWayPopUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,19 +39,29 @@ export default class XXYJSelPayWayPopUp extends Component {
   };
 
   renderPlaceBox = () => {
+    const {place, handlePlace} = this.props;
+    console.log(place);
     return (
-      <View style={styles.placeBox}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => {
+          this.closeModal();
+          handlePlace();
+        }}
+        style={styles.placeBox}>
         <View style={styles.leftBox}>
-          <Text style={styles.namePhone}>王旭 16789856460</Text>
-          <Text style={styles.place}>北京市 西城区 西直门外大街137号</Text>
+          <Text style={styles.namePhone}>
+            {place.name} {place.mobile}
+          </Text>
+          <Text style={styles.place}>{place.detailAddress}</Text>
         </View>
-        <XXYJImage style={styles.toRight} />
-      </View>
+        <FMImage source={Images.toRightGray} style={styles.toRight} />
+      </TouchableOpacity>
     );
   };
 
   renderCount = () => {
-    const {count} = this.state;
+    const {buyCount, changeCount} = this.props;
     return (
       <View style={styles.countBox}>
         <Text style={styles.countTitle}>数量</Text>
@@ -59,10 +69,11 @@ export default class XXYJSelPayWayPopUp extends Component {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              if (count > 1) {
-                this.setState({
-                  count: +count - 1 + '',
-                });
+              if (buyCount > 1) {
+                changeCount(+buyCount - 1 + '');
+                // this.setState({
+                //   count: +buyCount - 1 + '',
+                // });
               }
             }}
             style={styles.minusBox}>
@@ -72,20 +83,22 @@ export default class XXYJSelPayWayPopUp extends Component {
           <TextInput
             keyboardType="numeric"
             style={styles.countInput}
-            value={count}
+            value={buyCount}
             onChangeText={(text) => {
-              this.setState({
-                count: text,
-              });
+              changeCount(text);
+              // this.setState({
+              //   count: text,
+              // });
             }}
           />
           {/* </View> */}
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              this.setState({
-                count: +count + 1 + '',
-              });
+              changeCount(+buyCount + 1 + '');
+              // this.setState({
+              //   count: +count + 1 + '',
+              // });
             }}
             style={styles.addBox}>
             <Text style={styles.addText}>+</Text>
@@ -102,20 +115,20 @@ export default class XXYJSelPayWayPopUp extends Component {
           activeOpacity={1}
           style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.remark}>无备注</Text>
-          <XXYJImage style={styles.remarkToRight} />
+          <FMImage source={Images.toRightGray} style={styles.remarkToRight} />
         </TouchableOpacity>
       </View>
     );
   };
 
   renderContent = () => {
-    const {handleBuy} = this.props;
+    const {handleBuy, data, buyCount} = this.props;
     return (
       <View style={styles.popUp}>
         <View style={styles.topBox}>
           <View style={styles.infoBox}>
-            <XXYJImage style={styles.img} />
-            <Text style={styles.price}>¥60</Text>
+            <FMImage style={styles.img} />
+            <Text style={styles.price}>¥{data.amount / 100}</Text>
           </View>
           {this.renderPlaceBox()}
           {this.renderClassifyBox()}
@@ -123,12 +136,14 @@ export default class XXYJSelPayWayPopUp extends Component {
           {this.renderRemark()}
           <TouchableOpacity
             onPress={() => {
-              handleBuy?.();
+              handleBuy?.(+buyCount);
             }}
             activeOpacity={1}
             style={styles.buyBtn}>
             <Text style={styles.buyText}>立即支付</Text>
-            <Text style={styles.buyPrice}>¥60</Text>
+            <Text style={styles.buyPrice}>
+              ¥{(data.amount / 100) * +buyCount}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -172,7 +187,7 @@ export default class XXYJSelPayWayPopUp extends Component {
   render() {
     const {navigation} = this.props;
     return (
-      <XXYJActionSheet
+      <FMActionSheet
         ref={(ref) => (this.refIos = ref)}
         refPop={this.refAndroid}
         children={this.renderContent()}
@@ -240,7 +255,6 @@ const styles = StyleSheet.create({
   toRight: {
     width: 7,
     height: 13,
-    backgroundColor: '#eee',
   },
   flBox: {
     marginTop: 15,
@@ -336,7 +350,6 @@ const styles = StyleSheet.create({
     width: 7,
     height: 13,
     marginLeft: 8,
-    backgroundColor: '#eee',
   },
   buyBtn: {
     width: 343,

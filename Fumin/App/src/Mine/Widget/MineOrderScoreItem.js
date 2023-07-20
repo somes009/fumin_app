@@ -2,14 +2,14 @@
 //课程item
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
-const MineOrderScoreItem = () => {
+const MineOrderScoreItem = ({item}) => {
   return (
     <TouchableOpacity activeOpacity={1} style={styles.item}>
       <View style={styles.top}>
-        <Text style={styles.name}>订单值</Text>
-        <Text style={styles.score}>+122</Text>
+        <Text style={styles.name}>{item.remark}</Text>
+        <Text style={styles.score}>+{item.count}</Text>
       </View>
       <Text style={styles.time}>发放时间：2023-04-03 05:06:28</Text>
     </TouchableOpacity>

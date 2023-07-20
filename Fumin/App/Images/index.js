@@ -20,8 +20,14 @@ const Mine = {
   waitSendIcon: require('./Mine/waitSendIcon.png'),
   waitUseIcon: require('./Mine/waitUseIcon.png'),
 };
+const Login = {
+  yinsi1: require('./Login/yinsi1.png'),
+  yinsi2: require('./Login/yinsi2.png'),
+  yinsi3: require('./Login/yinsi3.png'),
+};
 
 export default {
   ...Common,
   ...Mine,
+  ...Login,
 };

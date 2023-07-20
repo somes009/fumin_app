@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import Utils from '../../../Utils';
 import Images from '../../../Images';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from './FMImage';
 export default class TribeIndexPage extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +26,7 @@ export default class TribeIndexPage extends Component {
           },
           style,
         ]}>
-        <XXYJImage
+        {/* <FMImage
           source={image || Images.noData}
           style={[
             {
@@ -36,7 +36,7 @@ export default class TribeIndexPage extends Component {
             },
             imageStyle,
           ]}
-        />
+        /> */}
         <Text
           style={{
             color: '#000',

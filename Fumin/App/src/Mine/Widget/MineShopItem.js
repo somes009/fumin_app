@@ -2,12 +2,12 @@
 //课程item
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
 const MineShopItem = () => {
   return (
     <TouchableOpacity activeOpacity={1} style={styles.item}>
-      <XXYJImage style={styles.img} />
+      <FMImage style={styles.img} />
       <View style={styles.info}>
         <Text style={styles.name}>若溪润儿童用品企业店</Text>
         <Text style={styles.phone}>134****7654</Text>

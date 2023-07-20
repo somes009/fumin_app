@@ -10,61 +10,197 @@ import {
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
+import FMHeader from '../../Base/Widget/FMHeader';
 import MineFansItem from '../Widget/MineFansItem';
-import XXYJFlatList from '../../Base/Widget/XXYJFlatList';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMFlatList from '../../Base/Widget/FMFlatList';
+import FMImage from '../../Base/Widget/FMImage';
 import Images from '../../../Images';
+import {ApiPostJson} from '../../../Api/RequestTool';
 
 export default class MineOrderDetailPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      id: props.route?.params.id,
+      status: props.route?.params.status,
+      data: {},
+      show: false,
+    };
+  }
+  componentDidMount() {
+    this.getData();
   }
 
+  getData = () => {
+    const {id, status} = this.state;
+    const path = '/app-api/trade/order/selectMyOrderDetail';
+    const params = {
+      id,
+      status,
+    };
+    const onSuccess = (res) => {
+      this.setState({
+        data: res.orderInfo,
+        show: true,
+      });
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
   renderInfo = () => {
+    const {data} = this.state;
+    const {navigation} = this.props;
     return (
-      <View style={styles.infoBox}>
-        <TouchableOpacity activeOpacity={1} style={styles.pmNameBox}>
-          <Text style={styles.pmName}>shibook旗舰店</Text>
-          <XXYJImage source={Images.toRightGray} style={styles.toRight} />
+      <View style={styles.infoTopBox}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('IndexNav', {
+              screen: 'ShopDetailPage',
+              params: {
+                shopId: data.pmId,
+              },
+            });
+          }}
+          activeOpacity={1}
+          style={styles.pmNameBox}>
+          <Text style={styles.pmName}>{data.pmName}</Text>
+          <FMImage source={Images.toRightGray} style={styles.toRight} />
         </TouchableOpacity>
         <View style={styles.infoBottom}>
           <View style={styles.infoBottomLeft}>
-            <XXYJImage style={styles.spuPic} />
+            <FMImage style={styles.spuPic} />
             <Text numberOfLines={2} style={styles.spuName}>
-              2023盒装高档91件套取
+              {data.spuName}
             </Text>
           </View>
           <View style={styles.infoBottomRight}>
-            <Text style={styles.price}>￥1199.00</Text>
-            <Text style={styles.num}>x1</Text>
+            <Text style={styles.price}>￥{data.orderPrice / 100}</Text>
+            <Text style={styles.num}>x{data.productCount}</Text>
           </View>
         </View>
       </View>
     );
   };
-
+  addCart = () => {
+    const {data} = this.state;
+    const path = '/app-api/trade/cart/addMyCart';
+    const params = {
+      id: data.spuId,
+    };
+    const onSuccess = (_res) => {
+      Utils.Toast({text: '添加成功'});
+    };
+    const onFailure = () => {};
+    ApiPostJson({path, params, onSuccess, onFailure});
+  };
   renderMainButton = () => {
+    const {data} = this.state;
     return (
       <View style={styles.mainButtons}>
-        <TouchableOpacity style={styles.mainButton} activeOpacity={1}>
+        {/* <TouchableOpacity style={styles.mainButton} activeOpacity={1}>
           <Text style={styles.buttonText}>申请售后</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={[styles.mainButton, {marginLeft: 15}]}
+          onPress={this.addCart}
           activeOpacity={1}>
           <Text style={styles.buttonText}>加入购物车</Text>
         </TouchableOpacity>
       </View>
     );
   };
+  renderInfoBottom = () => {
+    const {data} = this.state;
+    return (
+      <View style={styles.priceBox}>
+        <View style={styles.infoBox}>
+          <Text style={styles.infoTitle}>商品总价</Text>
+          <Text style={styles.priceText}>¥{data.orderPrice / 100}</Text>
+        </View>
+        <View style={styles.infoBox}>
+          <Text style={styles.infoTitle}>消耗红包金</Text>
+          <Text style={styles.priceText}>-{data.hbj}</Text>
+        </View>
+        <View style={styles.infoBox}>
+          <Text style={styles.infoTitle}>实付款</Text>
+          <Text style={styles.priceText}>¥{data.payPrice / 100}</Text>
+        </View>
+        <View style={[styles.infoBox, {alignItems: 'flex-start'}]}>
+          <Text style={styles.infoTitle}>收货信息</Text>
+          <Text style={[styles.infoText, {width: 200}]}>
+            {data.receiverName}，{data.receiverMobile}，
+            {data.receiverDetailAddress}
+          </Text>
+        </View>
+        <View style={[styles.infoBox]}>
+          <Text style={styles.infoTitle}>订单编号</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Text style={styles.infoText}>{data.orderNo} | </Text>
+            <TouchableOpacity
+              onPress={() => {
+                Utils.copyText(data.orderNo);
+              }}
+              activeOpacity={1}>
+              <Text
+                style={[
+                  styles.infoText,
+                  {
+                    color: '#000',
+                    fontSize: Utils.properWidth(15),
+                    lineHeight: Utils.properWidth(21),
+                  },
+                ]}>
+                复制
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={[styles.infoBox]}>
+          <Text style={styles.infoTitle}>支付宝交易号</Text>
+          <Text style={[styles.infoText]}>{data.receiverAreaId}</Text>
+        </View>
+        <View style={[styles.infoBox]}>
+          <Text style={styles.infoTitle}>创建时间</Text>
+          <Text style={[styles.infoText]}>{data.createTime}</Text>
+        </View>
+        {!!data.payTime && (
+          <View style={[styles.infoBox]}>
+            <Text style={styles.infoTitle}>付款时间</Text>
+            <Text style={[styles.infoText]}>{data.payTime}</Text>
+          </View>
+        )}
+        {!!data.deliveryTime && (
+          <View style={[styles.infoBox]}>
+            <Text style={styles.infoTitle}>发货时间</Text>
+            <Text style={[styles.infoText]}>{data.deliveryTime}</Text>
+          </View>
+        )}
+        {!!data.finishTime && (
+          <View style={[styles.infoBox]}>
+            <Text style={styles.infoTitle}>成交时间</Text>
+            <Text style={[styles.infoText]}>{data.finishTime}</Text>
+          </View>
+        )}
+      </View>
+    );
+  };
 
   render() {
     const {navigation, safeAreaInsets} = this.props;
+    const {data, show} = this.state;
+    // if (!show) {
+    //   return <View />;
+    // }
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJHeader
+        <FMHeader
           title="交易成功"
           onLeftPress={() => {
             navigation.goBack();
@@ -82,6 +218,7 @@ export default class MineOrderDetailPage extends Component {
             <View style={styles.main}>
               {this.renderInfo()}
               {this.renderMainButton()}
+              {this.renderInfoBottom()}
             </View>
           </View>
         </ScrollView>
@@ -131,6 +268,7 @@ const styles = StyleSheet.create({
   infoBottom: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 13,
   },
   infoBottomLeft: {
     flexDirection: 'row',
@@ -178,5 +316,28 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.PingFangSC_Regular,
     fontSize: Utils.properWidth(15),
     lineHeight: Utils.properWidth(21),
+  },
+  infoBox: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 15,
+  },
+  infoTitle: {
+    fontFamily: Fonts.PingFangSC_Regular,
+    fontSize: Utils.properWidth(15),
+    lineHeight: Utils.properWidth(21),
+  },
+  priceText: {
+    fontFamily: Fonts.DIN_Alternate,
+    fontSize: Utils.properWidth(15),
+    lineHeight: Utils.properWidth(21),
+  },
+  infoText: {
+    fontFamily: Fonts.PingFangSC_Regular,
+    fontSize: Utils.properWidth(13),
+    lineHeight: Utils.properWidth(17),
+    color: '#6D7278',
   },
 });

@@ -2,7 +2,7 @@
 //课程item
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
 const MineOrderScoreItem = () => {
   return (

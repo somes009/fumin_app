@@ -11,11 +11,12 @@ import {
 import Images from '../../../Images';
 import {ApiPostJson} from '../../../Api/RequestTool';
 import Utils from '../../../Utils';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
+import FMHeader from '../../Base/Widget/FMHeader';
 import Fonts from '../../../Common/Fonts';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import ShopDetailItem from '../Widget/ShopDetailItem';
-import XXYJFlatList from '../../Base/Widget/XXYJFlatList';
+import FMFlatList from '../../Base/Widget/FMFlatList';
+import FMBanner from '../../Base/Widget/FMBanner';
 export default class ShopDetailPage extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +24,7 @@ export default class ShopDetailPage extends Component {
       data: {},
       sortType: 0,
       id: props.route.params.shopId,
+      sortField: 'zonghe',
     };
     this.webViewHeight = 1;
   }
@@ -47,7 +49,7 @@ export default class ShopDetailPage extends Component {
     const {data} = this.state;
     return (
       <View style={styles.infoBox}>
-        <XXYJImage source={{uri: data.logo}} style={styles.img} />
+        <FMImage source={{uri: data.logo}} style={styles.img} />
         <View style={styles.infoRight}>
           <Text style={styles.title}>{data.name}</Text>
           <Text numberOfLines={2} style={styles.desc}>
@@ -67,9 +69,18 @@ export default class ShopDetailPage extends Component {
           return (
             <TouchableOpacity
               onPress={() => {
-                this.setState({
-                  sortType: index,
-                });
+                this.setState(
+                  {
+                    sortType: index,
+                    sortField:
+                      index === 0
+                        ? 'zonghe'
+                        : index === 1
+                        ? 'salesCount'
+                        : 'price',
+                  },
+                  this.refList.handleRefresh,
+                );
               }}
               activeOpacity={1}
               key={index}>
@@ -88,12 +99,12 @@ export default class ShopDetailPage extends Component {
   };
   render() {
     const {safeAreaInsets, navigation, isFocused} = this.props;
-    const {data, id} = this.state;
+    const {data, id, sortField} = this.state;
 
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJImage source={{uri: data.bgImg}} style={styles.topImg} />
-        <XXYJHeader
+        <FMImage source={{uri: data.bgImg}} style={styles.topImg} />
+        <FMHeader
           safeAreaInsets={safeAreaInsets}
           title={''}
           onLeftPress={() => {
@@ -112,13 +123,15 @@ export default class ShopDetailPage extends Component {
               <View style={styles.main}>
                 {this.renderInfo()}
                 {this.renderTab()}
-                <XXYJFlatList
-                  ref={(ref) => (this.refCourse = ref)}
+                <FMFlatList
+                  ref={(ref) => (this.refList = ref)}
                   isApiPostJson
                   style={{flex: 1, width: Utils.getScreenSize().width}}
                   requestPath="/app-api/product/merchant/auth/selectProductMerchantSpuList"
                   requestParams={{
                     id,
+                    sortField,
+                    sortAsc: true,
                   }}
                   keyExtractor={(item) => item?.id}
                   numColumns={2}

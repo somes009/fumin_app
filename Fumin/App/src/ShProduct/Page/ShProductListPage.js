@@ -8,14 +8,14 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
 } from 'react-native';
-import XXYJFlatList from '../../Base/Widget/XXYJFlatList';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMFlatList from '../../Base/Widget/FMFlatList';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
-import XXYJBanner from '../../Base/Widget/XXYJBanner';
+import FMBanner from '../../Base/Widget/FMBanner';
 import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
 import Utils from '../../../Utils';
 import ShProductItem from '../Widget/ShProductItem';
-import XXYJButton from '../../Base/Widget/XXYJButton';
+import FMButton from '../../Base/Widget/FMButton';
 export default class ShProductListPage extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +32,7 @@ export default class ShProductListPage extends Component {
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         {/* {this.renderItem({item: {}, index: 1})} */}
-        <XXYJFlatList
+        <FMFlatList
           ref={(ref) => (this.refCourse = ref)}
           isApiPostJson
           style={{flex: 1}}
@@ -51,7 +51,7 @@ export default class ShProductListPage extends Component {
             paddingBottom: 120,
           }}
         />
-        <XXYJButton
+        <FMButton
           text="添加商品"
           textStyle={styles.add}
           containerStyle={styles.addBox}

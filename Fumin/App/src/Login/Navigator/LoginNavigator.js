@@ -13,6 +13,7 @@ import {
 } from 'react-native-safe-area-context';
 import LoginIndexPage from '../Page/LoginIndexPage';
 import LoginSignInPage from '../Page//LoginSignInPage';
+import LoginYinsiPage from '../Page//LoginYinsiPage';
 
 const isAndroid = Platform.OS === 'android';
 const Stack = createStackNavigator();
@@ -36,6 +37,19 @@ const LoginSignInPageWithNavigation = (props) => {
   const insets = useSafeAreaInsets();
   return (
     <LoginSignInPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const LoginYinsiPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <LoginYinsiPage
       {...props}
       routesLength={routesLength}
       safeAreaInsets={insets}
@@ -67,6 +81,13 @@ export const LoginInnerNavigator = ({initialRouteName}) => (
     <Stack.Screen
       name="LoginSignInPage"
       component={LoginSignInPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="LoginYinsiPage"
+      component={LoginYinsiPageWithNavigation}
       options={{
         header: () => null,
       }}

@@ -8,18 +8,21 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
 } from 'react-native';
-import XXYJFlatList from '../../Base/Widget/XXYJFlatList';
+import FMFlatList from '../../Base/Widget/FMFlatList';
 import IndexRenderItem from '../Widget/IndexRenderItem';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
-import XXYJBanner from '../../Base/Widget/XXYJBanner';
+import FMBanner from '../../Base/Widget/FMBanner';
 import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
 import Geolocation from 'react-native-geolocation-service';
 import Utils from '../../../Utils';
 export default class IndexPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      latitude: '',
+      longitude: '',
+    };
   }
   componentDidMount() {
     this.requestLocationPermission();
@@ -55,8 +58,18 @@ export default class IndexPage extends Component {
         console.log('info', info);
         // const {latitude, longitude} = info.coords;
         global.coords = info.coords;
+        this.setState(
+          {
+            latitude: info.coords.latitude,
+            longitude: info.coords.longitude,
+          },
+          this.refList.handleRefresh,
+        );
       },
-      (error) => console.log('ERROR', error),
+      (error) => {
+        this.getLocation();
+        console.log('ERROR', error);
+      },
       config,
     );
   };
@@ -82,7 +95,7 @@ export default class IndexPage extends Component {
     return (
       <View style={styles.topBox}>
         <TouchableOpacity style={styles.placeBox} activeOpacity={1}>
-          <XXYJImage style={styles.placeIcon} />
+          <FMImage style={styles.placeIcon} />
           <Text style={styles.placeText}>佛山</Text>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={1} style={styles.searchBox}>
@@ -95,7 +108,7 @@ export default class IndexPage extends Component {
   renderBanner = () => {
     const bannerList = [{pic: '1'}, {pic: '1'}, {pic: '1'}];
     return (
-      <XXYJBanner
+      <FMBanner
         style={{marginTop: 19}}
         itemWidth={343}
         height={104}
@@ -112,31 +125,31 @@ export default class IndexPage extends Component {
   };
   render() {
     const {navigation, safeAreaInsets} = this.props;
+    const {latitude, longitude} = this.state;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         {this.renderTop()}
         {this.renderBanner()}
-        <XXYJFlatList
-          ref={(ref) => (this.refCourse = ref)}
+        <FMFlatList
+          ref={(ref) => (this.refList = ref)}
           isApiPostJson
-          style={{flex: 1}}
+          style={{flex: 1, width: Utils.getScreenSize().width}}
           // isApiPostJson={false}
           //  responseKey={'history'}
           requestPath="/app-api/product/merchant/auth/selectNearbyBusiness"
-          requestParams={
-            {
-              // latitude: '39.983424',
-              // longitude: '116.322987',
-            }
-          }
+          requestParams={{
+            // latitude,
+            // longitude,
+          }}
           handleRefresh={() => {
-            this.getLocation();
+            // this.getLocation();
           }}
           keyExtractor={(item) => item?.id}
           renderItem={this.renderItem}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingBottom: 20,
+            alignItems: 'center',
           }}
         />
       </View>

@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMHeader from '../../Base/Widget/FMHeader';
+import FMImage from '../../Base/Widget/FMImage';
 import * as CacheManager from 'react-native-http-cache';
 
 export default class MineSetUpPage extends Component {
@@ -73,7 +73,7 @@ export default class MineSetUpPage extends Component {
     ];
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJHeader
+        <FMHeader
           title="设置"
           onLeftPress={() => {
             navigation.goBack();
@@ -88,7 +88,7 @@ export default class MineSetUpPage extends Component {
                 onPress={item.fun}
                 activeOpacity={1}>
                 <Text style={styles.name}>{item.name}</Text>
-                <XXYJImage style={styles.toRight} />
+                <FMImage style={styles.toRight} />
               </TouchableOpacity>
             );
           })}

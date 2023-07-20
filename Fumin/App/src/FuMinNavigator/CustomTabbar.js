@@ -9,7 +9,7 @@ import * as Animatable from 'react-native-animatable';
 const isAndroid = Platform.OS === 'android';
 import AppStore from '../../Store/AppStore';
 import Fonts from '../../Common/Fonts';
-import XXYJImage from '../Base/Widget/XXYJImage';
+import FMImage from '../Base/Widget/FMImage';
 export default class MyTabBar extends Component {
   constructor(props) {
     super(props);
@@ -143,7 +143,7 @@ export default class MyTabBar extends Component {
                       backgroundColor: isFocused ? '#FF9B00' : '#fff',
                     },
                   ]}>
-                  <XXYJImage
+                  <FMImage
                     resizeMode="contain"
                     source={
                       isFocused

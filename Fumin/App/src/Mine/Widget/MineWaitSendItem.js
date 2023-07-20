@@ -2,7 +2,7 @@
 //待发货
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
 import Utils from '../../../Utils';
 const MineWaitSendItem = () => {
@@ -11,12 +11,12 @@ const MineWaitSendItem = () => {
       <View style={styles.titleBox}>
         <TouchableOpacity activeOpacity={1} style={styles.shopNameBox}>
           <Text style={styles.shopName}>shibook旗舰店</Text>
-          <XXYJImage style={styles.toRight} />
+          <FMImage style={styles.toRight} />
         </TouchableOpacity>
         <Text style={styles.state}>买家已付款</Text>
       </View>
       <View style={styles.infoBox}>
-        <XXYJImage style={styles.img} />
+        <FMImage style={styles.img} />
         <View style={styles.infoRight}>
           <View style={styles.righrTop}>
             <Text numberOfLines={2} style={styles.productName}>

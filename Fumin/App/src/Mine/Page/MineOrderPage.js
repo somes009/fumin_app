@@ -10,13 +10,13 @@ import {
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
-// import XXYJAnimatableTabView from '../../Base/Widget/XXYJMyTabView';
-import XXYJAnimatableTabView from '../../Base/Widget/XXYJAnimatableTabView';
+import FMHeader from '../../Base/Widget/FMHeader';
+// import FMAnimatableTabView from '../../Base/Widget/FMMyTabView';
+import FMAnimatableTabView from '../../Base/Widget/FMAnimatableTabView';
 import MineObligationItem from '../Widget/MineObligationItem';
 import MineWaitSendItem from '../Widget/MineWaitSendItem';
 import MineIsEndItem from '../Widget/MineIsEndItem';
-import XXYJFlatList from '../../Base/Widget/XXYJFlatList';
+import FMFlatList from '../../Base/Widget/FMFlatList';
 
 export default class MineOrderPage extends Component {
   constructor(props) {
@@ -44,17 +44,73 @@ export default class MineOrderPage extends Component {
         }}>
         {index === 0 && (
           <>
-            <MineObligationItem
-              onPress={() => {
-                navigation.navigate('MineOrderDetailPage');
+            <FMFlatList
+              ref={(ref) => (this.refCourse = ref)}
+              isApiPostJson
+              style={{flex: 1}}
+              //  responseKey={'history'}
+              requestPath="/app-api/trade/order/selectMyorderList"
+              requestParams={
+                {
+                  // status: 0,
+                }
+              }
+              keyExtractor={(item) => item?.id}
+              renderItem={({item}) => {
+                return (
+                  <MineObligationItem
+                    onPress={() => {
+                      navigation.navigate('MineOrderDetailPage', {
+                        id: item.orderId,
+                      });
+                    }}
+                    item={item}
+                  />
+                );
+              }}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingBottom: 20,
               }}
             />
-            <MineWaitSendItem />
-            <MineIsEndItem />
           </>
         )}
         {index === 1 && (
-          <XXYJFlatList
+          <FMFlatList
+            ref={(ref) => (this.refOrder1 = ref)}
+            isApiPostJson
+            style={{flex: 1}}
+            //  responseKey={'history'}
+            requestPath="/app-api/trade/order/selectMyorderList"
+            requestParams={{
+              status: 0,
+            }}
+            keyExtractor={(item) => item?.id}
+            renderItem={({item}) => {
+              return (
+                <MineObligationItem
+                  onPress={() => {
+                    navigation.navigate('MineOrderDetailPage', {
+                      id: item.childOrderId,
+                      status: 0,
+                    });
+                  }}
+                  handleRef={() => {
+                    this.refOrder1.handleRefresh();
+                  }}
+                  navigation={navigation}
+                  item={item}
+                />
+              );
+            }}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingBottom: 20,
+            }}
+          />
+        )}
+        {index === 2 && (
+          <FMFlatList
             ref={(ref) => (this.refCourse = ref)}
             isApiPostJson
             style={{flex: 1}}
@@ -65,7 +121,7 @@ export default class MineOrderPage extends Component {
             }}
             keyExtractor={(item) => item?.id}
             renderItem={({item}) => {
-              return <MineObligationItem item={item} />;
+              return <MineWaitSendItem item={item} />;
             }}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
@@ -73,11 +129,30 @@ export default class MineOrderPage extends Component {
             }}
           />
         )}
-        {index === 2 && <MineWaitSendItem />}
         {index === 3 && (
-          <MineIsEndItem
-            onPress={() => {
-              navigation.navigate('MineOrderDetailPage');
+          <FMFlatList
+            ref={(ref) => (this.refCourse = ref)}
+            isApiPostJson
+            style={{flex: 1}}
+            //  responseKey={'history'}
+            requestPath="/app-api/trade/order/selectMyorderList"
+            requestParams={{
+              status: 30,
+            }}
+            keyExtractor={(item) => item?.id}
+            renderItem={({item}) => {
+              return (
+                <MineIsEndItem
+                  item={item}
+                  onPress={() => {
+                    navigation.navigate('MineOrderDetailPage');
+                  }}
+                />
+              );
+            }}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingBottom: 20,
             }}
           />
         )}
@@ -89,13 +164,13 @@ export default class MineOrderPage extends Component {
     const {status} = this.state;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJHeader
+        <FMHeader
           title={'我的订单'}
           onLeftPress={() => {
             navigation.goBack();
           }}
         />
-        <XXYJAnimatableTabView
+        <FMAnimatableTabView
           tabItemStyle={{width: Utils.getScreenSize().width / 5}}
           lineStyle={styles.tabLine}
           tabList={this.tagList}

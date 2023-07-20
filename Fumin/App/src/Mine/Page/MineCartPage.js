@@ -2,10 +2,10 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CartList from '../Widget/CartList/CartList';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
-import XXYJBanner from '../../Base/Widget/XXYJBanner';
+import FMHeader from '../../Base/Widget/FMHeader';
+import FMBanner from '../../Base/Widget/FMBanner';
 import Fonts from '../../../Common/Fonts';
-import XXYJButton from '../../Base/Widget/XXYJButton';
+import FMButton from '../../Base/Widget/FMButton';
 import {ApiPostJson} from '../../../Api/RequestTool';
 import Utils from '../../../Utils';
 // 组件样式
@@ -209,7 +209,7 @@ class MineCartPage extends React.Component {
       this.state;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJHeader
+        <FMHeader
           title={`购物车（${count}）`}
           onLeftPress={() => {
             navigation.goBack();
@@ -268,7 +268,7 @@ class MineCartPage extends React.Component {
                 <Text style={styles.price}>¥{price / 100}</Text>
               </>
             )}
-            <XXYJButton
+            <FMButton
               darkShadowColor="#99C6BB"
               text={type ? '删除' : '结算'}
               textStyle={styles.buyBtnText}

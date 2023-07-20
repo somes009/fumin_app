@@ -9,15 +9,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Images from '../../../Images';
-import {ApiPostJson} from '../../../Api/RequestTool';
+import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
 import Utils from '../../../Utils';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
+import FMHeader from '../../Base/Widget/FMHeader';
 import Fonts from '../../../Common/Fonts';
-import XXYJImage from '../../Base/Widget/XXYJImage';
-import XXYJSelPayWayPopUp from '../../Base/Widget/XXYJSelPayWayPopUp';
+import FMImage from '../../Base/Widget/FMImage';
+import FMSelPayWayPopUp from '../../Base/Widget/FMSelPayWayPopUp';
 import SelProductPopUp from '../../Base/Widget/SelProductPopUp';
 import ProductDetailItem from '../Widget/ProductDetailItem';
 import Alipay from '@uiw/react-native-alipay';
+import * as WeChat from 'react-native-wechat-lib';
+import FMBanner from '../../Base/Widget/FMBanner';
 
 export default class ShopDetailPage extends Component {
   constructor(props) {
@@ -27,12 +29,50 @@ export default class ShopDetailPage extends Component {
       lookList: [],
       sortType: 0,
       id: props.route.params.id,
+      buyCount: '1',
+      place: {},
     };
     this.webViewHeight = 1;
   }
   componentDidMount() {
     this.getData();
+    this.getPlace();
   }
+  getData = () => {
+    let {id} = this.state;
+    const path = '/app-api/product/merchant/auth/getProductMerchantSpuDetail';
+    const params = {
+      id,
+    };
+    const onSuccess = (res) => {
+      this.refScroll.scrollTo({
+        x: 0,
+        y: 0,
+        animated: false,
+      });
+      this.setState({
+        data: res,
+        lookList: res.lookList,
+      });
+    };
+    const onFailure = () => {};
+    ApiPostJson({path, params, onSuccess, onFailure});
+  };
+  getPlace = () => {
+    let {id} = this.state;
+    const path = '/app-api/member/address/get-default';
+    const params = {
+      id,
+    };
+    const onSuccess = (res) => {
+      console.log(res);
+      this.setState({
+        place: res,
+      });
+    };
+    const onFailure = () => {};
+    ApiGet({path, params, onSuccess, onFailure});
+  };
   handleAliPay = (payInfo, callback) => {
     async function aliPay(aliCB) {
       // 支付宝端支付
@@ -45,17 +85,56 @@ export default class ShopDetailPage extends Component {
     }
     aliPay(callback);
   };
-  getData = () => {
-    let {id} = this.state;
-    const path = '/app-api/product/merchant/auth/getProductMerchantSpuDetail';
+  createOrder = (payType) => {
+    let {id, buyCount} = this.state;
+    const path = '/app-api/trade/order/createOrder';
     const params = {
-      id,
+      spuId: id,
+      count: buyCount,
+      fromCart: false,
     };
     const onSuccess = (res) => {
-      this.setState({
-        data: res,
-        lookList: res.lookList,
-      });
+      Utils.requestPay(
+        {id: res.orderId, channelCode: payType ? 'wx_app' : 'alipay_app'},
+        (resData) => {
+          if (payType) {
+            const data = resData.jsonBean.data;
+            WeChat.pay({
+              partnerId: data.partnerId,
+              prepayId: data.prepayId,
+              nonceStr: data.nonceStr,
+              timeStamp: data.timestamp,
+              package: data.packageVal,
+              sign: data.sign,
+            })
+              .then((requestJson) => {
+                console.log(requestJson);
+                //支付成功回调
+                if (requestJson.errCode == '0') {
+                  //回调成功处理
+                  Utils.Toast({text: '支付成功'});
+                  // this.getData();
+                  this.getData();
+                }
+              })
+              .catch((_err) => {
+                Utils.Toast({text: '支付失败'});
+                this.getData();
+              });
+          } else {
+            const callback = (_respont) => {
+              if (res.resultStatus === '9000') {
+                Utils.Toast({text: '支付成功'});
+                // getData?.();
+              } else {
+                Utils.Toast({text: '支付失败'});
+              }
+              console.log(res);
+            };
+            this.handleAliPay(resData?.jsonbean?.data, callback);
+          }
+        },
+      );
     };
     const onFailure = () => {};
     ApiPostJson({path, params, onSuccess, onFailure});
@@ -77,18 +156,34 @@ export default class ShopDetailPage extends Component {
     );
   };
   renderPlaceBox = () => {
-    const {data} = this.state;
+    const {navigation} = this.props;
+    const {data, place} = this.state;
     return (
-      <View style={styles.placeBox}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => {
+          navigation.navigate('MineNav', {
+            screen: 'MinePlaceListPage',
+            params: {
+              changePlace: (placeData) => {
+                this.setState({
+                  place: placeData,
+                });
+              },
+              type: 2,
+            },
+          });
+        }}
+        style={styles.placeBox}>
         <View style={styles.leftBox}>
           <View style={styles.leftTop}>
             <Text style={styles.city}>{data.address}</Text>
             <Text style={styles.kuaidi}>快递：免运费</Text>
           </View>
-          <Text style={styles.toText}>配送至：北京海淀区马家堡</Text>
+          <Text style={styles.toText}>配送至：{place?.detailAddress}</Text>
         </View>
-        <XXYJImage style={styles.toRight} />
-      </View>
+        <FMImage source={Images.toRightGray} style={styles.toRight} />
+      </TouchableOpacity>
     );
   };
 
@@ -98,7 +193,7 @@ export default class ShopDetailPage extends Component {
     const params = {
       id,
     };
-    const onSuccess = (res) => {
+    const onSuccess = (_res) => {
       Utils.Toast({text: '添加成功'});
     };
     const onFailure = () => {};
@@ -106,12 +201,26 @@ export default class ShopDetailPage extends Component {
   };
   render() {
     const {safeAreaInsets, navigation, isFocused} = this.props;
-    const {data, lookList} = this.state;
+    const {data, lookList, buyCount, place} = this.state;
 
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJImage style={styles.topImg} />
-        <XXYJHeader
+        {/* <FMImage style={styles.topImg} /> */}
+        <FMBanner
+          // style={{marginTop: 19}}
+          itemWidth={343}
+          height={104}
+          loop
+          autoplay
+          autoplayInterval={5000}
+          imgs={data?.picUrls}
+          onPress={this.handlePressBanner}
+          itemStyle={{
+            backgroundColor: '#eee',
+          }}
+          style={styles.topImg}
+        />
+        <FMHeader
           safeAreaInsets={safeAreaInsets}
           title={''}
           onLeftPress={() => {
@@ -120,6 +229,7 @@ export default class ShopDetailPage extends Component {
         />
         <View style={styles.mainBox}>
           <ScrollView
+            ref={(ref) => (this.refScroll = ref)}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.containerIn}>
             <View
@@ -131,7 +241,7 @@ export default class ShopDetailPage extends Component {
                 <Text style={styles.price}>¥{(data.amount || 0) / 100}</Text>
                 <Text style={styles.name}>{data.name}</Text>
                 {this.renderPlaceBox()}
-                <XXYJImage style={styles.descImg} />
+                <FMImage style={styles.descImg} />
                 <Text style={styles.lookTitle}>看了又看</Text>
                 <View style={styles.list}>
                   {lookList.map((item, index) => {
@@ -172,18 +282,40 @@ export default class ShopDetailPage extends Component {
             <Text style={styles.buyText}>立即购买</Text>
           </TouchableOpacity>
         </View>
-        <XXYJSelPayWayPopUp
-          handlePay={this.handleBuy}
+        <FMSelPayWayPopUp
+          handleBuy={this.createOrder}
           ref={(ref) => (this.refSelPay = ref)}
+          price={(data.amount / 100) * +buyCount}
         />
         <SelProductPopUp
-          handleBuy={() => {
+          handleBuy={(_count) => {
             this.refSelProduct.closeModal();
             setTimeout(() => {
               this.refSelPay.openModal();
             }, 300);
           }}
+          handlePlace={() => {
+            navigation.navigate('MineNav', {
+              screen: 'MinePlaceListPage',
+              params: {
+                changePlace: (placeData) => {
+                  this.setState({
+                    place: placeData,
+                  });
+                },
+                type: 2,
+              },
+            });
+          }}
           ref={(ref) => (this.refSelProduct = ref)}
+          data={data}
+          place={place}
+          buyCount={buyCount}
+          changeCount={(count) => {
+            this.setState({
+              buyCount: count,
+            });
+          }}
         />
       </View>
     );
@@ -238,6 +370,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     fontFamily: Fonts.PingFangSC_Regular,
     color: '#000',
+    width: '100%',
   },
   placeBox: {
     width: 340,
@@ -281,7 +414,6 @@ const styles = StyleSheet.create({
   toRight: {
     width: 7,
     height: 13,
-    backgroundColor: '#eee',
   },
   descImg: {
     marginTop: 10,

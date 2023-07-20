@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
+import FMHeader from '../../Base/Widget/FMHeader';
 import {ApiPostJson} from '../../../Api/RequestTool';
 export default class TaskListPage extends Component {
   constructor(props) {
@@ -76,7 +76,7 @@ export default class TaskListPage extends Component {
             style={{
               alignItems: 'center',
             }}>
-            <XXYJHeader
+            <FMHeader
               title=""
               onLeftPress={() => {
                 navigation.goBack();

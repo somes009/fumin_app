@@ -10,6 +10,40 @@ import {uploadImg} from './AliyunTools';
 
 let Utils = {};
 
+Utils.requestPay = (params, callback) => {
+  const path = '/app-api/pay/order/submitPayOrderApp';
+  // const params = {
+  //   spuId: id,
+  //   count: buyCount,
+  //   fromCart: false,
+  // };
+  const onSuccess = (res) => {
+    callback(res);
+  };
+
+  ApiPostJson({path, params, onSuccess});
+};
+
+Utils.getImageOssProcess = ({imageUrl, fill, h, w}) => {
+  if (!imageUrl) {
+    return '';
+  }
+  if (imageUrl.indexOf('fumin') === -1) {
+    return imageUrl;
+  }
+  const fillNew = !fill ? '' : `,m_${fill}`;
+  let height = '';
+  let width = '';
+  if (!h && !w) {
+    height = `,h_${375}`;
+    width = `,w_${375}`;
+  } else {
+    height = !h ? '' : `,h_${h}`;
+    width = !w ? '' : `,w_${w}`;
+  }
+  return `${imageUrl}?x-oss-process=image/resize${fillNew}${height}${width}`;
+};
+
 //获取本地缓存
 Utils.getCacheStore = ({storeName}) => {
   return CacheStore.get(storeName);

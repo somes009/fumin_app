@@ -1,19 +1,19 @@
 import React, {Component} from 'react';
 
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
 const IndexRenderItem = ({item, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.item}>
-      <XXYJImage source={{uri: item.logo}} style={styles.img} />
+      <FMImage source={{uri: item.logo}} style={styles.img} />
       <View style={styles.rightBox}>
         <Text style={styles.name} numberOfLines={2}>
           {item.name}
         </Text>
         <View style={styles.bottomBox}>
           <View style={styles.placeBox}>
-            <XXYJImage style={styles.placeIcon} />
+            <FMImage style={styles.placeIcon} />
             <Text style={styles.placeText}>{item.address}</Text>
           </View>
           <Text style={styles.distance}>{item.distance}km</Text>

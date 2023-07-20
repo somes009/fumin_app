@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
-import XXYJTextInput from '../../Base/Widget/XXYJTextinput';
+import FMHeader from '../../Base/Widget/FMHeader';
+import FMTextInput from '../../Base/Widget/FMTextinput';
 import PlacePicker from '../Widget/PlacePicker/index';
 import {ApiGet, ApiPostJson, ApiPut} from '../../../Api/RequestTool';
 
@@ -27,14 +27,15 @@ export default class MineCreatePlacePage extends Component {
       placeList: [],
       cityList: [],
       quList: [],
-      placeId: '',
-      cityId: '',
-      quId: '',
+      placeId: 0,
+      cityId: 0,
+      quId: 0,
+      defaulted: false,
+      show: false,
     };
   }
   componentDidMount() {
     this.getPlace();
-    this.getData();
   }
   getPlace = () => {
     const path = '/app-api/system/area/auth/tree';
@@ -44,9 +45,12 @@ export default class MineCreatePlacePage extends Component {
     };
     const onSuccess = (res) => {
       console.log(res);
-      this.setState({
-        placeList: res,
-      });
+      this.setState(
+        {
+          placeList: res,
+        },
+        this.getData,
+      );
     };
     const onFailure = (err) => {};
     ApiGet({
@@ -57,8 +61,11 @@ export default class MineCreatePlacePage extends Component {
     });
   };
   getData = () => {
-    const {id} = this.state;
+    const {id, placeList} = this.state;
     if (!id) {
+      this.setState({
+        show: true,
+      });
       return;
     }
     const path = '/app-api/member/address/get';
@@ -73,7 +80,30 @@ export default class MineCreatePlacePage extends Component {
         phone: res.mobile,
         place2: res.detailAddress,
         quId: res.areaId,
+        defaulted: res.defaulted,
       });
+      for (var i = 0; i < placeList.length; i++) {
+        const cityList = placeList[i].children;
+        // 遍历第二维
+        for (var j = 0; j < cityList.length; j++) {
+          const quList = cityList?.[j]?.children;
+          // 遍历第三维
+          for (var k = 0; k < quList.length; k++) {
+            // 如果找到目标元素，返回它的索引
+            if (quList[k].id === res.areaId) {
+              this.setState({
+                placeId: placeList[i].id,
+                cityId: cityList?.[j].id,
+                cityList,
+                quId: res.areaId,
+                quList,
+                show: true,
+              });
+              return;
+            }
+          }
+        }
+      }
     };
     const onFailure = (err) => {};
     ApiGet({
@@ -88,7 +118,7 @@ export default class MineCreatePlacePage extends Component {
     return (
       <View style={styles.infoBox}>
         <Text style={styles.title}>手机号</Text>
-        <XXYJTextInput
+        <FMTextInput
           placeholder="请输入收货人"
           maxLength={11}
           value={phone}
@@ -111,7 +141,7 @@ export default class MineCreatePlacePage extends Component {
     return (
       <View style={styles.infoBox}>
         <Text style={styles.title}>收货人</Text>
-        <XXYJTextInput
+        <FMTextInput
           placeholder="请输入收货人"
           maxLength={11}
           value={name}
@@ -134,7 +164,7 @@ export default class MineCreatePlacePage extends Component {
     return (
       <View style={styles.infoBox}>
         <Text style={styles.title}>所在地区</Text>
-        <XXYJTextInput
+        <FMTextInput
           placeholder="请输入所在地区"
           maxLength={11}
           value={place1}
@@ -157,7 +187,7 @@ export default class MineCreatePlacePage extends Component {
     return (
       <View style={styles.infoBox}>
         <Text style={styles.title}>所在地区</Text>
-        <XXYJTextInput
+        <FMTextInput
           placeholder="请输入所在地区"
           maxLength={11}
           value={place2}
@@ -176,7 +206,7 @@ export default class MineCreatePlacePage extends Component {
     );
   };
   handleCreate = () => {
-    const {name, phone, place1, place2, quId, id} = this.state;
+    const {name, phone, defaulted, place2, quId, id} = this.state;
     const API = id ? ApiPut : ApiPostJson;
     const path = id
       ? '/app-api/member/address/update'
@@ -186,7 +216,7 @@ export default class MineCreatePlacePage extends Component {
       mobile: phone,
       areaId: quId,
       detailAddress: place2,
-      defaulted: 1,
+      defaulted,
       postCode: 258000,
       id,
     };
@@ -200,12 +230,38 @@ export default class MineCreatePlacePage extends Component {
       onSuccess,
     });
   };
+  renderBottom = () => {
+    const {defaulted} = this.state;
+    return (
+      <View style={styles.loginBottom}>
+        <TouchableOpacity
+          style={styles.loginBottomIn}
+          onPress={() => {
+            this.setState(
+              {
+                defaulted: !defaulted,
+              },
+              this.check,
+            );
+          }}
+          activeOpacity={1}>
+          <View style={styles.selBox}>
+            {defaulted && <View style={styles.isSelCri} />}
+          </View>
+          <Text style={styles.loginBottomText}>设为默认</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   render() {
     const {navigation, safeAreaInsets} = this.props;
-    const {placeList, cityList, quList} = this.state;
+    const {placeList, cityList, quList, placeId, cityId, quId, show} = this.state;
+    if (!show) {
+      return <View />;
+    }
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJHeader
+        <FMHeader
           title="新增收货地址"
           onLeftPress={() => {
             navigation.goBack();
@@ -224,6 +280,7 @@ export default class MineCreatePlacePage extends Component {
                       this.setState({
                         placeId: id,
                         cityList: placeList[i].children,
+                        quList: [],
                       });
                     }
                   }
@@ -245,9 +302,13 @@ export default class MineCreatePlacePage extends Component {
               provinces={placeList}
               cities={cityList}
               districts={quList}
+              placeId={placeId}
+              cityId={cityId}
+              quId={quId}
             />
           )}
           {this.renderPlace2()}
+          {this.renderBottom()}
         </View>
         <TouchableOpacity
           onPress={this.handleCreate}
@@ -312,5 +373,28 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     fontFamily: Fonts.PingFangSC_Regular,
     color: '#fff',
+  },
+  loginBottom: {
+    marginTop: 30,
+    alignItems: 'flex-end',
+    width: '100%',
+  },
+  loginBottomIn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  selBox: {
+    width: 14,
+    height: 14,
+    borderRadius: 3,
+    borderWidth: 1,
+    marginRight: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  isSelCri: {
+    width: 9,
+    height: 9,
+    backgroundColor: 'orange',
   },
 });

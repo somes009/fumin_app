@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
-import XXYJAnimatableTabView from '../../Base/Widget/XXYJAnimatableTabView';
-import XXYJBanner from '../../Base/Widget/XXYJBanner';
+import FMHeader from '../../Base/Widget/FMHeader';
+import FMAnimatableTabView from '../../Base/Widget/FMAnimatableTabView';
+import FMBanner from '../../Base/Widget/FMBanner';
 import ShopIndexList from '../Widget/ShopIndexList';
 
 export default class MineOrderPage extends Component {
@@ -39,7 +39,7 @@ export default class MineOrderPage extends Component {
     const {navigation, safeAreaInsets} = this.props;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJAnimatableTabView
+        <FMAnimatableTabView
           tabItemStyle={{width: Utils.getScreenSize().width / 2}}
           lineStyle={styles.tabLine}
           tabList={this.tagList}

@@ -3,7 +3,7 @@
 import React from 'react';
 import Picker from './Picker';
 
-const ProvincePicker = ({provinces, onProvinceChange}) => {
+const ProvincePicker = ({provinces, onProvinceChange, id}) => {
   const items = provinces.map((province) => ({
     label: province.name,
     value: province.id,
@@ -14,6 +14,7 @@ const ProvincePicker = ({provinces, onProvinceChange}) => {
       items={items}
       onValueChange={onProvinceChange}
       placeholder="请选择省份"
+      id={id}
     />
   );
 };

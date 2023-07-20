@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
 import Utils from '../../../Utils';
 const ShopDetailItem = ({item, onPress, style}) => {
@@ -9,8 +9,9 @@ const ShopDetailItem = ({item, onPress, style}) => {
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={1}
+      key={item.spuId}
       style={[styles.item, style]}>
-      <XXYJImage source={{uri: item?.picUrls?.[0]}} style={styles.img} />
+      <FMImage source={{uri: item?.picUrls?.[0]}} style={styles.img} />
       <View style={styles.itemBottom}>
         <Text numberOfLines={1} style={styles.name}>
           {item.name}

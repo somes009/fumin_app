@@ -9,14 +9,12 @@ import {
   BackHandler,
   TouchableOpacity,
 } from 'react-native';
-import Images from '../../../Images';
 import {ApiPostJson} from '../../../Api/RequestTool';
 import CacheStore, {CacheStoreName} from '../../../Common/CacheStore';
-import XXYJImage from '../../Base/Widget/XXYJImage';
 import {ScrollView} from 'react-native-gesture-handler';
 import Utils from '../../../Utils';
-import XXYJButton from '../../Base/Widget/XXYJButton';
-import XXYJTextinput from '../../Base/Widget/XXYJTextinput';
+import FMButton from '../../Base/Widget/FMButton';
+import FMTextinput from '../../Base/Widget/FMTextinput';
 import EventBus, {EventBusName} from '../../../Api/EventBus';
 const isAndroid = Platform.OS === 'android';
 export default class LoginIndexPage extends Component {
@@ -52,17 +50,6 @@ export default class LoginIndexPage extends Component {
   componentWillUnmount() {
     clearInterval(this.timerSend);
   }
-  // shouldComponentUpdate(np, ns) {
-  //   if (np.isFocused !== this.props.isFocused && np.isFocused) {
-  //     CacheStore.get(CacheStoreName.ProtocolUserCheck).then((data) => {
-  //       if (!data) {
-  //         this.refPop.openModal();
-  //       }
-  //     });
-  //     return true;
-  //   }
-  //   return true;
-  // }
 
   handleUserCommitProtocol = () => {
     CacheStore.set(CacheStoreName.ProtocolUserCheck, true);
@@ -87,7 +74,7 @@ export default class LoginIndexPage extends Component {
   renderCodeInput = () => {
     const {code, isSend, sec} = this.state;
     return (
-      <XXYJTextinput
+      <FMTextinput
         keyboardType="numeric"
         placeholder="请输入验证码"
         maxLength={4}
@@ -105,7 +92,7 @@ export default class LoginIndexPage extends Component {
         needBorder
         placeholderStyle={styles.placeholderStyle}
         rightComponent={
-          <XXYJButton
+          <FMButton
             text={isSend ? sec + 's' : '发送'}
             textStyle={styles.send}
             containerStyle={styles.sendBox}
@@ -120,7 +107,7 @@ export default class LoginIndexPage extends Component {
   renderPasswordInput = () => {
     const {password} = this.state;
     return (
-      <XXYJTextinput
+      <FMTextinput
         placeholder="请输入密码"
         maxLength={20}
         value={password}
@@ -143,7 +130,7 @@ export default class LoginIndexPage extends Component {
     const {value, type} = this.state;
     return (
       <View style={styles.in}>
-        <XXYJTextinput
+        <FMTextinput
           keyboardType="numeric"
           placeholder="请输入手机号"
           maxLength={11}
@@ -276,16 +263,33 @@ export default class LoginIndexPage extends Component {
       needShowMsg: true,
     });
   };
+  checkInfo = () => {
+    const {value, code, type, password, isSel} = this.state;
+    if (!Utils.checkPhone(value)) {
+      Utils.Toast({text: '请输入正确的手机号'});
+    } else if (type === 1 && code.length < 4) {
+      Utils.Toast({text: '请输入4位数的验证码'});
+    } else if (type === 2 && !this.checkPassword(password)) {
+      Utils.Toast({
+        text: '密码必须是6-20个英文字母、数字或符号(除空格)，且字母、数字和标点符号至少包含两种',
+      });
+    } else if (!isSel) {
+      Utils.Toast({
+        text: '请先阅读并同意《用户协议》和《隐私政策》',
+      });
+    }
+  };
   renderLogin = () => {
     const {canLogin} = this.state;
     return (
-      <XXYJButton
+      <FMButton
         darkShadowColor="#99C6BB"
         text="登录"
         textStyle={styles.loginText}
         containerStyle={styles.buttonShadow}
         onPress={this.handleLogin}
         unTouch={!canLogin}
+        unPress={this.checkInfo}
       />
     );
   };
@@ -328,6 +332,7 @@ export default class LoginIndexPage extends Component {
 
   renderLoginBottom = () => {
     const {isSel} = this.state;
+    const {navigation} = this.props;
     return (
       <View style={styles.loginBottom}>
         <TouchableOpacity
@@ -344,9 +349,24 @@ export default class LoginIndexPage extends Component {
           <View style={styles.selBox}>
             {isSel && <View style={styles.isSelCri} />}
           </View>
-          <Text style={styles.loginBottomText}>
-            同意《用户协议》和《隐私政策》
-          </Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={styles.loginBottomText}>同意</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('LoginYinsiPage');
+              }}
+              activeOpacity={1}>
+              <Text style={styles.loginBottomText}>《用户协议》</Text>
+            </TouchableOpacity>
+            <Text style={styles.loginBottomText}>和</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('LoginYinsiPage');
+              }}
+              activeOpacity={1}>
+              <Text style={styles.loginBottomText}>《隐私政策》</Text>
+            </TouchableOpacity>
+          </View>
         </TouchableOpacity>
       </View>
     );

@@ -1,20 +1,25 @@
 /* eslint-disable radix */
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
-const MinePlaceListItem = ({item, navigation}) => {
+const MinePlaceListItem = ({item, navigation, onPress, key}) => {
   return (
     <TouchableOpacity
-      onPress={() =>
+      onPress={() => {
+        if (onPress) {
+          onPress(item);
+          return;
+        }
         navigation.navigate('MineCreatePlacePage', {
           id: item.id,
-        })
-      }
+        });
+      }}
+      key={key}
       activeOpacity={1}
       style={styles.item}>
       <View style={styles.leftBox}>
-        <XXYJImage style={styles.img} />
+        <FMImage style={styles.img} />
         <View style={styles.infoBox}>
           <View style={styles.infoTop}>
             <Text style={styles.name}>{item.name}</Text>
@@ -23,7 +28,7 @@ const MinePlaceListItem = ({item, navigation}) => {
           <Text style={styles.place}>{item.detailAddress}</Text>
         </View>
       </View>
-      <XXYJImage style={styles.changeIcon} />
+      <FMImage style={styles.changeIcon} />
     </TouchableOpacity>
   );
 };

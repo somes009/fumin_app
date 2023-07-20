@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
-import XXYJAnimatableTabView from '../../Base/Widget/XXYJAnimatableTabView';
+import FMHeader from '../../Base/Widget/FMHeader';
+import FMAnimatableTabView from '../../Base/Widget/FMAnimatableTabView';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 export default class ShopBuyPage extends Component {
   constructor(props) {
     super(props);
@@ -54,7 +54,7 @@ export default class ShopBuyPage extends Component {
             <View style={styles.orderInfoBox}>
               <Text style={styles.shopName}>若溪润儿童用品企业店</Text>
               <View style={styles.orderInfoTopBox}>
-                <XXYJImage style={styles.orderImg} />
+                <FMImage style={styles.orderImg} />
                 <View style={styles.orderInfo}>
                   <View style={styles.infoTopBox}>
                     <View style={styles.infoTop}>
@@ -123,13 +123,13 @@ export default class ShopBuyPage extends Component {
     const {navigation, safeAreaInsets} = this.props;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJHeader
+        <FMHeader
           title=""
           onLeftPress={() => {
             navigation.goBack();
           }}
         />
-        <XXYJAnimatableTabView
+        <FMAnimatableTabView
           tabItemStyle={{width: Utils.getScreenSize().width / 2}}
           lineStyle={styles.tabLine}
           tabList={this.tagList}

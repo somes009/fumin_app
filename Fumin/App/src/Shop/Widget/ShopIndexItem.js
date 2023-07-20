@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
 const ShopIndexItem = ({item, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.item}>
-      <XXYJImage style={styles.img} />
+      <FMImage style={styles.img} />
       <View style={styles.itemBottom}>
         <Text numberOfLines={1} style={styles.name}>
           新款儿童储蓄存钱罐

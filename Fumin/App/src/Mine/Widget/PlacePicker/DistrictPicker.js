@@ -3,7 +3,7 @@
 import React, {useState, useEffect} from 'react';
 import Picker from './Picker';
 
-const DistrictPicker = ({districts, onDistrictChange, cityId}) => {
+const DistrictPicker = ({districts, onDistrictChange, cityId, id}) => {
   const [filteredDistricts, setFilteredDistricts] = useState([]);
 
   useEffect(() => {
@@ -24,6 +24,7 @@ const DistrictPicker = ({districts, onDistrictChange, cityId}) => {
           items={filteredDistricts}
           onValueChange={onDistrictChange}
           placeholder="请选择区县"
+          id={id}
         />
       )}
     </>

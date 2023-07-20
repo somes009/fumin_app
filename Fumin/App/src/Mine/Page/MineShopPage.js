@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
+import FMHeader from '../../Base/Widget/FMHeader';
 import MineShopItem from '../Widget/MineShopItem';
-import XXYJFlatList from '../../Base/Widget/XXYJFlatList';
+import FMFlatList from '../../Base/Widget/FMFlatList';
 
 export default class MineShopPage extends Component {
   constructor(props) {
@@ -24,13 +24,13 @@ export default class MineShopPage extends Component {
     const {navigation, safeAreaInsets} = this.props;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJHeader
+        <FMHeader
           title="我的商家"
           onLeftPress={() => {
             navigation.goBack();
           }}
         />
-        <XXYJFlatList
+        <FMFlatList
           ref={(ref) => (this.refCourse = ref)}
           isApiPostJson
           style={{flex: 1}}

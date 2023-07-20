@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import XXYJImage from '../../Base/Widget/XXYJImage';
+import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
 import CommonButtonsPopUp from '../../Base/Widget/CommonButtonsPopUp';
 const ShProductItem = ({item, onPress, navigation}) => {
   let refPop = {};
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.item}>
-      <XXYJImage source={{uri: item?.picUrls?.[0]}} style={styles.img} />
+      <FMImage source={{uri: item?.picUrls?.[0]}} style={styles.img} />
       <View style={styles.rightBox}>
         <View style={styles.rightTop}>
           <Text style={styles.name} numberOfLines={1}>

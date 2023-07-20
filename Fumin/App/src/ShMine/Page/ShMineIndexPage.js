@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
-import XXYJImage from '../../Base/Widget/XXYJImage';
-import XXYJBanner from '../../Base/Widget/XXYJBanner';
+import FMImage from '../../Base/Widget/FMImage';
+import FMBanner from '../../Base/Widget/FMBanner';
 import CommonButtonsPopUp from '../../Base/Widget/CommonButtonsPopUp';
 import {ApiPostJson} from '../../../Api/RequestTool';
 import Images from '../../../Images';
@@ -59,7 +59,7 @@ class ShMineIndexPage extends Component {
     return (
       <View style={[styles.infoBox]}>
         <View style={styles.infoBoxLeft}>
-          <XXYJImage source={{uri: data.avatar}} style={styles.userImg} />
+          <FMImage source={{uri: data.avatar}} style={styles.userImg} />
           <View style={styles.userinfoLeft}>
             <Text style={styles.username}>{data?.nickname || '昵称'}</Text>
             <TouchableOpacity
@@ -78,7 +78,7 @@ class ShMineIndexPage extends Component {
             onPress={this.openChange}
             activeOpacity={0.8}
             style={styles.changeTypeBox}>
-            <XXYJImage style={styles.changeTypeImg} />
+            <FMImage style={styles.changeTypeImg} />
             <Text style={styles.changeTypeText}>切换身份</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -165,7 +165,7 @@ class ShMineIndexPage extends Component {
                       },
                 ]}>
                 <Text style={styles.bottomName}>{item.name}</Text>
-                <XXYJImage
+                <FMImage
                   style={styles.bottomToRight}
                   source={Images.toRightOrange}
                 />

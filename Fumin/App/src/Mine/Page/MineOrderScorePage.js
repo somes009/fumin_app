@@ -10,18 +10,39 @@ import {
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
-import XXYJHeader from '../../Base/Widget/XXYJHeader';
+import FMHeader from '../../Base/Widget/FMHeader';
 import MineOrderScoreItem from '../Widget/MineOrderScoreItem';
-import XXYJFlatList from '../../Base/Widget/XXYJFlatList';
+import FMFlatList from '../../Base/Widget/FMFlatList';
+import { ApiPostJson } from '../../../Api/RequestTool';
 
 export default class MineOrderScorePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      score: 1638,
+      score: 0,
     };
   }
 
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData = () => {
+    const path = '/app-api/member/userwallet/auth/myUserWallectDeatils';
+    const params = {
+      type: 2,
+    };
+    const onSuccess = (res) => {
+      this.setState({
+        score: res.allCount,
+      });
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
   renderTop = () => {
     const {score} = this.state;
     return (
@@ -35,7 +56,7 @@ export default class MineOrderScorePage extends Component {
     const {navigation, safeAreaInsets} = this.props;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <XXYJHeader
+        <FMHeader
           title="我的订单值"
           onLeftPress={() => {
             navigation.goBack();
@@ -43,13 +64,13 @@ export default class MineOrderScorePage extends Component {
         />
         {this.renderTop()}
         <Text style={styles.listTitle}>账户明细</Text>
-        <XXYJFlatList
+        <FMFlatList
           ref={(ref) => (this.refCourse = ref)}
           isApiPostJson
           style={{flex: 1}}
           //  responseKey={'history'}
-          requestPath="/app-api/member/userinviterecord/auth/myInviteCode"
-          requestParams={{}}
+          requestPath="/app-api/member/userwallet/auth/myUserWallectDeatils"
+          requestParams={{type: 2}}
           keyExtractor={(item) => item?.id}
           renderItem={({item}) => {
             return <MineOrderScoreItem item={item} />;
