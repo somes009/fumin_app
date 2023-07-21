@@ -6,14 +6,14 @@ import Fonts from '../../../Common/Fonts';
 const ShopIndexItem = ({item, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.item}>
-      <FMImage style={styles.img} />
+      <FMImage style={styles.img} source={{uri: item.picUrl}} />
       <View style={styles.itemBottom}>
         <Text numberOfLines={1} style={styles.name}>
-          新款儿童储蓄存钱罐
+          {item.spuName}
         </Text>
         <View style={styles.bottom}>
-          <Text style={styles.price}>¥60</Text>
-          <Text style={styles.count}>300+人付款</Text>
+          <Text style={styles.price}>{item.marketPrice}</Text>
+          <Text style={styles.count}>{item.salesCount}人付款</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
   img: {
     width: '100%',
     height: 167,
-    backgroundColor: '#eee',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },

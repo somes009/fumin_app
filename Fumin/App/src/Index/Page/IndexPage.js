@@ -22,11 +22,29 @@ export default class IndexPage extends Component {
     this.state = {
       latitude: '',
       longitude: '',
+      banners: [],
     };
   }
   componentDidMount() {
     this.requestLocationPermission();
+    this.getBanner();
   }
+  getBanner = () => {
+    const path = '/app-api/advertising/auth/getAdvertisingList';
+    const params = {
+      type: 2,
+    };
+    const onSuccess = (res) => {
+      this.setState({
+        banners: res.list,
+      });
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
   requestLocationPermission = () => {
     const granted = PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -106,7 +124,10 @@ export default class IndexPage extends Component {
   };
 
   renderBanner = () => {
-    const bannerList = [{pic: '1'}, {pic: '1'}, {pic: '1'}];
+    const {banners} = this.state;
+    if (!banners.length) {
+      return;
+    }
     return (
       <FMBanner
         style={{marginTop: 19}}
@@ -115,11 +136,9 @@ export default class IndexPage extends Component {
         loop
         autoplay
         autoplayInterval={5000}
-        imgs={bannerList}
+        imgs={banners}
+        imgName={'adImage'}
         onPress={this.handlePressBanner}
-        itemStyle={{
-          backgroundColor: '#eee',
-        }}
       />
     );
   };
@@ -137,10 +156,12 @@ export default class IndexPage extends Component {
           // isApiPostJson={false}
           //  responseKey={'history'}
           requestPath="/app-api/product/merchant/auth/selectNearbyBusiness"
-          requestParams={{
-            // latitude,
-            // longitude,
-          }}
+          requestParams={
+            {
+              // latitude,
+              // longitude,
+            }
+          }
           handleRefresh={() => {
             // this.getLocation();
           }}

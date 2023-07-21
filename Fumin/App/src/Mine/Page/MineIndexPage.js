@@ -53,6 +53,7 @@ class MineIndexPage extends Component {
       onSuccess,
     });
   };
+
   getBanner = () => {
     const path = '/app-api/advertising/auth/getAdvertisingList';
     const params = {
@@ -173,9 +174,7 @@ class MineIndexPage extends Component {
         autoplayInterval={5000}
         imgs={banners}
         onPress={this.handlePressBanner}
-        itemStyle={{
-          backgroundColor: '#eee',
-        }}
+        imgName={'adImage'}
       />
     );
   };

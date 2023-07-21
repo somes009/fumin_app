@@ -31,6 +31,7 @@ export default class ShopDetailPage extends Component {
       id: props.route.params.id,
       buyCount: '1',
       place: {},
+      topPics: [],
     };
     this.webViewHeight = 1;
   }
@@ -50,9 +51,16 @@ export default class ShopDetailPage extends Component {
         y: 0,
         animated: false,
       });
+      let pics = [];
+      for (let i in res.prcUrls) {
+        pics.push({
+          pic: res.prcUrls[i],
+        });
+      }
       this.setState({
         data: res,
         lookList: res.lookList,
+        topPics: pics,
       });
     };
     const onFailure = () => {};
@@ -201,24 +209,21 @@ export default class ShopDetailPage extends Component {
   };
   render() {
     const {safeAreaInsets, navigation, isFocused} = this.props;
-    const {data, lookList, buyCount, place} = this.state;
+    const {data, lookList, buyCount, place, topPics} = this.state;
 
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         {/* <FMImage style={styles.topImg} /> */}
         <FMBanner
-          // style={{marginTop: 19}}
-          itemWidth={343}
-          height={104}
+          itemWidth={Utils.getScreenSize().width}
+          height={300}
           loop
           autoplay
           autoplayInterval={5000}
-          imgs={data?.picUrls}
+          imgs={topPics}
           onPress={this.handlePressBanner}
-          itemStyle={{
-            backgroundColor: '#eee',
-          }}
           style={styles.topImg}
+          noradius
         />
         <FMHeader
           safeAreaInsets={safeAreaInsets}
@@ -241,7 +246,10 @@ export default class ShopDetailPage extends Component {
                 <Text style={styles.price}>¥{(data.amount || 0) / 100}</Text>
                 <Text style={styles.name}>{data.name}</Text>
                 {this.renderPlaceBox()}
-                <FMImage style={styles.descImg} />
+                <FMImage
+                  source={{uri: Utils.isValidUrl(data.bgImg)}}
+                  style={styles.descImg}
+                />
                 <Text style={styles.lookTitle}>看了又看</Text>
                 <View style={styles.list}>
                   {lookList.map((item, index) => {
@@ -356,6 +364,7 @@ const styles = StyleSheet.create({
     height: 375,
     top: 0,
     backgroundColor: '#eee',
+    // zIndex: 1,
   },
   price: {
     fontSize: 25,
@@ -420,7 +429,6 @@ const styles = StyleSheet.create({
     width: 340,
     height: 526,
     borderRadius: 10,
-    backgroundColor: '#eee',
   },
   lookTitle: {
     marginTop: 17,

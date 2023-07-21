@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
@@ -14,17 +15,64 @@ import FMHeader from '../../Base/Widget/FMHeader';
 import FMAnimatableTabView from '../../Base/Widget/FMAnimatableTabView';
 import FMBanner from '../../Base/Widget/FMBanner';
 import ShopIndexItem from './ShopIndexItem';
+import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
+import FMFlatList from '../../Base/Widget/FMFlatList';
 
 export default class MineOrderPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selTab: 0,
+      banners: [],
+      tabList: [],
+      categoryId: 0,
     };
   }
+  componentDidMount() {
+    this.getBanner();
+    this.getTab();
+  }
+  getTab = () => {
+    const path = '/app-api/product/category/selectEnableCategoryList';
+    const params = {
+      // objType: 1,
+    };
+    const onSuccess = (res) => {
+      this.setState({
+        tabList: res.list,
+        categoryId: res.list[0]?.id,
+      });
+    };
+    ApiGet({
+      path,
+      params,
+      onSuccess,
+    });
+  };
+
+  getBanner = () => {
+    const path = '/app-api/advertising/auth/getAdvertisingList';
+    const params = {
+      type: 3,
+    };
+    const onSuccess = (res) => {
+      this.setState({
+        banners: res.list,
+      });
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
 
   renderBanner = () => {
+    const {banners} = this.state;
     const bannerList = [{pic: '1'}, {pic: '1'}, {pic: '1'}];
+    if (!banners.length) {
+      return;
+    }
     return (
       <FMBanner
         style={{marginTop: 19}}
@@ -33,11 +81,9 @@ export default class MineOrderPage extends Component {
         loop
         autoplay
         autoplayInterval={5000}
-        imgs={bannerList}
+        imgs={banners}
+        imgName={'adImage'}
         onPress={this.handlePressBanner}
-        itemStyle={{
-          backgroundColor: '#eee',
-        }}
       />
     );
   };
@@ -51,78 +97,91 @@ export default class MineOrderPage extends Component {
   };
 
   renderTab = () => {
-    const {selTab} = this.state;
+    const {selTab, tabList, categoryId} = this.state;
     const list = ['全部', '食品', '办公', '服饰', '家纺'];
     return (
       <View style={styles.tabList}>
-        {list.map((item, index) => {
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({
-                  selTab: index,
-                });
-              }}
-              activeOpacity={1}
-              key={index}>
-              <Text
-                style={[
-                  styles.tabText,
-                  {
-                    color: selTab === index ? '#000' : '#6D7278',
-                    fontFamily:
-                      selTab === index
+        <FlatList
+          data={tabList}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item, index}) => {
+            const isSel = item.id === categoryId;
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState(
+                    {
+                      categoryId: item.id,
+                    },
+                    this.refList.handleRefresh,
+                  );
+                }}
+                activeOpacity={1}
+                key={index}>
+                <Text
+                  style={[
+                    styles.tabText,
+                    {
+                      color: isSel ? '#000' : '#6D7278',
+                      fontFamily: isSel
                         ? Fonts.PingFangSC_Medium
                         : Fonts.PingFangSC_Regular,
-                  },
-                ]}>
-                {item}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
+                    },
+                  ]}>
+                  {item?.name}
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+        />
       </View>
     );
   };
 
   render() {
-    const {navigation} = this.props;
+    const {navigation, index} = this.props;
+    const {categoryId} = this.state;
     return (
       <View style={[styles.container]}>
         {this.renderBanner()}
         {this.renderSearch()}
         {this.renderTab()}
         <View style={styles.list}>
-          <ShopIndexItem
-            onPress={() => {
-              navigation.navigate('IndexNav', {
-                screen: 'ProductDetailPage',
-                params: {id: 1},
-              });
+          <FMFlatList
+            ref={(ref) => (this.refList = ref)}
+            isApiPostJson
+            style={{flex: 1, width: Utils.getScreenSize().width}}
+            requestPath="/app-api/product/merchant/auth/queryProductSpuPage"
+            requestParams={{
+              type: index + 2,
+              // categoryId,
             }}
-          />
-          <ShopIndexItem
-            onPress={() => {
-              navigation.navigate('IndexNav', {
-                screen: 'ProductDetailPage',
-                params: {id: 1},
-              });
+            keyExtractor={(item) => item?.id}
+            numColumns={2}
+            renderItem={({item, index}) => {
+              return (
+                <ShopIndexItem
+                  key={index + 'item'}
+                  item={item}
+                  style={{
+                    marginLeft: index % 2 ? Utils.properWidth(8) : 0,
+                  }}
+                  onPress={() => {
+                    // navigation.navigate('ProductDetailPage', {
+                    //   id: item.spuId,
+                    // });
+                    navigation.navigate('IndexNav', {
+                      screen: 'ProductDetailPage',
+                      params: {id: item.spuId},
+                    });
+                  }}
+                />
+              );
             }}
-          />
-          <ShopIndexItem
-            onPress={() => {
-              navigation.navigate('IndexNav', {
-                screen: 'ProductDetailPage',
-                params: {id: 1},
-              });
-            }}
-          />
-          <ShopIndexItem
-            onPress={() => {
-              navigation.navigate('IndexNav', {
-                screen: 'ProductDetailPage',
-                params: {id: 1},
-              });
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingBottom: 20,
             }}
           />
         </View>

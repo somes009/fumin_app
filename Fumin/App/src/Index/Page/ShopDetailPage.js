@@ -103,7 +103,10 @@ export default class ShopDetailPage extends Component {
 
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
-        <FMImage source={{uri: data.bgImg}} style={styles.topImg} />
+        <FMImage
+          source={{uri: Utils.isValidUrl(data.bgImg)}}
+          style={styles.topImg}
+        />
         <FMHeader
           safeAreaInsets={safeAreaInsets}
           title={''}
@@ -154,7 +157,6 @@ export default class ShopDetailPage extends Component {
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{
                     paddingBottom: 20,
-                    // paddingHorizontal: Utils.properWidth(16),
                   }}
                 />
               </View>
@@ -197,7 +199,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 155,
     top: 0,
-    backgroundColor: '#eee',
   },
   infoBox: {
     flexDirection: 'row',

@@ -90,6 +90,7 @@ export default class TaskIndexPage extends Component {
   renderBox = ({topNum, numTitle, needLook, isLook, continuous}) => {
     const {navigation} = this.props;
     const isEnd = needLook <= isLook;
+    const canSF = needLook === isLook;
     return (
       <View style={styles.taskBox}>
         <View style={styles.topBox}>
@@ -97,7 +98,9 @@ export default class TaskIndexPage extends Component {
             <Text style={styles.topNum}>{topNum}</Text>
             <Text style={styles.numTitle}>{numTitle}</Text>
           </View>
-          {this.renderCanTouch('释放奖励', () => {})}
+          {canSF
+            ? this.renderCanTouch('释放奖励', () => {})
+            : this.renderUnTouch('释放奖励', () => {})}
         </View>
         <View style={styles.bottomBox}>
           <View style={styles.bottomTop}>

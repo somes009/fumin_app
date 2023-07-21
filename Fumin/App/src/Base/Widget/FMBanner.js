@@ -77,8 +77,9 @@ export default class FMBanner extends Component {
       loop,
       onChange,
       itemStyle,
+      imgName,
     } = this.props;
-
+    const imagesName = imgName || 'pic';
     const customSliderWidth = sliderWidth || Utils.properWidth(375);
     const customItemWidth = itemWidth || Utils.properWidth(348);
     return (
@@ -95,10 +96,10 @@ export default class FMBanner extends Component {
                 activeOpacity={1}
                 style={itemStyle}
                 onPress={() => onPress?.({item, index})}>
-                {!!item?.pic && (
+                {!!item?.[imagesName] && (
                   <FMImage
                     // resizeMode="cover"
-                    source={{uri: item.pic}}
+                    source={{uri: item[imagesName]}}
                     isUri
                     style={{
                       ...styles.swiper,

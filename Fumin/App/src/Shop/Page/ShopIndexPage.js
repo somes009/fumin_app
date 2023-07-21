@@ -31,7 +31,7 @@ export default class MineOrderPage extends Component {
           width: Utils.getScreenSize().width,
           alignItems: 'center',
         }}>
-        <ShopIndexList navigation={navigation} />
+        <ShopIndexList index={index} navigation={navigation} />
       </View>
     );
   };

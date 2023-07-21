@@ -11,7 +11,7 @@ const ShopDetailItem = ({item, onPress, style}) => {
       activeOpacity={1}
       key={item.spuId}
       style={[styles.item, style]}>
-      <FMImage source={{uri: item?.picUrls?.[0]}} style={styles.img} />
+      <FMImage source={{uri: item?.picUrl}} style={styles.img} />
       <View style={styles.itemBottom}>
         <Text numberOfLines={1} style={styles.name}>
           {item.name}
