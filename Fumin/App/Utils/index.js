@@ -10,6 +10,23 @@ import {uploadImg} from './AliyunTools';
 
 let Utils = {};
 
+Utils.isValidUrl = (url) => {
+  // 使用正则表达式检查链接格式是否正确
+  const urlPattern = new RegExp(
+    '^(https?:\\/\\/)?' + // 协议
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // 域名
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // IP
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // 端口和路径
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // 查询字符串
+      '(\\#[-a-z\\d_]*)?$',
+    'i',
+  ); // 锚点
+  if (url?.indexOf?.('http') !== -1 && !!url) {
+    return url;
+  }
+  return 'https://gats-test.oss-cn-beijing.aliyuncs.com/acd4dcf52725a05ae6d8c2a3c3d59a2c1d9a5c356ff3b2792387b96172baa2f5.png';
+};
+
 Utils.requestPay = (params, callback) => {
   const path = '/app-api/pay/order/submitPayOrderApp';
   // const params = {
@@ -153,13 +170,13 @@ Utils.Toast = ({
 };
 
 Utils.getLocalImagePathAndroid = (item) => {
-  if (Utils.isAndroid) {
-    if (item?.indexOf('content://') !== -1) {
-      return item;
-    } else {
-      return 'file://' + item;
-    }
-  }
+  // if (Utils.isAndroid) {
+  //   if (item?.indexOf('content://') !== -1) {
+  //     return item;
+  //   } else {
+  //     return 'file://' + item;
+  //   }
+  // }
   return item;
 };
 
