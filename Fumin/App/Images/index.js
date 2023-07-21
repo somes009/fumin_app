@@ -11,6 +11,7 @@ const Common = {
   mineUnSelIcon: require('./Common/mineUnSelIcon.png'),
   mineIsSelIcon: require('./Common/mineIsSelIcon.png'),
   toBottomBlack: require('./Common/toBottomBlack.png'),
+  isSelGou: require('./Common/isSelGou.png'),
 };
 const Mine = {
   isEndIcon: require('./Mine/isEndIcon.png'),

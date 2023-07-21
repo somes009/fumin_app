@@ -495,4 +495,9 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 25,
   },
+  isSelBox: {
+    width: 14,
+    marginRight: 5,
+    height: 14,
+  },
 });

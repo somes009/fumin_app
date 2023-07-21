@@ -16,6 +16,8 @@ import Utils from '../../../Utils';
 import FMButton from '../../Base/Widget/FMButton';
 import FMTextinput from '../../Base/Widget/FMTextinput';
 import EventBus, {EventBusName} from '../../../Api/EventBus';
+import FMImage from '../../Base/Widget/FMImage';
+import Images from '../../../Images';
 const isAndroid = Platform.OS === 'android';
 export default class LoginIndexPage extends Component {
   constructor(props) {
@@ -346,9 +348,8 @@ export default class LoginIndexPage extends Component {
             );
           }}
           activeOpacity={1}>
-          <View style={styles.selBox}>
-            {isSel && <View style={styles.isSelCri} />}
-          </View>
+          
+            {isSel ? <FMImage style={styles.isSelBox} source={Images.isSelGou} /> : <View style={styles.selBox} />}
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={styles.loginBottomText}>同意</Text>
             <TouchableOpacity
@@ -562,11 +563,16 @@ const styles = StyleSheet.create({
   selBox: {
     width: 14,
     height: 14,
-    borderRadius: 3,
+    borderRadius: 7,
     borderWidth: 1,
     marginRight: 5,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  isSelBox: {
+    width: 14,
+    marginRight: 5,
+    height: 14,
   },
   isSelCri: {
     width: 9,
