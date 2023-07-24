@@ -65,7 +65,7 @@ export default class MineOrderPage extends Component {
           width: Utils.getScreenSize().width,
           alignItems: 'center',
         }}>
-        {index === 0 && (
+        {/* {index === 0 && (
           <>
             <FMFlatList
               ref={(ref) => (this.refCourse = ref)}
@@ -97,42 +97,41 @@ export default class MineOrderPage extends Component {
               }}
             />
           </>
-        )}
-        {index === 1 && (
-          <FMFlatList
-            ref={(ref) => (this.refOrder1 = ref)}
-            isApiPostJson
-            style={{flex: 1}}
-            //  responseKey={'history'}
-            requestPath="/app-api/trade/order/selectMyorderList"
-            requestParams={{
-              status: item.type,
-            }}
-            keyExtractor={(item) => item?.id}
-            renderItem={({item}) => {
-              return (
-                <MineObligationItem
-                  onPress={() => {
-                    navigation.navigate('MineOrderDetailPage', {
-                      id: item.childOrderId,
-                      status: 0,
-                    });
-                  }}
-                  handleRef={() => {
-                    this.refOrder1.handleRefresh();
-                  }}
-                  navigation={navigation}
-                  item={item}
-                />
-              );
-            }}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingBottom: 20,
-            }}
-          />
-        )}
-        {index === 2 && (
+        )} */}
+        <FMFlatList
+          ref={(ref) => (this.refOrder1 = ref)}
+          isApiPostJson
+          style={{flex: 1}}
+          //  responseKey={'history'}
+          requestPath="/app-api/trade/order/selectMyorderList"
+          requestParams={{
+            status: item.type,
+          }}
+          keyExtractor={(item) => item?.id}
+          renderItem={({item}) => {
+            return (
+              <MineObligationItem
+                onPress={() => {
+                  navigation.navigate('MineOrderDetailPage', {
+                    id: item.childOrderId,
+                    status: 0,
+                  });
+                }}
+                handleRef={() => {
+                  this.refOrder1.handleRefresh();
+                }}
+                navigation={navigation}
+                item={item}
+              />
+            );
+          }}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: 20,
+          }}
+        />
+
+        {/* {index === 2 && (
           <FMFlatList
             ref={(ref) => (this.refCourse = ref)}
             isApiPostJson
@@ -178,7 +177,7 @@ export default class MineOrderPage extends Component {
               paddingBottom: 20,
             }}
           />
-        )}
+        )} */}
       </View>
     );
   };
