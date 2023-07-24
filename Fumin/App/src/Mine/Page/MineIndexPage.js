@@ -190,65 +190,26 @@ class MineIndexPage extends Component {
   renderAsset = () => {
     const {navigation} = this.props;
     const {data} = this.state;
-    const list = [
-      {
-        name: '订单值',
-        count: data?.myZcList?.[0]?.zhi,
-        fun: () => {
-          navigation.navigate('MineNav', {
-            screen: 'MineOrderScorePage',
-          });
-        },
-      },
-      {
-        name: '贡献值',
-        count: data?.myZcList?.[1]?.zhi,
-        fun: () => {
-          navigation.navigate('MineNav', {
-            screen: 'MineContributeScorePage',
-          });
-        },
-      },
-      {
-        name: '福豆',
-        count: data?.myZcList?.[2]?.zhi,
-        fun: () => {
-          navigation.navigate('MineNav', {
-            screen: 'MineFuDouPage',
-          });
-        },
-      },
-      {
-        name: '红包',
-        count: data?.myZcList?.[3]?.zhi,
-        fun: () => {
-          navigation.navigate('MineNav', {
-            screen: 'MineHongBaoPage',
-          });
-        },
-      },
-      {
-        name: '红包金',
-        count: data?.myZcList?.[4]?.zhi,
-        fun: () => {
-          navigation.navigate('MineNav', {
-            screen: 'MineHongBaoJinPage',
-          });
-        },
-      },
-    ];
     return (
       <View style={styles.assetBox}>
         <Text style={styles.boxTitle}>我的资产</Text>
         <View style={styles.assetList}>
-          {list.map((item, index) => {
+          {data?.myZcList?.map((item, index) => {
             return (
               <TouchableOpacity
                 style={styles.assetItem}
                 key={index}
-                onPress={item.fun}
+                onPress={() => {
+                  navigation.navigate('MineNav', {
+                    screen: 'MineOrderScorePage',
+                    params: {
+                      name: item.name,
+                      type: item.type,
+                    },
+                  });
+                }}
                 activeOpacity={1}>
-                <Text style={styles.assetNum}>{item.count}</Text>
+                <Text style={styles.assetNum}>{item.zhi}</Text>
                 <View style={styles.assetBottom}>
                   <Text style={styles.assetName}>{item.name}</Text>
                   <FMImage
@@ -498,7 +459,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1.5,
     borderRadius: 10,
     marginTop: 16,
-    paddingHorizontal: 15,
+    paddingHorizontal: 5,
     paddingVertical: 8,
   },
   assetList: {
@@ -517,7 +478,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   assetNum: {
-    fontSize: 21,
+    fontSize: 16,
     lineHeight: 24,
     fontFamily: Fonts.DIN_Alternate,
     fontWeight: 'bold',
@@ -529,14 +490,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   assetName: {
-    fontSize: 13,
+    fontSize: 11,
     lineHeight: 17,
     fontFamily: Fonts.PingFangSC_Regular,
     color: '#6D7278',
   },
   assetToRight: {
-    width: 7,
-    height: 11,
+    width: 5,
+    height: 9,
     marginLeft: 3,
   },
   orderImg: {

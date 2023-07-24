@@ -13,13 +13,15 @@ import Fonts from '../../../Common/Fonts';
 import FMHeader from '../../Base/Widget/FMHeader';
 import MineOrderScoreItem from '../Widget/MineOrderScoreItem';
 import FMFlatList from '../../Base/Widget/FMFlatList';
-import { ApiPostJson } from '../../../Api/RequestTool';
+import {ApiPostJson} from '../../../Api/RequestTool';
 
 export default class MineOrderScorePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       score: 0,
+      name: props.route.params.name,
+      type: props.route.params.type,
     };
   }
 
@@ -28,9 +30,10 @@ export default class MineOrderScorePage extends Component {
   }
 
   getData = () => {
+    const {type} = this.state;
     const path = '/app-api/member/userwallet/auth/myUserWallectDeatils';
     const params = {
-      type: 2,
+      type,
     };
     const onSuccess = (res) => {
       this.setState({
@@ -44,20 +47,21 @@ export default class MineOrderScorePage extends Component {
     });
   };
   renderTop = () => {
-    const {score} = this.state;
+    const {score, name} = this.state;
     return (
       <View style={styles.topBox}>
-        <Text style={styles.topTitle}>总订单值</Text>
+        <Text style={styles.topTitle}>总{name}</Text>
         <Text style={styles.topScore}>{score}</Text>
       </View>
     );
   };
   render() {
     const {navigation, safeAreaInsets} = this.props;
+    const {name} = this.state;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         <FMHeader
-          title="我的订单值"
+          title={'我的' + name}
           onLeftPress={() => {
             navigation.goBack();
           }}
