@@ -9,7 +9,10 @@ const MineOrderScoreItem = ({item}) => {
     <TouchableOpacity activeOpacity={1} style={styles.item}>
       <View style={styles.top}>
         <Text style={styles.name}>{item.remark}</Text>
-        <Text style={styles.score}>+{item.count}</Text>
+        <Text style={styles.score}>
+          {item?.isAdd ? '+' : '-'}
+          {item.count}
+        </Text>
       </View>
       <Text style={styles.time}>发放时间：2023-04-03 05:06:28</Text>
     </TouchableOpacity>
