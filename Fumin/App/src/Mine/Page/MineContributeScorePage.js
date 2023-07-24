@@ -11,7 +11,7 @@ import {
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
 import FMHeader from '../../Base/Widget/FMHeader';
-import MineContributeScoreItem from '../Widget/MineContributeScoreItem';
+import MineOrderScoreItem from '../Widget/MineOrderScoreItem';
 import FMFlatList from '../../Base/Widget/FMFlatList';
 import {ApiPostJson} from '../../../Api/RequestTool';
 
@@ -74,7 +74,7 @@ export default class MineContributeScorePage extends Component {
           requestParams={{type: 3}}
           keyExtractor={(item) => item?.id}
           renderItem={({item}) => {
-            return <MineContributeScoreItem item={item} />;
+            return <MineOrderScoreItem item={item} />;
           }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{

@@ -30,6 +30,14 @@ class MineIndexPage extends Component {
       selDelList: [],
       banners: [],
     };
+    this.orderIcon = {
+      0: Images.waitPayIcon,
+      10: Images.waitSendIcon,
+      20: Images.waitReceiveIcon,
+      50: Images.waitUseIcon,
+      30: Images.isEndIcon,
+      60: Images.shouhouIcon,
+    };
   }
   componentDidMount() {
     // console.log(this.props);
@@ -257,80 +265,65 @@ class MineIndexPage extends Component {
   };
   renderOrder = () => {
     const {navigation} = this.props;
-    const list = [
-      {
-        name: '待付款',
-        img: Images.waitPayIcon,
-        fun: () => {
-          navigation.navigate('MineNav', {
-            screen: 'MineOrderPage',
-            params: {
-              status: 1,
-            },
-          });
-        },
+    const {data} = this.state;
+    const orderFun = {
+      0: () => {
+        navigation.navigate('MineNav', {
+          screen: 'MineOrderPage',
+          params: {
+            status: 1,
+          },
+        });
       },
-      {
-        name: '待发货',
-        img: Images.waitSendIcon,
-        fun: () => {
-          navigation.navigate('MineNav', {
-            screen: 'MineOrderPage',
-            params: {
-              status: 2,
-            },
-          });
-        },
+      10: () => {
+        navigation.navigate('MineNav', {
+          screen: 'MineOrderPage',
+          params: {
+            status: 2,
+          },
+        });
       },
-      {
-        name: '已完成',
-        img: Images.isEndIcon,
-        fun: () => {
-          navigation.navigate('MineNav', {
-            screen: 'MineOrderPage',
-            params: {
-              status: 3,
-            },
-          });
-        },
+      20: Images.waitReceiveIcon,
+      50: () => {
+        navigation.navigate('MineNav', {
+          screen: 'MineOrderPage',
+          params: {
+            status: 4,
+          },
+        });
       },
-      {
-        name: '待使用',
-        img: Images.waitUseIcon,
-        fun: () => {
-          navigation.navigate('MineNav', {
-            screen: 'MineOrderPage',
-            params: {
-              status: 4,
-            },
-          });
-        },
+      30: () => {
+        navigation.navigate('MineNav', {
+          screen: 'MineOrderPage',
+          params: {
+            status: 3,
+          },
+        });
       },
-      {
-        name: '售后/退款',
-        img: Images.shouhouIcon,
-        fun: () => {
-          navigation.navigate('MineNav', {
-            screen: 'MineOrderPage',
-            params: {
-              // status: 1,
-            },
-          });
-        },
+      60: () => {
+        navigation.navigate('MineNav', {
+          screen: 'MineOrderPage',
+          params: {
+            // status: 2,
+          },
+        });
       },
-    ];
+    };
     return (
       <View style={styles.assetBox}>
         <Text style={styles.boxTitle}>我的订单</Text>
         <View style={styles.assetList}>
-          {list.map((item, index) => {
+          {data?.orderList?.map((item, index) => {
             return (
               <TouchableOpacity
                 style={styles.assetItem}
                 key={index}
-                onPress={item.fun}
+                onPress={orderFun[item.type]}
                 activeOpacity={1}>
-                <FMImage source={item.img} style={styles.orderImg} />
+                <FMImage
+                  source={this.orderIcon[item.type]}
+                  style={styles.orderImg}
+                />
                 <View style={styles.assetBottom}>
                   <Text style={styles.assetName}>{item.name}</Text>
                 </View>
