@@ -17,12 +17,14 @@ import MineObligationItem from '../Widget/MineObligationItem';
 import MineWaitSendItem from '../Widget/MineWaitSendItem';
 import MineIsEndItem from '../Widget/MineIsEndItem';
 import FMFlatList from '../../Base/Widget/FMFlatList';
+import {ApiPostJson} from '../../../Api/RequestTool';
 
 export default class MineOrderPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       status: props.route?.params?.status || 0,
+      tagList: [],
     };
     this.tagList = [
       {name: '全部'},
@@ -32,6 +34,27 @@ export default class MineOrderPage extends Component {
       {name: '待使用'},
     ];
   }
+
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData = () => {
+    const path = '/app-api/member/auth/myPageDetail';
+    const params = {
+      // objType: 1,
+    };
+    const onSuccess = (res) => {
+      this.setState({
+        tagList: res.orderList,
+      });
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
 
   renderList = (item, index) => {
     const {navigation} = this.props;
@@ -83,7 +106,7 @@ export default class MineOrderPage extends Component {
             //  responseKey={'history'}
             requestPath="/app-api/trade/order/selectMyorderList"
             requestParams={{
-              status: 0,
+              status: item.type,
             }}
             keyExtractor={(item) => item?.id}
             renderItem={({item}) => {
@@ -117,7 +140,7 @@ export default class MineOrderPage extends Component {
             //  responseKey={'history'}
             requestPath="/app-api/trade/order/selectMyorderList"
             requestParams={{
-              status: 10,
+              status: item.type,
             }}
             keyExtractor={(item) => item?.id}
             renderItem={({item}) => {
@@ -137,7 +160,7 @@ export default class MineOrderPage extends Component {
             //  responseKey={'history'}
             requestPath="/app-api/trade/order/selectMyorderList"
             requestParams={{
-              status: 30,
+              status: item.type,
             }}
             keyExtractor={(item) => item?.id}
             renderItem={({item}) => {
@@ -161,7 +184,7 @@ export default class MineOrderPage extends Component {
   };
   render() {
     const {navigation, safeAreaInsets, route} = this.props;
-    const {status} = this.state;
+    const {status, tagList} = this.state;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         <FMHeader
@@ -170,18 +193,22 @@ export default class MineOrderPage extends Component {
             navigation.goBack();
           }}
         />
-        <FMAnimatableTabView
-          tabItemStyle={{width: Utils.getScreenSize().width / 5}}
-          lineStyle={styles.tabLine}
-          tabList={this.tagList}
-          data={this.tagList}
-          // unScroll
-          firstTag={status}
-          renderItem={this.renderList}
-          activeTextStyle={{
-            color: '#FF9B00',
-          }}
-        />
+        {!!tagList.length && (
+          <FMAnimatableTabView
+            tabItemStyle={{
+              width: Utils.getScreenSize().width / (tagList?.length || 1),
+            }}
+            lineStyle={styles.tabLine}
+            tabList={tagList}
+            data={tagList}
+            // unScroll
+            firstTag={status}
+            renderItem={this.renderList}
+            activeTextStyle={{
+              color: '#FF9B00',
+            }}
+          />
+        )}
       </View>
     );
   }

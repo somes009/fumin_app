@@ -266,49 +266,6 @@ class MineIndexPage extends Component {
   renderOrder = () => {
     const {navigation} = this.props;
     const {data} = this.state;
-    const orderFun = {
-      0: () => {
-        navigation.navigate('MineNav', {
-          screen: 'MineOrderPage',
-          params: {
-            status: 1,
-          },
-        });
-      },
-      10: () => {
-        navigation.navigate('MineNav', {
-          screen: 'MineOrderPage',
-          params: {
-            status: 2,
-          },
-        });
-      },
-      20: Images.waitReceiveIcon,
-      50: () => {
-        navigation.navigate('MineNav', {
-          screen: 'MineOrderPage',
-          params: {
-            status: 4,
-          },
-        });
-      },
-      30: () => {
-        navigation.navigate('MineNav', {
-          screen: 'MineOrderPage',
-          params: {
-            status: 3,
-          },
-        });
-      },
-      60: () => {
-        navigation.navigate('MineNav', {
-          screen: 'MineOrderPage',
-          params: {
-            // status: 2,
-          },
-        });
-      },
-    };
     return (
       <View style={styles.assetBox}>
         <Text style={styles.boxTitle}>我的订单</Text>
@@ -318,7 +275,14 @@ class MineIndexPage extends Component {
               <TouchableOpacity
                 style={styles.assetItem}
                 key={index}
-                onPress={orderFun[item.type]}
+                onPress={() => {
+                  navigation.navigate('MineNav', {
+                    screen: 'MineOrderPage',
+                    params: {
+                      status: index + 1,
+                    },
+                  });
+                }}
                 activeOpacity={1}>
                 <FMImage
                   source={this.orderIcon[item.type]}
