@@ -95,6 +95,7 @@ export default class ShopDetailPage extends Component {
   };
   createOrder = (payType) => {
     let {id, buyCount} = this.state;
+    const {navigation} = this.props;
     const path = '/app-api/trade/order/createOrder';
     const params = {
       spuId: id,
@@ -121,6 +122,13 @@ export default class ShopDetailPage extends Component {
                 if (requestJson.errCode == '0') {
                   //回调成功处理
                   Utils.Toast({text: '支付成功'});
+                  navigation.navigate('MineNav', {
+                    screen: 'MineOrderDetailPage',
+                    params: {
+                      id: res.orderId,
+                    },
+                  });
+                  this.getData?.();
                   // this.getData();
                   this.getData();
                 }
@@ -133,6 +141,13 @@ export default class ShopDetailPage extends Component {
             const callback = (_respont) => {
               if (res.resultStatus === '9000') {
                 Utils.Toast({text: '支付成功'});
+                navigation.navigate('MineNav', {
+                  screen: 'MineOrderDetailPage',
+                  params: {
+                    id: res.orderId,
+                  },
+                });
+                this.getData();
                 // getData?.();
               } else {
                 Utils.Toast({text: '支付失败'});
@@ -149,10 +164,10 @@ export default class ShopDetailPage extends Component {
   };
 
   handleBuy = () => {
+    const {navigation} = this.state;
     const callback = (res) => {
       if (res.resultStatus === '9000') {
         Utils.Toast({text: '支付成功'});
-        // getData?.();
       } else {
         Utils.Toast({text: '支付失败'});
       }

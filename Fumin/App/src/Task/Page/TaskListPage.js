@@ -17,17 +17,35 @@ export default class TaskListPage extends Component {
     super(props);
     this.state = {
       type: props.route?.params?.type,
+      list: [],
     };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.getList();
+  }
+
   getList = () => {
-    const {} = this.state;
-    const path = '/app-api/advertising/auth/getAdvertisingList';
-    const params = {};
+    const {type} = this.state;
+    const path = '/app-api/advertising/auth/getAdListDetailByType';
+    const params = {type};
     const onSuccess = (res) => {
       this.setState({
         list: res.list,
       });
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
+  handleAd = (sn) => {
+    const {type} = this.state;
+    const path = '/app-api/advertising/auth/addAdvertisingClick';
+    const params = {type, sn};
+    const onSuccess = (res) => {
+      console.log(res);
+      this.getList();
     };
     ApiPostJson({
       path,
@@ -59,14 +77,17 @@ export default class TaskListPage extends Component {
   renderItem = (item, index) => {
     return (
       <View key={index} style={styles.item}>
-        <Text style={styles.itemText}>观看第{index + 1}条广告</Text>
-        {this.goSeeButton(() => {})}
+        <Text style={styles.itemText}>{item.content}</Text>
+        {item.status
+          ? this.isEndButton()
+          : this.goSeeButton(this.handleAd.bind(this, item.sn))}
       </View>
     );
   };
 
   render() {
     const {navigation, safeAreaInsets} = this.props;
+    const {list} = this.state;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         <ScrollView
@@ -82,9 +103,7 @@ export default class TaskListPage extends Component {
                 navigation.goBack();
               }}
             />
-            <View style={styles.list}>
-              {new Array(6).fill(1).map(this.renderItem)}
-            </View>
+            <View style={styles.list}>{list.map(this.renderItem)}</View>
           </View>
         </ScrollView>
       </View>

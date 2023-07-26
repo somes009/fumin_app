@@ -15,6 +15,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import Utils from '../../../Utils';
 import FMButton from '../../Base/Widget/FMButton';
 import FMTextinput from '../../Base/Widget/FMTextinput';
+import MustPopup from '../../Base/Widget/MustPopup';
 import EventBus, {EventBusName} from '../../../Api/EventBus';
 import FMImage from '../../Base/Widget/FMImage';
 import Images from '../../../Images';
@@ -35,12 +36,22 @@ export default class LoginIndexPage extends Component {
     };
   }
   componentDidMount() {
-    global.phone = '';
+    const {navigation} = this.props;
+    this.backHandler = navigation.addListener('focus', () => {
+      // 在这里编写页面成为焦点页面时需要执行的操作
+      console.log('页面成为焦点页面');
+      CacheStore.get(CacheStoreName.ProtocolUserCheck).then((data) => {
+        if (!data) {
+          this.refPop.openModal();
+        }
+      });
+    });
     CacheStore.get(CacheStoreName.ProtocolUserCheck).then((data) => {
       if (!data) {
         this.refPop.openModal();
       }
     });
+    global.phone = '';
     Utils.getCacheStore({storeName: 'lastPhone'}).then((data) => {
       if (data) {
         this.setState({
@@ -51,15 +62,14 @@ export default class LoginIndexPage extends Component {
   }
   componentWillUnmount() {
     clearInterval(this.timerSend);
+    this.backHandler.remove?.();
   }
-
   handleUserCommitProtocol = () => {
     CacheStore.set(CacheStoreName.ProtocolUserCheck, true);
     this.refPop.closeModal();
     this.setState({
       showMustPopup: false,
     });
-    // 安卓启动友盟等第三方sdk
   };
 
   handleUserRefused = () => {
@@ -348,8 +358,11 @@ export default class LoginIndexPage extends Component {
             );
           }}
           activeOpacity={1}>
-          
-            {isSel ? <FMImage style={styles.isSelBox} source={Images.isSelGou} /> : <View style={styles.selBox} />}
+          {isSel ? (
+            <FMImage style={styles.isSelBox} source={Images.isSelGou} />
+          ) : (
+            <View style={styles.selBox} />
+          )}
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={styles.loginBottomText}>同意</Text>
             <TouchableOpacity
@@ -373,7 +386,7 @@ export default class LoginIndexPage extends Component {
     );
   };
   render() {
-    const {safeAreaInsets} = this.props;
+    const {safeAreaInsets, navigation} = this.props;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         <ScrollView
@@ -385,6 +398,13 @@ export default class LoginIndexPage extends Component {
           {this.renderChangeType()}
         </ScrollView>
         {this.renderLoginBottom()}
+        <MustPopup
+          safeAreaInsets={safeAreaInsets}
+          navigation={navigation}
+          onCommit={this.handleUserCommitProtocol}
+          onRefused={this.handleUserRefused}
+          ref={(ref) => (this.refPop = ref)}
+        />
       </View>
     );
   }

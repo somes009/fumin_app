@@ -19,7 +19,16 @@ export default class TaskIndexPage extends Component {
     };
   }
   componentDidMount() {
+    const {navigation} = this.props;
+    this.backHandler = navigation.addListener('focus', () => {
+      // 在这里编写页面成为焦点页面时需要执行的操作
+      console.log('页面成为焦点页面');
+      this.getData();
+    });
     this.getData();
+  }
+  componentWillUnmount() {
+    this.backHandler.remove?.();
   }
   getData = () => {
     const path = '/app-api/advertising/auth/selectMyQuest';
@@ -37,7 +46,7 @@ export default class TaskIndexPage extends Component {
   };
   shifang = (type) => {
     const path = '/app-api/advertising/auth/userMissionRewardRelease';
-    const params = {type};
+    const params = {type, txType: 1};
     const onSuccess = (res) => {
       this.getData();
     };
@@ -87,7 +96,7 @@ export default class TaskIndexPage extends Component {
       </TouchableOpacity>
     );
   };
-  renderBox = ({topNum, numTitle, needLook, isLook, continuous}) => {
+  renderBox = ({topNum, numTitle, needLook, isLook, continuous, type}) => {
     const {navigation} = this.props;
     const isEnd = needLook <= isLook;
     const canSF = needLook === isLook;
@@ -99,7 +108,7 @@ export default class TaskIndexPage extends Component {
             <Text style={styles.numTitle}>{numTitle}</Text>
           </View>
           {canSF
-            ? this.renderCanTouch('释放奖励', () => {})
+            ? this.renderCanTouch('释放奖励', this.shifang.bind(this, type))
             : this.renderUnTouch('释放奖励', () => {})}
         </View>
         <View style={styles.bottomBox}>
@@ -112,6 +121,9 @@ export default class TaskIndexPage extends Component {
               : this.goSeeButton(() => {
                   navigation.navigate('TaskNav', {
                     screen: 'TaskListPage',
+                    params: {
+                      type,
+                    },
                   });
                 })}
           </View>
@@ -138,6 +150,7 @@ export default class TaskIndexPage extends Component {
               needLook: data.onAdCount,
               isLook: data.onLookAdCount,
               continuous: data.onReleaseDay,
+              type: 1,
             })}
             {this.renderBox({
               topNum: data.degreeContribution,
@@ -145,19 +158,22 @@ export default class TaskIndexPage extends Component {
               needLook: data.dcAdCount,
               isLook: data.dcLookAdCount,
               continuous: data.dcReleaseDay,
+              type: 2,
             })}
             {this.renderBox({
               topNum: data.redEnvelope,
-              numTitle: '红包金',
+              numTitle: '红包',
               needLook: data.reAdCount,
               isLook: data.reLookAdCount,
               continuous: data.reReleaseDay,
+              type: 3,
             })}
             {this.renderBox({
               topNum: data.balance,
               numTitle: '金额',
               isLook: data.blookAdCount,
               continuous: data.breleaseDay,
+              type: 4,
             })}
           </View>
         </ScrollView>

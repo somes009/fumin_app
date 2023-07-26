@@ -130,7 +130,8 @@ export default class AliyunTools {
     });
   }
   static FuminUpload(filePath, uploadProgress, fileType, objectKey) {
-    const tempObject = objectKey || 'mindtrip';
+    const tempObject = objectKey || 'fumin';
+    // const FILE_URL = 'https://gats-test.oss-cn-beijing.aliyuncs.com/';
     const FILE_URL = `https://gats-test.oss-cn-beijing.aliyuncs.com/${tempObject}/`;
     const funcProgress = (progress) => {
       uploadProgress && uploadProgress(progress);
@@ -149,8 +150,12 @@ export default class AliyunTools {
         fileType || '.jpg'
       }`;
       // const filename = `${uuid()}${fileType || '.jpg'}`;
-      // AliyunOSS.asyncUpload(BUCKET_NAME, `${tempObject}/${filename}`, filePath)
-      AliyunOSS.asyncUpload(BUCKET_NAME, `${tempObject}/${filename}`, filePath)
+      console.log(AliyunOSS.asyncUpload);
+      AliyunOSS?.asyncUpload?.(
+        BUCKET_NAME,
+        `${tempObject}/${filename}`,
+        filePath,
+      )
         .then((res) => {
           resolve(FILE_URL + filename);
           AliyunOSS.removeEventListener('uploadProgress');

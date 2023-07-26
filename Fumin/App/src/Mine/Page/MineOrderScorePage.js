@@ -57,7 +57,7 @@ export default class MineOrderScorePage extends Component {
   };
   render() {
     const {navigation, safeAreaInsets} = this.props;
-    const {name} = this.state;
+    const {name, type} = this.state;
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         <FMHeader
@@ -74,7 +74,7 @@ export default class MineOrderScorePage extends Component {
           style={{flex: 1}}
           //  responseKey={'history'}
           requestPath="/app-api/member/userwallet/auth/myUserWallectDeatils"
-          requestParams={{type: 2}}
+          requestParams={{type}}
           keyExtractor={(item) => item?.id}
           renderItem={({item}) => {
             return <MineOrderScoreItem item={item} />;

@@ -41,8 +41,18 @@ class MineIndexPage extends Component {
   }
   componentDidMount() {
     // console.log(this.props);
+    const {navigation} = this.props;
+    this.backHandler = navigation.addListener('focus', () => {
+      // 在这里编写页面成为焦点页面时需要执行的操作
+      console.log('页面成为焦点页面');
+      this.getData();
+    });
     this.getData();
     this.getBanner();
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove?.();
   }
 
   getData = () => {
