@@ -203,7 +203,9 @@ export default class ShopDetailPage extends Component {
             <Text style={styles.city}>{data.address}</Text>
             <Text style={styles.kuaidi}>快递：免运费</Text>
           </View>
-          <Text style={styles.toText}>配送至：{place?.detailAddress}</Text>
+          <Text style={styles.toText}>
+            {place ? `配送至：${place?.detailAddress}` : '请添加收货地址'}
+          </Text>
         </View>
         <FMImage source={Images.toRightGray} style={styles.toRight} />
       </TouchableOpacity>
@@ -361,7 +363,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 16,
     borderTopLeftRadius: 16,
     overflow: 'hidden',
-    paddingBottom: 100,
+    paddingBottom: 82,
   },
   main: {
     width: '100%',

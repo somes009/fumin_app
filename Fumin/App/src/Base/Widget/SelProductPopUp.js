@@ -50,10 +50,16 @@ export default class FMSelPayWayPopUp extends Component {
         }}
         style={styles.placeBox}>
         <View style={styles.leftBox}>
-          <Text style={styles.namePhone}>
-            {place.name} {place.mobile}
-          </Text>
-          <Text style={styles.place}>{place.detailAddress}</Text>
+          {place ? (
+            <>
+              <Text style={styles.namePhone}>
+                {place?.name} {place?.mobile}
+              </Text>
+              <Text style={styles.place}>{place?.detailAddress}</Text>
+            </>
+          ) : (
+            <Text style={styles.namePhone}>请添加收货地址</Text>
+          )}
         </View>
         <FMImage source={Images.toRightGray} style={styles.toRight} />
       </TouchableOpacity>
@@ -122,12 +128,12 @@ export default class FMSelPayWayPopUp extends Component {
   };
 
   renderContent = () => {
-    const {handleBuy, data, buyCount} = this.props;
+    const {handleBuy, data, buyCount, place} = this.props;
     return (
       <View style={styles.popUp}>
         <View style={styles.topBox}>
           <View style={styles.infoBox}>
-            <FMImage style={styles.img} />
+            <FMImage source={{uri: data?.prcUrls?.[0]}} style={styles.img} />
             <Text style={styles.price}>¥{data.amount / 100}</Text>
           </View>
           {this.renderPlaceBox()}
@@ -136,6 +142,11 @@ export default class FMSelPayWayPopUp extends Component {
           {this.renderRemark()}
           <TouchableOpacity
             onPress={() => {
+              if (!place) {
+                Utils.Toast({
+                  text: '请添加收货地址',
+                });
+              }
               handleBuy?.(+buyCount);
             }}
             activeOpacity={1}
@@ -213,7 +224,6 @@ const styles = StyleSheet.create({
     width: 83,
     height: 83,
     borderRadius: 10,
-    backgroundColor: '#eee',
   },
   price: {
     fontSize: 31,

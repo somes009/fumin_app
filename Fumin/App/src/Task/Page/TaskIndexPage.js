@@ -107,7 +107,7 @@ export default class TaskIndexPage extends Component {
             <Text style={styles.topNum}>{topNum}</Text>
             <Text style={styles.numTitle}>{numTitle}</Text>
           </View>
-          {canSF
+          {canSF && needLook > 0
             ? this.renderCanTouch('释放奖励', this.shifang.bind(this, type))
             : this.renderUnTouch('释放奖励', () => {})}
         </View>

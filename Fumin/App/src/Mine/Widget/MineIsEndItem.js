@@ -36,11 +36,11 @@ const MineIsEndItem = ({onPress, item}) => {
         <TouchableOpacity activeOpacity={1} style={styles.button}>
           <Text style={styles.buttonText}>删除订单</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           activeOpacity={1}
           style={[styles.button, {width: 93}]}>
           <Text style={styles.buttonText}>加入购物车</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </TouchableOpacity>
   );

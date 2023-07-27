@@ -38,12 +38,13 @@ export default class MineFansPage extends Component {
           requestPath="/app-api/member/userinviterecord/auth/myInviteCode"
           requestParams={{}}
           keyExtractor={(item) => item?.id}
-          renderItem={({item}) => {
-            return <MineFansItem item={item} />;
+          renderItem={({item, index}) => {
+            return <MineFansItem index={index} item={item} />;
           }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingBottom: 20,
+            width: Utils.getScreenSize().width,
           }}
         />
       </View>
