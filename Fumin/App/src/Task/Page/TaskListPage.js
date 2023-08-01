@@ -12,6 +12,7 @@ import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
 import FMHeader from '../../Base/Widget/FMHeader';
 import {ApiPostJson} from '../../../Api/RequestTool';
+import Module from '../../../Module/Module';
 export default class TaskListPage extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +23,7 @@ export default class TaskListPage extends Component {
   }
   componentDidMount() {
     this.getList();
+    // console.log(Module.handleAd);
   }
 
   getList = () => {
@@ -39,7 +41,7 @@ export default class TaskListPage extends Component {
       onSuccess,
     });
   };
-  handleAd = (sn) => {
+  handleAdCallBack = (sn) => {
     const {type} = this.state;
     const path = '/app-api/advertising/auth/addAdvertisingClick';
     const params = {type, sn};
@@ -80,7 +82,11 @@ export default class TaskListPage extends Component {
         <Text style={styles.itemText}>{item.content}</Text>
         {item.status
           ? this.isEndButton()
-          : this.goSeeButton(this.handleAd.bind(this, item.sn))}
+          : this.goSeeButton(
+              Module.handleAd.bind(this, () => {
+                this.handleAdCallBack(item.sn);
+              }),
+            )}
       </View>
     );
   };
