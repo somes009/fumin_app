@@ -214,11 +214,7 @@ export default class LoginLogoutPage extends Component {
   };
   check = () => {
     const {value, code, type, password, isSel} = this.state;
-    if (
-      Utils.checkPhone(value) &&
-      code.length === 4 &&
-      this.checkPassword(password)
-    ) {
+    if (Utils.checkPhone(value) && code.length === 4) {
       this.setState({
         canLogin: true,
       });
@@ -234,10 +230,6 @@ export default class LoginLogoutPage extends Component {
       Utils.Toast({text: '请输入正确的手机号'});
     } else if (code.length < 4) {
       Utils.Toast({text: '请输入4位数的验证码'});
-    } else if (!this.checkPassword(password)) {
-      Utils.Toast({
-        text: '密码必须是6-20个英文字母、数字或符号(除空格)，且字母、数字和标点符号至少包含两种',
-      });
     }
   };
   handleLogout = () => {
