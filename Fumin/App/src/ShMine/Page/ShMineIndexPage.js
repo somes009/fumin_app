@@ -140,8 +140,8 @@ class ShMineIndexPage extends Component {
       {
         name: '资产管理',
         fun: () => {
-          navigation.navigate('SetShopNav', {
-            screen: 'SetShopDetailPage',
+          navigation.navigate('ShMineNav', {
+            screen: 'ShMineAssetPage',
           });
         },
       },

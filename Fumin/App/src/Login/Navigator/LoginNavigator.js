@@ -14,6 +14,7 @@ import {
 import LoginIndexPage from '../Page/LoginIndexPage';
 import LoginSignInPage from '../Page//LoginSignInPage';
 import LoginYinsiPage from '../Page//LoginYinsiPage';
+import LoginLogoutPage from '../Page//LoginLogoutPage';
 
 const isAndroid = Platform.OS === 'android';
 const Stack = createStackNavigator();
@@ -57,6 +58,19 @@ const LoginYinsiPageWithNavigation = (props) => {
     />
   );
 };
+const LoginLogoutPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <LoginLogoutPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
 
 export const LoginInnerNavigator = ({initialRouteName}) => (
   <Stack.Navigator
@@ -88,6 +102,13 @@ export const LoginInnerNavigator = ({initialRouteName}) => (
     <Stack.Screen
       name="LoginYinsiPage"
       component={LoginYinsiPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="LoginLogoutPage"
+      component={LoginLogoutPageWithNavigation}
       options={{
         header: () => null,
       }}

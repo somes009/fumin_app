@@ -160,25 +160,46 @@ export default class MineCreatePlacePage extends Component {
     );
   };
   renderPlace1 = () => {
-    const {place1} = this.state;
+    const {placeList, cityList, quList, placeId, cityId, quId} = this.state;
     return (
-      <View style={styles.infoBox}>
+      <View style={[styles.infoBox, {alignItems: 'flex-start'}]}>
         <Text style={styles.title}>所在地区</Text>
-        <FMTextInput
-          placeholder="请输入所在地区"
-          maxLength={11}
-          value={place1}
-          onChangeText={(text) => {
-            this.setState({
-              place1: text,
-            });
-          }}
-          isNumber
-          textStyle={styles.input}
-          placeholderStyle={styles.placeholderStyle}
-          containerStyle={styles.containerStyle}
-          needBorder
-        />
+        {!!placeList.length && (
+          <PlacePicker
+            onLocationChange={(type, id) => {
+              if (type === 1) {
+                for (let i in placeList) {
+                  if (placeList[i].id === id) {
+                    this.setState({
+                      placeId: id,
+                      cityList: placeList[i].children,
+                      quList: [],
+                    });
+                  }
+                }
+              } else if (type === 2) {
+                for (let i in cityList) {
+                  if (cityList[i].id === id) {
+                    this.setState({
+                      cityId: id,
+                      quList: cityList[i].children,
+                    });
+                  }
+                }
+              } else {
+                this.setState({
+                  quId: id,
+                });
+              }
+            }}
+            provinces={placeList}
+            cities={cityList}
+            districts={quList}
+            placeId={placeId}
+            cityId={cityId}
+            quId={quId}
+          />
+        )}
       </View>
     );
   };
@@ -186,9 +207,9 @@ export default class MineCreatePlacePage extends Component {
     const {place2} = this.state;
     return (
       <View style={styles.infoBox}>
-        <Text style={styles.title}>所在地区</Text>
+        <Text style={styles.title}>详细地址</Text>
         <FMTextInput
-          placeholder="请输入所在地区"
+          placeholder="请输入详细地址"
           maxLength={11}
           value={place2}
           onChangeText={(text) => {
@@ -255,7 +276,7 @@ export default class MineCreatePlacePage extends Component {
   };
   render() {
     const {navigation, safeAreaInsets} = this.props;
-    const {placeList, cityList, quList, placeId, cityId, quId, show} = this.state;
+    const {show} = this.state;
     if (!show) {
       return <View />;
     }
@@ -270,43 +291,7 @@ export default class MineCreatePlacePage extends Component {
         <View style={styles.infoList}>
           {this.renderName()}
           {this.renderPhone()}
-          {/* {this.renderPlace1()} */}
-          {!!placeList.length && (
-            <PlacePicker
-              onLocationChange={(type, id) => {
-                if (type === 1) {
-                  for (let i in placeList) {
-                    if (placeList[i].id === id) {
-                      this.setState({
-                        placeId: id,
-                        cityList: placeList[i].children,
-                        quList: [],
-                      });
-                    }
-                  }
-                } else if (type === 2) {
-                  for (let i in cityList) {
-                    if (cityList[i].id === id) {
-                      this.setState({
-                        cityId: id,
-                        quList: cityList[i].children,
-                      });
-                    }
-                  }
-                } else {
-                  this.setState({
-                    quId: id,
-                  });
-                }
-              }}
-              provinces={placeList}
-              cities={cityList}
-              districts={quList}
-              placeId={placeId}
-              cityId={cityId}
-              quId={quId}
-            />
-          )}
+          {this.renderPlace1()}
           {this.renderPlace2()}
           {this.renderBottom()}
         </View>

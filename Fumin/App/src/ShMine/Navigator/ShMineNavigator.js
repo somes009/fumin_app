@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ShMineIndexPage from '../Page/ShMineIndexPage';
 import SetShopDetailPage from '../Page/SetShopDetailPage';
+import ShMineAssetPage from '../Page/ShMineAssetPage';
 import {Platform} from 'react-native';
 import {
   NavigationContainer,
@@ -42,6 +43,19 @@ const SetShopDetailPageWithNavigation = (props) => {
     />
   );
 };
+const ShMineAssetPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <ShMineAssetPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
 
 export const ShMineInnerNavigator = ({initialRouteName}) => (
   <Stack.Navigator
@@ -66,6 +80,13 @@ export const ShMineInnerNavigator = ({initialRouteName}) => (
     <Stack.Screen
       name="SetShopDetailPage"
       component={SetShopDetailPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="ShMineAssetPage"
+      component={ShMineAssetPageWithNavigation}
       options={{
         header: () => null,
       }}

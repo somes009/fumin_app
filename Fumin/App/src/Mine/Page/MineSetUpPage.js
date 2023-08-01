@@ -58,6 +58,18 @@ export default class MineSetUpPage extends Component {
           navigation.navigate('MinePlaceListPage');
         },
       },
+      {
+        name: '隐私政策',
+        fun: () => {
+          navigation.navigate('LoginNav', {screen: 'LoginYinsiPage'});
+        },
+      },
+      {
+        name: '注销账号',
+        fun: () => {
+          navigation.navigate('LoginNav', {screen: 'LoginLogoutPage'});
+        },
+      },
       // {
       //   name: '修改密码',
       //   fun: () => {},

@@ -10,10 +10,11 @@ import {
 } from 'react-native';
 import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
-import {ApiPostJson} from '../../../Api/RequestTool';
+import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
 import Utils from '../../../Utils';
 import FMHeader from '../../Base/Widget/FMHeader';
 import FMTextInput from '../../Base/Widget/FMTextinput';
+import CommonButtonsPopUp from '../../Base/Widget/CommonButtonsPopUp';
 import _ from 'lodash';
 import Images from '../../../Images';
 import FMButton from '../../Base/Widget/FMButton';
@@ -30,6 +31,7 @@ export default class ShProductAddPage extends Component {
       expenseType: 0,
       count: '',
       price: '',
+      tabList: [],
     };
   }
 
@@ -54,6 +56,7 @@ export default class ShProductAddPage extends Component {
     if (id) {
       this.getData();
     }
+    this.getTab();
   }
   getData = () => {
     const {id} = this.state;
@@ -73,6 +76,67 @@ export default class ShProductAddPage extends Component {
       path,
       params,
       onSuccess,
+    });
+  };
+  getTab = () => {
+    const path = '/app-api/product/category/selectEnableCategoryList';
+    const params = {
+      // objType: 1,
+    };
+    const onSuccess = (res) => {
+      this.setState({
+        tabList: res.list,
+        categoryId: res.list[0]?.id,
+      });
+    };
+    ApiGet({
+      path,
+      params,
+      onSuccess,
+    });
+  };
+  create = () => {
+    const {name, payType, expenseType, count, price} = this.state;
+    const path = '/app-api/product/spu/addSpuForAPP';
+    const params = {
+      name,
+      picUrls: ['1', '2'],
+      categoryId: 10,
+      buyMode: payType + 1,
+      consumeMode: expenseType + 1,
+      totalStock: count,
+      marketPrice: price * 100,
+      status: 1,
+    };
+    const onSuccess = (res) => {
+      this.setState({
+        data: res,
+      });
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
+  openChange = () => {
+    const {tabList} = this.state;
+    let list = [];
+    for(let i in tabList) {
+      list.push({
+        text: tabList[i].name,
+        color: '#0091FF',
+        fun: () => {
+          this.setState({
+            categoryId: tabList[i].id,
+          });
+          this.refPop.closeModal();
+        },
+      });
+    }
+    this.refPop.openModal({
+      title: '',
+      list,
     });
   };
   renderName = () => {
@@ -166,7 +230,7 @@ export default class ShProductAddPage extends Component {
           <Text style={styles.title}>商品分类</Text>
           <Text style={styles.xing}>*</Text>
         </View>
-        <TouchableOpacity style={styles.classifyBox}>
+        <TouchableOpacity onPress={this.openChange} style={styles.classifyBox}>
           <Text style={styles.classify}>食品</Text>
           <FMImage source={Images.toBottomBlack} style={styles.toBottomBlack} />
         </TouchableOpacity>
@@ -344,13 +408,10 @@ export default class ShProductAddPage extends Component {
           text="完成"
           textStyle={styles.add}
           containerStyle={styles.addBox}
-          onPress={() => {
-            navigation.navigate('ShProductNav', {
-              screen: 'ShProductAddPage',
-            });
-          }}
+          onPress={this.create}
           unNeomorph={true}
         />
+        <CommonButtonsPopUp ref={(ref) => (this.refPop = ref)} />
       </View>
     );
   }

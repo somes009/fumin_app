@@ -4,6 +4,7 @@ import CityPicker from './CityPicker';
 import DistrictPicker from './DistrictPicker';
 import {View} from 'native-base';
 import {StyleSheet, Text} from 'react-native';
+import Fonts from '../../../../Common/Fonts';
 
 const LocationPicker = ({
   provinces,
@@ -37,9 +38,9 @@ const LocationPicker = ({
   };
 
   return (
-    <>
+    <View style={styles.container}>
       <View style={styles.box}>
-        <Text>
+        <Text style={styles.text}>
           {provinces.map((item) => {
             if (item.id === placeId) {
               return item.name;
@@ -58,7 +59,7 @@ const LocationPicker = ({
       {!!selectedProvinceId && cities.length > 0 && (
         <>
           <View style={styles.box}>
-            <Text>
+            <Text style={styles.text}>
               {cities.map((item) => {
                 if (item.id === cityId) {
                   return item.name;
@@ -77,7 +78,7 @@ const LocationPicker = ({
           </View>
           {!!selectedCityId && cities.length > 0 && (
             <View style={styles.box}>
-              <Text>
+              <Text style={styles.text}>
                 {districts.map((item) => {
                   if (item.id === quId) {
                     return item.name;
@@ -96,39 +97,29 @@ const LocationPicker = ({
           )}
         </>
       )}
-
-      {/* {!!selectedProvinceId && cities.length > 0 && (
-        <>
-          <CityPicker
-            cities={cities}
-            onCityChange={handleCityChange}
-            provinceId={selectedProvinceId}
-            id={cityId}
-          />
-          {!!selectedCityId && districts.length > 0 && (
-            <DistrictPicker
-              districts={districts}
-              onDistrictChange={handleDistrictChange}
-              cityId={selectedCityId}
-              id={quId}
-            />
-          )}
-        </>
-      )} */}
-    </>
+    </View>
   );
 };
 
 export default LocationPicker;
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: -10,
+  },
   box: {
     width: 150,
     height: 30,
     justifyContent: 'center',
     borderRadius: 25,
     backgroundColor: '#f2f2f2',
+    paddingLeft: 10,
     marginTop: 10,
+  },
+  text: {
+    fontSize: 14,
+    fontFamily: Fonts.PingFangSC_Regular,
+    lineHeight: 19,
   },
   pickBox: {
     width: '100%',
