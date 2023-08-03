@@ -10,6 +10,28 @@ import {uploadImg} from './AliyunTools';
 
 let Utils = {};
 
+Utils.isValidIdNumber = (idNumber) => {
+  // 验证身份证格式，18位数字或17位数字加一位字母X
+  const pattern = /^(\d{17}|\d{18}|(\d{17}|\d{18})[xX])$/;
+  if (!pattern.test(idNumber)) {
+    return false;
+  }
+
+  // 验证身份证校验码
+  const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+  const checkCodes = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+  let sum = 0;
+  for (let i = 0; i < 17; i++) {
+    sum += parseInt(idNumber.charAt(i)) * weights[i];
+  }
+  const checkCode = checkCodes[sum % 11];
+  if (checkCode !== idNumber.charAt(17).toUpperCase()) {
+    return false;
+  }
+
+  return true;
+};
+
 Utils.isValidUrl = (url) => {
   // 使用正则表达式检查链接格式是否正确
   const urlPattern = new RegExp(

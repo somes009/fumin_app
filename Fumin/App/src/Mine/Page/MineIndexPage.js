@@ -138,7 +138,7 @@ class MineIndexPage extends Component {
           </View>
         </View>
         <View style={styles.infoBoxRight}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               navigation.navigate('MineNav', {
                 screen: 'MineCartPage',
@@ -148,12 +148,12 @@ class MineIndexPage extends Component {
             style={styles.changeTypeBox}>
             <FMImage style={styles.changeTypeImg} />
             <Text style={styles.changeTypeText}>购物车</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             onPress={this.openChange}
             activeOpacity={0.8}
             style={styles.changeTypeBox}>
-            <FMImage style={styles.changeTypeImg} />
+            <FMImage source={{uri: Images.logo}} style={styles.changeTypeImg} />
             <Text style={styles.changeTypeText}>切换身份</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -289,14 +289,22 @@ class MineIndexPage extends Component {
           });
         },
       },
-      // {
-      //   name: '申请理事',
-      //   fun: () => {},
-      // },
-      // {
-      //   name: '申请经理',
-      //   fun: () => {},
-      // },
+      {
+        name: '申请理事',
+        fun: () => {
+          navigation.navigate('MineNav', {
+            screen: 'MineApplyLSPage',
+          });
+        },
+      },
+      {
+        name: '申请经理',
+        fun: () => {
+          navigation.navigate('MineNav', {
+            screen: 'MineApplyJLPage',
+          });
+        },
+      },
       // {
       //   name: '我要开店',
       //   fun: () => {},
@@ -379,7 +387,7 @@ class MineIndexPage extends Component {
             {this.renderInfo()}
             {this.renderBanner()}
             {this.renderAsset()}
-            {this.renderOrder()}
+            {/* {this.renderOrder()} */}
             {this.renderMineBottom()}
           </View>
         </ScrollView>
@@ -443,7 +451,6 @@ const styles = StyleSheet.create({
   changeTypeImg: {
     width: 23,
     height: 22,
-    backgroundColor: '#eee',
   },
   changeTypeText: {
     marginTop: 5,

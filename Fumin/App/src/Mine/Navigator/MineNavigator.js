@@ -13,6 +13,8 @@ import MineFuDouPage from '../Page/MineFuDouPage';
 import MineHongBaoPage from '../Page/MineHongBaoPage';
 import MineHongBaoJinPage from '../Page/MineHongBaoJinPage';
 import MineOrderDetailPage from '../Page/MineOrderDetailPage';
+import MineApplyLSPage from '../Page/MineApplyLSPage';
+import MineApplyJLPage from '../Page/MineApplyJLPage';
 import {Platform} from 'react-native';
 import {
   NavigationContainer,
@@ -210,6 +212,32 @@ const MineOrderDetailPageWithNavigation = (props) => {
     />
   );
 };
+const MineApplyLSPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineApplyLSPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
+const MineApplyJLPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineApplyJLPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
 
 export const MineInnerNavigator = ({initialRouteName}) => (
   <Stack.Navigator
@@ -318,6 +346,20 @@ export const MineInnerNavigator = ({initialRouteName}) => (
     <Stack.Screen
       name="MineOrderDetailPage"
       component={MineOrderDetailPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineApplyLSPage"
+      component={MineApplyLSPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineApplyJLPage"
+      component={MineApplyJLPageWithNavigation}
       options={{
         header: () => null,
       }}

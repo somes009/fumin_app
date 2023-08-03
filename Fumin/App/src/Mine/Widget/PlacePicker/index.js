@@ -40,13 +40,15 @@ const LocationPicker = ({
   return (
     <View style={styles.container}>
       <View style={styles.box}>
-        <Text style={styles.text}>
-          {provinces.map((item) => {
-            if (item.id === placeId) {
-              return item.name;
-            }
-            return null;
-          })}
+        <Text style={[styles.text, {color: !placeId ? '#6D7278' : '#000'}]}>
+          {!placeId
+            ? '省'
+            : provinces.map((item) => {
+                if (item.id === placeId) {
+                  return item.name;
+                }
+                return null;
+              })}
         </Text>
         <View style={styles.pickBox}>
           <ProvincePicker
@@ -59,13 +61,15 @@ const LocationPicker = ({
       {!!selectedProvinceId && cities.length > 0 && (
         <>
           <View style={styles.box}>
-            <Text style={styles.text}>
-              {cities.map((item) => {
-                if (item.id === cityId) {
-                  return item.name;
-                }
-                return null;
-              })}
+            <Text style={[styles.text, {color: !cityId ? '#6D7278' : '#000'}]}>
+              {!cityId
+                ? '市'
+                : cities.map((item) => {
+                    if (item.id === cityId) {
+                      return item.name;
+                    }
+                    return null;
+                  })}
             </Text>
             <View style={styles.pickBox}>
               <CityPicker
@@ -78,13 +82,15 @@ const LocationPicker = ({
           </View>
           {!!selectedCityId && cities.length > 0 && (
             <View style={styles.box}>
-              <Text style={styles.text}>
-                {districts.map((item) => {
-                  if (item.id === quId) {
-                    return item.name;
-                  }
-                  return null;
-                })}
+              <Text style={[styles.text, {color: !quId ? '#6D7278' : '#000'}]}>
+                {!quId
+                  ? '区'
+                  : districts.map((item) => {
+                      if (item.id === quId) {
+                        return item.name;
+                      }
+                      return null;
+                    })}
               </Text>
               <View style={styles.pickBox}>
                 <DistrictPicker

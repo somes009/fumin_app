@@ -20,17 +20,18 @@ export default class MyTabBar extends Component {
     this.arrayTabJson = [
       Images.indexIsIselIcon,
       Images.shopIsSelIcon,
-      Images.taskIsSelIcon,
+      // Images.taskIsSelIcon,
       Images.mineIsSelIcon,
     ];
     this.arrayTabJsonW = [
       Images.indexUnSelIcon,
       Images.shopUnSelIcon,
-      Images.taskUnSelIcon,
+      // Images.taskUnSelIcon,
       Images.mineUnSelIcon,
     ];
 
-    this.arrayTabText = ['附近', '商城', '任务', '我的'];
+    this.arrayTabText = ['附近', '商城', '我的'];
+    // this.arrayTabText = ['附近', '商城', '任务', '我的'];
     this.refAnimationArray = [];
 
     this.arrayColors = [

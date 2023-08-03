@@ -291,7 +291,17 @@ export default class ShopDetailPage extends Component {
             </View>
           </ScrollView>
         </View>
-        <View style={styles.bottomBox}>
+        {/* <View style={styles.bottomBox}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('MineNav', {
+                screen: 'MineCartPage',
+              });
+            }}
+            activeOpacity={1}
+            style={[styles.addBtn, {marginRight: 10}]}>
+            <Text style={styles.addText}>购物车</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={this.addCart}
             activeOpacity={1}
@@ -306,7 +316,7 @@ export default class ShopDetailPage extends Component {
             style={styles.buyBtn}>
             <Text style={styles.buyText}>立即购买</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <FMSelPayWayPopUp
           handleBuy={this.createOrder}
           ref={(ref) => (this.refSelPay = ref)}

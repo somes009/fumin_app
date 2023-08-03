@@ -85,6 +85,10 @@ const MineObligationItem = ({onPress, item, navigation, handleRef}) => {
       callback,
     );
   };
+  let price = 0;
+  for( let i in item.orderItemVos) {
+    price += item.orderItemVos[i].spuPrice;
+  }
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.item}>
       <View style={styles.titleBox}>
@@ -104,23 +108,29 @@ const MineObligationItem = ({onPress, item, navigation, handleRef}) => {
         </TouchableOpacity>
         <Text style={styles.state}>等待买家付款</Text>
       </View>
-      <View style={styles.infoBox}>
-        <FMImage source={{uri: item?.spuLogo}} style={styles.img} />
-        <View style={styles.infoRight}>
-          <View style={styles.righrTop}>
-            <Text numberOfLines={2} style={styles.productName}>
-              {item?.spuName}
-            </Text>
-            <Text style={styles.price}>￥{item?.spuPrice / 100}</Text>
+      {item?.orderItemVos?.map((data, i) => {
+        return (
+          <View key={i}>
+            <View style={styles.infoBox}>
+              <FMImage source={{uri: data?.spuLogo}} style={styles.img} />
+              <View style={styles.infoRight}>
+                <View style={styles.righrTop}>
+                  <Text numberOfLines={2} style={styles.productName}>
+                    {data?.spuName}
+                  </Text>
+                  <Text style={styles.price}>￥{data?.spuPrice / 100}</Text>
+                </View>
+                <Text style={styles.size}>x1</Text>
+              </View>
+            </View>
+            <View style={styles.warpBox}>
+              <Text style={styles.warpText1}>付款后</Text>
+              <Text style={styles.warpText2}>**天内发货</Text>
+            </View>
           </View>
-          <Text style={styles.size}>x1</Text>
-        </View>
-      </View>
-      <View style={styles.warpBox}>
-        <Text style={styles.warpText1}>付款后</Text>
-        <Text style={styles.warpText2}>**天内发货</Text>
-      </View>
-      <Text style={styles.needPrice}>需付款：￥{item?.spuPrice / 100}</Text>
+        );
+      })}
+      <Text style={styles.needPrice}>需付款：￥{price / 100}</Text>
       <View style={styles.buttons}>
         <TouchableOpacity
           onPress={() => {
@@ -217,7 +227,7 @@ const MineObligationItem = ({onPress, item, navigation, handleRef}) => {
       <FMSelPayWayPopUp
         handleBuy={createOrder}
         ref={(ref) => (refSelPay = ref)}
-        price={item.spuPrice / 100}
+        price={price / 100}
       />
     </TouchableOpacity>
   );

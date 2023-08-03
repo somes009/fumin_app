@@ -12,6 +12,7 @@ const Common = {
   mineIsSelIcon: require('./Common/mineIsSelIcon.png'),
   toBottomBlack: require('./Common/toBottomBlack.png'),
   isSelGou: require('./Common/isSelGou.png'),
+  logo: 'https://gats-test.oss-cn-beijing.aliyuncs.com/acd4dcf52725a05ae6d8c2a3c3d59a2c1d9a5c356ff3b2792387b96172baa2f5.png',
 };
 const Mine = {
   isEndIcon: require('./Mine/isEndIcon.png'),

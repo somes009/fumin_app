@@ -50,26 +50,6 @@ export default class LoginIndexPage extends Component {
     return true;
   }
 
-  handleUserCommitProtocol = () => {
-    CacheStore.set(CacheStoreName.ProtocolUserCheck, true);
-    this.refPop.closeModal();
-    this.setState({
-      showMustPopup: false,
-    });
-    // 安卓启动友盟等第三方sdk
-  };
-
-  handleUserRefused = () => {
-    Utils.Toast({text: '您需要同意后才可以继续使用\n亲鹿鹿提供的服务'});
-    if (Utils.isAndroid) {
-      this.refPop?.closeModal();
-      const timeout = setTimeout(() => {
-        clearTimeout(timeout);
-        this.refPop?.openModal();
-        BackHandler.exitApp();
-      }, 1000);
-    }
-  };
   renderCodeInput = () => {
     const {code, isSend, sec} = this.state;
     return (

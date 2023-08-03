@@ -73,7 +73,6 @@ export default class LoginIndexPage extends Component {
   };
 
   handleUserRefused = () => {
-    Utils.Toast({text: '您需要同意后才可以继续使用\n亲鹿鹿提供的服务'});
     if (Utils.isAndroid) {
       this.refPop?.closeModal();
       const timeout = setTimeout(() => {

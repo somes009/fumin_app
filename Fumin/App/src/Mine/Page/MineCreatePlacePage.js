@@ -119,7 +119,7 @@ export default class MineCreatePlacePage extends Component {
       <View style={styles.infoBox}>
         <Text style={styles.title}>手机号</Text>
         <FMTextInput
-          placeholder="请输入收货人"
+          placeholder="请输入收货人手机号"
           maxLength={11}
           value={phone}
           onChangeText={(text) => {
@@ -142,7 +142,7 @@ export default class MineCreatePlacePage extends Component {
       <View style={styles.infoBox}>
         <Text style={styles.title}>收货人</Text>
         <FMTextInput
-          placeholder="请输入收货人"
+          placeholder="请输入收货人姓名"
           maxLength={11}
           value={name}
           onChangeText={(text) => {
@@ -331,10 +331,10 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 14,
-    padding: 0,
-    paddingHorizontal: 4.5,
     fontFamily: Fonts.PingFangSC_Regular,
     lineHeight: 19,
+    padding: 0,
+    paddingHorizontal: 4.5,
   },
   containerStyle: {
     width: 249,

@@ -16,6 +16,7 @@ import FMBanner from '../../Base/Widget/FMBanner';
 import {ApiGet, ApiPostJson} from '../../../Api/RequestTool';
 import Geolocation from 'react-native-geolocation-service';
 import Utils from '../../../Utils';
+import Images from '../../../Images';
 export default class IndexPage extends Component {
   constructor(props) {
     super(props);
@@ -113,8 +114,8 @@ export default class IndexPage extends Component {
     return (
       <View style={styles.topBox}>
         <TouchableOpacity style={styles.placeBox} activeOpacity={1}>
-          <FMImage style={styles.placeIcon} />
-          <Text style={styles.placeText}>佛山</Text>
+          <FMImage source={{uri: Images.logo}} style={styles.placeIcon} />
+          <Text style={styles.placeText}>北京</Text>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={1} style={styles.searchBox}>
           <Text style={styles.searchText}>搜索</Text>
@@ -199,7 +200,6 @@ const styles = StyleSheet.create({
   placeIcon: {
     width: 16,
     height: 21,
-    backgroundColor: '#eee',
     marginRight: 5,
   },
   placeText: {

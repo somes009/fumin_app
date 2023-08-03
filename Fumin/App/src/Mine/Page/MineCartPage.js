@@ -3,11 +3,13 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CartList from '../Widget/CartList/CartList';
 import FMHeader from '../../Base/Widget/FMHeader';
-import FMBanner from '../../Base/Widget/FMBanner';
+import FMSelPayWayPopUp from '../../Base/Widget/FMSelPayWayPopUp';
 import Fonts from '../../../Common/Fonts';
 import FMButton from '../../Base/Widget/FMButton';
 import {ApiPostJson} from '../../../Api/RequestTool';
 import Utils from '../../../Utils';
+import Alipay from '@uiw/react-native-alipay';
+import * as WeChat from 'react-native-wechat-lib';
 // 组件样式
 var styles = StyleSheet.create({
   container: {
@@ -102,6 +104,7 @@ class MineCartPage extends React.Component {
       selPayList: [],
       selDelList: [],
       list: [],
+      payType: 0,
     };
   }
   componentDidMount() {
@@ -150,8 +153,88 @@ class MineCartPage extends React.Component {
       onSuccess,
     });
   };
-
-  handleBuy = () => {};
+  handleAliPay = (payInfo, callback) => {
+    async function aliPay(aliCB) {
+      // 支付宝端支付
+      // payInfo 是后台拼接好的支付参数
+      // return_url=
+      const resule = await Alipay.alipay(payInfo);
+      // const resule = await Alipay.alipay('alipay_sdk=alipay-sdk-java-dynamicVersionNo&app_id=2021001166608171&biz_content=%7B%22body%22%3A%22%E5%95%86%E5%93%81%E8%AF%A6%E6%83%85%22%2C%22out_trade_no%22%3A%2220210207153414T99T2%22%2C%22passback_params%22%3A%220%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22subject%22%3A%22%E5%95%86%E5%93%81%E5%90%8D%E7%A7%B0%22%2C%22total_amount%22%3A%2218.0%22%7D&charset=utf-8&format=json&method=alipay.trade.app.pay&notify_url=http%3A%2F%2Fpsptest.alsome.net.cn%2Fv1%2Falipay%2Fnotifyalipay&sign_type=RSA2&timestamp=2021-06-03+15%3A57%3A51&version=1.0&sign=Y07UGOyjpJHJQXh2IYrGF6ztuF5eXx1i3nGYSCYQYP%2B0GImwsxBSpsEoFQcmhFfA8VlWA2EXNc%2F5ZH%2FyQWUaG21W6ibdWWhU9rE%2BF3gvmRZchWh87TDaQexc%2FIZ46SuY%2FWGKXteBxjaeOygaXIt4kSUj%2B4GKAb7r10xDmyGdNK5ojBnuzyoeelojPv95m9iLIH0BA9olC%2FUnqqA9wstZJXcdLhMGC6wtfMIIHbCnjyebn%2BPOgYsGX0Dk6Y%2BJDuwAm9U6lbxPVK6IKO2VGU3IN6hfFHcCzJck1pkw0zf8Oc2LHQmTBaYhLbaXzVU%2BY95i61MwLuCL3mDQen76usY6%2Bw%3D%3D');
+      console.log('alipay:resule-->>>', resule);
+      aliCB(resule);
+    }
+    aliPay(callback);
+  };
+  handleBuy = () => {
+    const {navigation} = this.props;
+    const {payType} = this.state;
+    const path = '/app-api/trade/order/createOrder';
+    const params = {
+      fromCart: true,
+    };
+    const onSuccess = (res) => {
+      Utils.requestPay(
+        {id: res.orderId, channelCode: payType ? 'wx_app' : 'alipay_app'},
+        (resData) => {
+          if (payType) {
+            const data = resData.jsonBean.data;
+            WeChat.pay({
+              partnerId: data.partnerId,
+              prepayId: data.prepayId,
+              nonceStr: data.nonceStr,
+              timeStamp: data.timestamp,
+              package: data.packageVal,
+              sign: data.sign,
+            })
+              .then((requestJson) => {
+                console.log(requestJson);
+                //支付成功回调
+                if (requestJson.errCode == '0') {
+                  //回调成功处理
+                  Utils.Toast({text: '支付成功'});
+                  navigation.navigate('MineNav', {
+                    screen: 'MineOrderDetailPage',
+                    params: {
+                      id: res.orderId,
+                    },
+                  });
+                  this.getData?.();
+                  // this.getData();
+                  this.getData();
+                }
+              })
+              .catch((_err) => {
+                Utils.Toast({text: '支付失败'});
+                this.getData();
+              });
+          } else {
+            const callback = (_respont) => {
+              if (res.resultStatus === '9000') {
+                Utils.Toast({text: '支付成功'});
+                navigation.navigate('MineNav', {
+                  screen: 'MineOrderDetailPage',
+                  params: {
+                    id: res.orderId,
+                  },
+                });
+                this.getData();
+                // getData?.();
+              } else {
+                Utils.Toast({text: '支付失败'});
+              }
+              console.log(res);
+            };
+            this.handleAliPay(resData?.jsonbean?.data, callback);
+          }
+        },
+      );
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
 
   handleDel = (ids) => {
     const {selPayList} = this.state;
@@ -274,12 +357,19 @@ class MineCartPage extends React.Component {
               textStyle={styles.buyBtnText}
               containerStyle={styles.buyButton}
               onPress={
-                type ? this.handleDel.bind(this, selDelList) : this.handleBuy
+                type
+                  ? this.handleDel.bind(this, selDelList)
+                  : this?.refSelPay?.openModal
               }
               unTouch={!price}
             />
           </View>
         </View>
+        <FMSelPayWayPopUp
+          handleBuy={this.handleBuy}
+          ref={(ref) => (this.refSelPay = ref)}
+          price={price / 100}
+        />
       </View>
     );
   }
