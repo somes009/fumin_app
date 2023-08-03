@@ -118,7 +118,7 @@ const MineObligationItem = ({onPress, item, navigation, handleRef}) => {
                   <Text numberOfLines={2} style={styles.productName}>
                     {data?.spuName}
                   </Text>
-                  <Text style={styles.price}>￥{data?.spuPrice / 100}</Text>
+                  <Text style={styles.price}>￥{data?.spuPrice}</Text>
                 </View>
                 <Text style={styles.size}>x1</Text>
               </View>
@@ -130,7 +130,7 @@ const MineObligationItem = ({onPress, item, navigation, handleRef}) => {
           </View>
         );
       })}
-      <Text style={styles.needPrice}>需付款：￥{price / 100}</Text>
+      <Text style={styles.needPrice}>需付款：￥{price}</Text>
       <View style={styles.buttons}>
         <TouchableOpacity
           onPress={() => {
@@ -227,7 +227,7 @@ const MineObligationItem = ({onPress, item, navigation, handleRef}) => {
       <FMSelPayWayPopUp
         handleBuy={createOrder}
         ref={(ref) => (refSelPay = ref)}
-        price={price / 100}
+        price={price}
       />
     </TouchableOpacity>
   );

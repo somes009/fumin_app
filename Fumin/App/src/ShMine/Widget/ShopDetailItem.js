@@ -16,7 +16,7 @@ const ShopDetailItem = ({item, onPress, style}) => {
           {item.name}
         </Text>
         <View style={styles.bottom}>
-          <Text style={styles.price}>¥{item.amount / 100}</Text>
+          <Text style={styles.price}>¥{item.amount}</Text>
           <Text style={styles.count}>
             {Utils.formatNumberToBai(item.buyCount)}人付款
           </Text>

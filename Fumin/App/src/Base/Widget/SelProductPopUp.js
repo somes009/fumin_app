@@ -134,7 +134,7 @@ export default class FMSelPayWayPopUp extends Component {
         <View style={styles.topBox}>
           <View style={styles.infoBox}>
             <FMImage source={{uri: data?.prcUrls?.[0]}} style={styles.img} />
-            <Text style={styles.price}>¥{data.amount / 100}</Text>
+            <Text style={styles.price}>¥{data.amount}</Text>
           </View>
           {this.renderPlaceBox()}
           {this.renderClassifyBox()}
@@ -152,9 +152,7 @@ export default class FMSelPayWayPopUp extends Component {
             activeOpacity={1}
             style={styles.buyBtn}>
             <Text style={styles.buyText}>立即支付</Text>
-            <Text style={styles.buyPrice}>
-              ¥{(data.amount / 100) * +buyCount}
-            </Text>
+            <Text style={styles.buyPrice}>¥{data.amount * +buyCount}</Text>
           </TouchableOpacity>
         </View>
       </View>

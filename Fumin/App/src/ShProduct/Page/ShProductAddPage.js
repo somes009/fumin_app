@@ -69,7 +69,7 @@ export default class ShProductAddPage extends Component {
       this.setState({
         data: res,
         name: res.name,
-        price: res.amount / 100 + '',
+        price: res.amount + '',
       });
     };
     ApiPostJson({

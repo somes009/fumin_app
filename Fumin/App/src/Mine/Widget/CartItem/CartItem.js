@@ -108,7 +108,7 @@ export default class GoodItem extends React.Component {
               {item.spuName}
             </Text>
             <Text style={styles.size}>x{item.count}</Text>
-            <Text style={styles.price}>¥{item.amount / 100}</Text>
+            <Text style={styles.price}>¥{item.amount}</Text>
           </View>
         </View>
         <TouchableOpacity

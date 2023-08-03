@@ -348,7 +348,7 @@ class MineCartPage extends React.Component {
             {!type && (
               <>
                 <Text style={styles.priceTitle}>合计：</Text>
-                <Text style={styles.price}>¥{price / 100}</Text>
+                <Text style={styles.price}>¥{price}</Text>
               </>
             )}
             <FMButton
@@ -368,7 +368,7 @@ class MineCartPage extends React.Component {
         <FMSelPayWayPopUp
           handleBuy={this.handleBuy}
           ref={(ref) => (this.refSelPay = ref)}
-          price={price / 100}
+          price={price}
         />
       </View>
     );

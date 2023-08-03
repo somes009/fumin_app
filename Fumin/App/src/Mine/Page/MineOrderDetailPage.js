@@ -77,7 +77,7 @@ export default class MineOrderDetailPage extends Component {
             </Text>
           </View>
           <View style={styles.infoBottomRight}>
-            <Text style={styles.price}>￥{data.orderPrice / 100}</Text>
+            <Text style={styles.price}>￥{data.orderPrice}</Text>
             <Text style={styles.num}>x{data.productCount}</Text>
           </View>
         </View>
@@ -118,7 +118,7 @@ export default class MineOrderDetailPage extends Component {
       <View style={styles.priceBox}>
         <View style={styles.infoBox}>
           <Text style={styles.infoTitle}>商品总价</Text>
-          <Text style={styles.priceText}>¥{data.orderPrice / 100}</Text>
+          <Text style={styles.priceText}>¥{data.orderPrice}</Text>
         </View>
         <View style={styles.infoBox}>
           <Text style={styles.infoTitle}>消耗红包金</Text>
@@ -126,7 +126,7 @@ export default class MineOrderDetailPage extends Component {
         </View>
         <View style={styles.infoBox}>
           <Text style={styles.infoTitle}>实付款</Text>
-          <Text style={styles.priceText}>¥{data.payPrice / 100}</Text>
+          <Text style={styles.priceText}>¥{data.payPrice}</Text>
         </View>
         <View style={[styles.infoBox, {alignItems: 'flex-start'}]}>
           <Text style={styles.infoTitle}>收货信息</Text>
