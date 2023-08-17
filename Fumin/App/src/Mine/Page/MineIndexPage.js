@@ -138,7 +138,7 @@ class MineIndexPage extends Component {
           </View>
         </View>
         <View style={styles.infoBoxRight}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               navigation.navigate('MineNav', {
                 screen: 'MineCartPage',
@@ -148,7 +148,7 @@ class MineIndexPage extends Component {
             style={styles.changeTypeBox}>
             <FMImage style={styles.changeTypeImg} />
             <Text style={styles.changeTypeText}>购物车</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             onPress={this.openChange}
             activeOpacity={0.8}
@@ -387,7 +387,7 @@ class MineIndexPage extends Component {
             {this.renderInfo()}
             {this.renderBanner()}
             {this.renderAsset()}
-            {this.renderOrder()}
+            {/* {this.renderOrder()} */}
             {this.renderMineBottom()}
           </View>
         </ScrollView>

@@ -70,6 +70,12 @@ export default class MineSetUpPage extends Component {
           navigation.navigate('LoginNav', {screen: 'LoginLogoutPage'});
         },
       },
+      {
+        name: '绑定账号',
+        fun: () => {
+          navigation.navigate('MinebindInfoPage');
+        },
+      },
       // {
       //   name: '修改密码',
       //   fun: () => {},
@@ -95,7 +101,7 @@ export default class MineSetUpPage extends Component {
           {list.map((item, index) => {
             return (
               <TouchableOpacity
-                style={[styles.item, index === 3 ? {} : {borderBottomWidth: 1}]}
+                style={[styles.item, index === 4 ? {} : {borderBottomWidth: 1}]}
                 key={index}
                 onPress={item.fun}
                 activeOpacity={1}>

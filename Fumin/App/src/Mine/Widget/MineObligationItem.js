@@ -11,7 +11,7 @@ import FMSelPayWayPopUp from '../../Base/Widget/FMSelPayWayPopUp';
 import Images from '../../../Images';
 import Alipay from '@uiw/react-native-alipay';
 import * as WeChat from 'react-native-wechat-lib';
-const MineObligationItem = ({onPress, item, navigation, handleRef}) => {
+const MineObligationItem = ({onPress, item, navigation, handleRef, isSel, handleSel}) => {
   const [payType, setPayType] = useState(0);
   let refCancel = {};
   let refSelPay = {};
@@ -86,26 +86,33 @@ const MineObligationItem = ({onPress, item, navigation, handleRef}) => {
     );
   };
   let price = 0;
-  for( let i in item.orderItemVos) {
+  for (let i in item.orderItemVos) {
     price += item.orderItemVos[i].spuPrice;
   }
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.item}>
       <View style={styles.titleBox}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('IndexNav', {
-              screen: 'ShopDetailPage',
-              params: {
-                shopId: item.pmId,
-              },
-            });
-          }}
-          activeOpacity={1}
-          style={styles.shopNameBox}>
-          <Text style={styles.shopName}>{item?.pmName}</Text>
-          <FMImage source={Images.toRightGray} style={styles.toRight} />
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={handleSel}
+            style={isSel ? styles.isSel : styles.unSel}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('IndexNav', {
+                screen: 'ShopDetailPage',
+                params: {
+                  shopId: item.pmId,
+                },
+              });
+            }}
+            activeOpacity={1}
+            style={styles.shopNameBox}>
+            <Text style={styles.shopName}>{item?.pmName}</Text>
+            <FMImage source={Images.toRightGray} style={styles.toRight} />
+          </TouchableOpacity>
+        </View>
         <Text style={styles.state}>等待买家付款</Text>
       </View>
       {item?.orderItemVos?.map((data, i) => {
@@ -254,9 +261,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  isSel: {
+    width: Utils.properWidth(18),
+    height: Utils.properWidth(18),
+    borderRadius: Utils.properWidth(9),
+    backgroundColor: '#FF9B00',
+  },
+  unSel: {
+    width: Utils.properWidth(18),
+    height: Utils.properWidth(18),
+    borderRadius: Utils.properWidth(9),
+    borderWidth: 1,
+    borderColor: '#000',
+  },
   shopNameBox: {
     alignItems: 'center',
     flexDirection: 'row',
+    marginLeft: 9,
   },
   shopName: {
     fontSize: 16,

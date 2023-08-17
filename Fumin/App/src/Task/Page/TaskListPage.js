@@ -7,6 +7,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  DeviceEventEmitter,
 } from 'react-native';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
@@ -20,10 +21,22 @@ export default class TaskListPage extends Component {
       type: props.route?.params?.type,
       list: [],
     };
+    this.canCallBack = true;
   }
   componentDidMount() {
     this.getList();
+    DeviceEventEmitter.addListener('showFinish', (msg) => {
+      if (!this.canCallBack) {
+        return;
+      }
+      const data = msg.split('=');
+      this.handleAdCallBack(data[0], data[1]);
+    });
     // console.log(Module.handleAd);
+  }
+  componentWillUnmount() {
+    Module.destoryVideo?.();
+    DeviceEventEmitter.removeAllListeners('showFinish');
   }
 
   getList = () => {
@@ -41,13 +54,13 @@ export default class TaskListPage extends Component {
       onSuccess,
     });
   };
-  handleAdCallBack = (sn) => {
-    const {type} = this.state;
+  handleAdCallBack = (type, sn) => {
+    this.canCallBack = false;
     const path = '/app-api/advertising/auth/addAdvertisingClick';
     const params = {type, sn};
     const onSuccess = (res) => {
-      console.log(res);
       this.getList();
+      this.canCallBack = true;
     };
     ApiPostJson({
       path,
@@ -77,16 +90,13 @@ export default class TaskListPage extends Component {
   };
 
   renderItem = (item, index) => {
+    const {type} = this.state;
     return (
       <View key={index} style={styles.item}>
         <Text style={styles.itemText}>{item.content}</Text>
         {item.status
           ? this.isEndButton()
-          : this.goSeeButton(
-              Module.handleAd.bind(this, () => {
-                this.handleAdCallBack(item.sn);
-              }),
-            )}
+          : this.goSeeButton(Module.handleAd.bind(this, type, item.sn))}
       </View>
     );
   };

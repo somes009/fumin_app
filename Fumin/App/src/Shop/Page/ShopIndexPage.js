@@ -15,7 +15,7 @@ import FMAnimatableTabView from '../../Base/Widget/FMAnimatableTabView';
 import FMBanner from '../../Base/Widget/FMBanner';
 import ShopIndexList from '../Widget/ShopIndexList';
 
-export default class MineOrderPage extends Component {
+export default class ShopIndexPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};

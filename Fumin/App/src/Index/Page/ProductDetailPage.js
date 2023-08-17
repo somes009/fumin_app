@@ -101,13 +101,14 @@ export default class ShopDetailPage extends Component {
       spuId: id,
       count: buyCount,
       fromCart: false,
+      skuId: 1,
     };
     const onSuccess = (res) => {
       Utils.requestPay(
         {id: res.orderId, channelCode: payType ? 'wx_app' : 'alipay_app'},
         (resData) => {
           if (payType) {
-            const data = resData.jsonBean.data;
+            const data = resData.jsonbean.data;
             WeChat.pay({
               partnerId: data.partnerId,
               prepayId: data.prepayId,
@@ -135,7 +136,6 @@ export default class ShopDetailPage extends Component {
               })
               .catch((_err) => {
                 Utils.Toast({text: '支付失败'});
-                this.getData();
               });
           } else {
             const callback = (_respont) => {
@@ -158,6 +158,26 @@ export default class ShopDetailPage extends Component {
           }
         },
       );
+    };
+    const onFailure = () => {};
+    ApiPostJson({path, params, onSuccess, onFailure});
+  };
+
+  goDetail = (skuId) => {
+    let {id, buyCount} = this.state;
+    const {navigation} = this.props;
+    const path = '/app-api/trade/order/createOrder';
+    const params = {
+      spuId: id,
+      count: buyCount,
+      fromCart: false,
+      skuId,
+    };
+    const onSuccess = (res) => {
+      navigation.navigate('ShopNav', {
+        screen: 'ShopBuyPage',
+        params: {orderId: res.orderId},
+      });
     };
     const onFailure = () => {};
     ApiPostJson({path, params, onSuccess, onFailure});
@@ -212,11 +232,12 @@ export default class ShopDetailPage extends Component {
     );
   };
 
-  addCart = () => {
+  addCart = (skuId) => {
     const {id} = this.state;
     const path = '/app-api/trade/cart/addMyCart';
     const params = {
       id,
+      skuId,
     };
     const onSuccess = (_res) => {
       Utils.Toast({text: '添加成功'});
@@ -291,7 +312,7 @@ export default class ShopDetailPage extends Component {
             </View>
           </ScrollView>
         </View>
-        <View style={styles.bottomBox}>
+        {/* <View style={styles.bottomBox}>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('MineNav', {
@@ -303,31 +324,39 @@ export default class ShopDetailPage extends Component {
             <Text style={styles.addText}>购物车</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={this.addCart}
+            onPress={() => {
+              this.refSelProduct.openModal(2);
+            }}
             activeOpacity={1}
             style={styles.addBtn}>
             <Text style={styles.addText}>加入购物车</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              this.refSelProduct.openModal();
+              this.refSelProduct.openModal(1);
             }}
             activeOpacity={1}
             style={styles.buyBtn}>
             <Text style={styles.buyText}>立即购买</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <FMSelPayWayPopUp
           handleBuy={this.createOrder}
           ref={(ref) => (this.refSelPay = ref)}
           price={data.amount * +buyCount}
         />
         <SelProductPopUp
-          handleBuy={(_count) => {
+          handleBuy={(skuId) => {
             this.refSelProduct.closeModal();
+            // this.goDetail(skuId);
+            // this.createOrder();
             setTimeout(() => {
               this.refSelPay.openModal();
-            }, 300);
+            }, 200);
+          }}
+          addCart={(skuId) => {
+            this.refSelProduct.closeModal();
+            this.addCart(skuId);
           }}
           handlePlace={() => {
             navigation.navigate('MineNav', {

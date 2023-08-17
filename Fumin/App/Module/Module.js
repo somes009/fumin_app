@@ -2,7 +2,10 @@ import {NativeModules} from 'react-native';
 const {TestMoudle} = NativeModules;
 
 export default {
-  handleAd(callback) {
-    TestMoudle?.fullScreenVideo?.(callback);
+  handleAd(type, sn) {
+    TestMoudle?.fullScreenVideo?.(type, sn);
+  },
+  destoryVideo() {
+    TestMoudle?.destoryVideo?.();
   },
 };

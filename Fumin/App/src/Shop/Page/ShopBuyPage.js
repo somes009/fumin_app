@@ -12,13 +12,97 @@ import FMAnimatableTabView from '../../Base/Widget/FMAnimatableTabView';
 import Utils from '../../../Utils';
 import Fonts from '../../../Common/Fonts';
 import FMImage from '../../Base/Widget/FMImage';
+import {ApiPostJson} from '../../../Api/RequestTool';
+import WeChat from 'react-native-wechat-lib';
 export default class ShopBuyPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      orderId: props.route?.params.orderId,
+    };
     this.tagList = [{name: '商家邮寄'}, {name: '到店自取'}];
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.getData();
+  }
+  getData = () => {
+    const {orderId, status} = this.state;
+    const path = '/app-api/trade/order/selectMyOrderDetail';
+    const params = {
+      id: orderId,
+      status: 0,
+    };
+    const onSuccess = (res) => {
+      this.setState({
+        data: res.orderInfo,
+        show: true,
+      });
+    };
+    ApiPostJson({
+      path,
+      params,
+      onSuccess,
+    });
+  };
+  createOrder = (payType) => {
+    let {orderId, buyCount} = this.state;
+    const {navigation} = this.props;
+    Utils.requestPay(
+      {id: orderId, channelCode: payType ? 'wx_app' : 'alipay_app'},
+      (resData) => {
+        if (payType) {
+          const data = resData.jsonBean.data;
+          WeChat.pay({
+            partnerId: data.partnerId,
+            prepayId: data.prepayId,
+            nonceStr: data.nonceStr,
+            timeStamp: data.timestamp,
+            package: data.packageVal,
+            sign: data.sign,
+          })
+            .then((requestJson) => {
+              console.log(requestJson);
+              //支付成功回调
+              if (requestJson.errCode == '0') {
+                //回调成功处理
+                Utils.Toast({text: '支付成功'});
+                navigation.replace('MineNav', {
+                  screen: 'MineOrderDetailPage',
+                  params: {
+                    id: orderId,
+                  },
+                });
+                this.getData?.();
+                // this.getData();
+                this.getData();
+              }
+            })
+            .catch((_err) => {
+              Utils.Toast({text: '支付失败'});
+              this.getData();
+            });
+        } else {
+          const callback = (_respont) => {
+            if (res.resultStatus === '9000') {
+              Utils.Toast({text: '支付成功'});
+              navigation.replace('MineNav', {
+                screen: 'MineOrderDetailPage',
+                params: {
+                  id: orderId,
+                },
+              });
+              this.getData();
+              // getData?.();
+            } else {
+              Utils.Toast({text: '支付失败'});
+            }
+            console.log(res);
+          };
+          this.handleAliPay(resData?.jsonbean?.data, callback);
+        }
+      },
+    );
+  };
 
   renderList = (item, index) => {
     return (

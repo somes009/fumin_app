@@ -337,6 +337,18 @@ export default class LoginIndexPage extends Component {
             {type === 1 ? '密码' : '验证码'}登录
           </Text>
         </TouchableOpacity>
+        {type === 2 && (
+          <>
+            <Text style={styles.typeLine}>|</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('LoginFindMmPage');
+              }}
+              activeOpacity={0.6}>
+              <Text style={styles.typeText}>忘记密码</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     );
   };

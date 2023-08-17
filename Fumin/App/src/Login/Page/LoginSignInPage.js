@@ -1,7 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 
-import {View, StyleSheet, Text, Platform, BackHandler} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Platform,
+  BackHandler,
+  TouchableOpacity,
+} from 'react-native';
 import Images from '../../../Images';
 import {ApiPostJson} from '../../../Api/RequestTool';
 import CacheStore, {CacheStoreName} from '../../../Common/CacheStore';
@@ -23,6 +30,7 @@ export default class LoginIndexPage extends Component {
       qrcode: '',
       password: '',
       sec: 60,
+      isSel: false,
       isSend: false,
       canLogin: false,
     };
@@ -212,7 +220,8 @@ export default class LoginIndexPage extends Component {
     if (
       Utils.checkPhone(value) &&
       code.length === 4 &&
-      this.checkPassword(password)
+      this.checkPassword(password) &&
+      isSel
     ) {
       this.setState({
         canLogin: true,
@@ -232,6 +241,10 @@ export default class LoginIndexPage extends Component {
     } else if (!this.checkPassword(password)) {
       Utils.Toast({
         text: '密码必须是6-20个英文字母、数字或符号(除空格)，且字母、数字和标点符号至少包含两种',
+      });
+    } else if (!isSel) {
+      Utils.Toast({
+        text: '请先阅读并同意《用户协议》和《隐私政策》',
       });
     }
   };
@@ -310,6 +323,50 @@ export default class LoginIndexPage extends Component {
       </View>
     );
   };
+
+  renderLoginBottom = () => {
+    const {isSel} = this.state;
+    const {navigation} = this.props;
+    return (
+      <View style={styles.loginBottom}>
+        <TouchableOpacity
+          style={styles.loginBottomIn}
+          onPress={() => {
+            this.setState(
+              {
+                isSel: !isSel,
+              },
+              this.check,
+            );
+          }}
+          activeOpacity={1}>
+          {isSel ? (
+            <FMImage style={styles.isSelBox} source={Images.isSelGou} />
+          ) : (
+            <View style={styles.selBox} />
+          )}
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={styles.loginBottomText}>同意</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('LoginYinsiPage');
+              }}
+              activeOpacity={1}>
+              <Text style={styles.loginBottomText}>《用户协议》</Text>
+            </TouchableOpacity>
+            <Text style={styles.loginBottomText}>和</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('LoginYinsiPage');
+              }}
+              activeOpacity={1}>
+              <Text style={styles.loginBottomText}>《隐私政策》</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   render() {
     const {safeAreaInsets, navigation} = this.props;
     return (
@@ -326,6 +383,7 @@ export default class LoginIndexPage extends Component {
           {this.renderInput()}
           {this.renderLogin()}
         </ScrollView>
+        {this.renderLoginBottom()}
       </View>
     );
   }
@@ -475,9 +533,33 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 25,
   },
+  loginBottom: {
+    position: 'absolute',
+    bottom: 100,
+    alignItems: 'center',
+    width: '100%',
+  },
+  loginBottomIn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  selBox: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    borderWidth: 1,
+    marginRight: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   isSelBox: {
     width: 14,
     marginRight: 5,
     height: 14,
+  },
+  isSelCri: {
+    width: 9,
+    height: 9,
+    backgroundColor: 'orange',
   },
 });

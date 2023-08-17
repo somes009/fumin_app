@@ -3,9 +3,13 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
-const ShopIndexItem = ({item, onPress}) => {
+import Utils from '../../../Utils';
+const ShopIndexItem = ({item, onPress, style}) => {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.item}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={1}
+      style={[styles.item, style]}>
       <FMImage style={styles.img} source={{uri: item.picUrl}} />
       <View style={styles.itemBottom}>
         <Text numberOfLines={1} style={styles.name}>
@@ -23,7 +27,7 @@ export default ShopIndexItem;
 
 const styles = StyleSheet.create({
   item: {
-    width: 167,
+    width: Utils.properWidth(167),
     height: 233,
     backgroundColor: '#FFFFFF',
     marginBottom: 10,

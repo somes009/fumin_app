@@ -25,6 +25,7 @@ export default class MineOrderPage extends Component {
     this.state = {
       status: props.route?.params?.status || 0,
       tagList: [],
+      selList: [],
     };
     this.tagList = [
       {name: '全部'},
@@ -58,6 +59,7 @@ export default class MineOrderPage extends Component {
 
   renderList = (item, index) => {
     const {navigation} = this.props;
+    const {selList} = this.state;
     return (
       <View
         key={index}
@@ -65,39 +67,6 @@ export default class MineOrderPage extends Component {
           width: Utils.getScreenSize().width,
           alignItems: 'center',
         }}>
-        {/* {index === 0 && (
-          <>
-            <FMFlatList
-              ref={(ref) => (this.refCourse = ref)}
-              isApiPostJson
-              style={{flex: 1}}
-              //  responseKey={'history'}
-              requestPath="/app-api/trade/order/selectMyorderList"
-              requestParams={
-                {
-                  // status: 0,
-                }
-              }
-              keyExtractor={(item) => item?.id}
-              renderItem={({item}) => {
-                return (
-                  <MineObligationItem
-                    onPress={() => {
-                      navigation.navigate('MineOrderDetailPage', {
-                        id: item.orderId,
-                      });
-                    }}
-                    item={item}
-                  />
-                );
-              }}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{
-                paddingBottom: 20,
-              }}
-            />
-          </>
-        )} */}
         <FMFlatList
           ref={(ref) => (this.refOrder1 = ref)}
           isApiPostJson
@@ -109,11 +78,24 @@ export default class MineOrderPage extends Component {
           }}
           keyExtractor={(item) => item?.id}
           renderItem={({item}) => {
+            const isSel = selList.indexOf(item.pmId) !== -1;
             return (
               <MineObligationItem
+                isSel={isSel}
+                handleSel={() => {
+                  if (isSel) {
+                    this.setState({
+                      selList: selList.filter((data) => data !== item.pmId),
+                    });
+                  } else {
+                    this.setState({
+                      selList: [...selList, item.pmId],
+                    });
+                  }
+                }}
                 onPress={() => {
                   navigation.navigate('MineOrderDetailPage', {
-                    id: item.childOrderId,
+                    id: item.orderId,
                     status: 0,
                   });
                 }}
@@ -130,54 +112,23 @@ export default class MineOrderPage extends Component {
             paddingBottom: 20,
           }}
         />
-
-        {/* {index === 2 && (
-          <FMFlatList
-            ref={(ref) => (this.refCourse = ref)}
-            isApiPostJson
-            style={{flex: 1}}
-            //  responseKey={'history'}
-            requestPath="/app-api/trade/order/selectMyorderList"
-            requestParams={{
-              status: item.type,
-            }}
-            keyExtractor={(item) => item?.id}
-            renderItem={({item}) => {
-              return <MineWaitSendItem item={item} />;
-            }}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingBottom: 20,
-            }}
-          />
+        {!index && (
+          <View style={styles.bottomBox}>
+            <TouchableOpacity
+              style={styles.buyBtn}
+              activeOpacity={1}
+              onPress={() => {}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: '#fff',
+                  textAlign: 'center',
+                }}>
+                合并付款
+              </Text>
+            </TouchableOpacity>
+          </View>
         )}
-        {index === 3 && (
-          <FMFlatList
-            ref={(ref) => (this.refCourse = ref)}
-            isApiPostJson
-            style={{flex: 1}}
-            //  responseKey={'history'}
-            requestPath="/app-api/trade/order/selectMyorderList"
-            requestParams={{
-              status: item.type,
-            }}
-            keyExtractor={(item) => item?.id}
-            renderItem={({item}) => {
-              return (
-                <MineIsEndItem
-                  item={item}
-                  onPress={() => {
-                    navigation.navigate('MineOrderDetailPage');
-                  }}
-                />
-              );
-            }}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingBottom: 20,
-            }}
-          />
-        )} */}
       </View>
     );
   };
@@ -224,5 +175,24 @@ const styles = StyleSheet.create({
     height: 3,
     borderRadius: 2,
     backgroundColor: '#FF9B00',
+  },
+  bottomBox: {
+    width: '100%',
+    backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 0,
+    height: Utils.properWidth(44),
+    borderTopColor: '#E9E9E9',
+    borderTopWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buyBtn: {
+    width: Utils.properWidth(343),
+    height: Utils.properWidth(31),
+    borderRadius: Utils.properWidth(23),
+    backgroundColor: '#FF9B00',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -6,7 +6,7 @@ import {ApiPostJson} from '../Api/RequestTool';
 import _ from 'lodash';
 import Clipboard from '@react-native-community/clipboard';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {uploadImg} from './AliyunTools';
+import {uploadImg} from '../Common/AliyunTools';
 
 let Utils = {};
 
@@ -107,14 +107,16 @@ Utils.checkPhone = (phone) => {
 };
 
 //上传图片
-Utils.upLoadImg = (success, fail) => {
+Utils.upLoadImg = (successCallback, fail) => {
   const option = {
     mediaType: 'photo',
   };
-  const callback = ({assets: [{uri}]}) => {
-    if (uri) {
-      uploadImg(uri, (uri) => {
-        success?.(uri);
+  // const callback = (res) => {
+  //   console.log(res);
+  const callback = ({assets: [{fileName}]}) => {
+    if (fileName) {
+      uploadImg(fileName, (uri) => {
+        successCallback(uri);
       });
     } else {
       fail?.();
@@ -192,13 +194,13 @@ Utils.Toast = ({
 };
 
 Utils.getLocalImagePathAndroid = (item) => {
-  // if (Utils.isAndroid) {
-  //   if (item?.indexOf('content://') !== -1) {
-  //     return item;
-  //   } else {
-  //     return 'file://' + item;
-  //   }
-  // }
+  if (Utils.isAndroid) {
+    if (item?.indexOf('content://') !== -1) {
+      return item;
+    } else {
+      return 'file://' + item;
+    }
+  }
   return item;
 };
 

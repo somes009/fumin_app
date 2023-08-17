@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 // import {createStore, applyMiddleware} from 'redux';
 // import 'react-native-reanimated';
+import AliyunTools from './App/Common/AliyunTools';
 import {RootSiblingParent} from 'react-native-root-siblings';
 import {NativeBaseProvider} from 'native-base';
 import TabNavigator from './App/src/FuMinNavigator/TabNavigator';
@@ -12,6 +13,8 @@ import CacheStore from './App/Common/CacheStore';
 import {Provider} from 'react-redux';
 import store from './App/src/store';
 import EventBus, {EventBusName} from './App/Api/EventBus';
+import * as WeChat from 'react-native-wechat-lib';
+AliyunTools.init(false);
 // import thunk from 'redux-thunk';
 // import rootReducer from './App/reducers';
 // import {getAllProducts} from './actions';
@@ -36,6 +39,7 @@ class App extends Component {
         userType,
       });
     });
+    WeChat.registerApp('wx4da22a07da9d5a7a', '');
     CacheStore.get('INFO').then((info) => {
       if (!info) {
         this.setState({

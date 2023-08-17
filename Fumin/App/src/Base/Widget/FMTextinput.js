@@ -27,6 +27,7 @@ class FMTextinput extends Component {
       length,
       returnKeyType,
       editable,
+      secureTextEntry,
     } = this.props;
     const {isGreen} = this.state;
     if (isNumber) {
@@ -60,6 +61,7 @@ class FMTextinput extends Component {
           maxLength={maxLength}
           returnKeyType={returnKeyType || 'done'}
           onChangeText={onChangeText}
+          secureTextEntry={secureTextEntry}
           placeholderTextColor="#8A8A8A"
           onFocus={() => {
             this.setState({
@@ -97,6 +99,7 @@ const con = ({
   needBorder,
   length,
   returnKeyType,
+  secureTextEntry,
   editable = true,
 }) => {
   return (
@@ -104,6 +107,7 @@ const con = ({
       containerStyle={containerStyle}
       leftComponent={leftComponent}
       rightComponent={rightComponent}
+      secureTextEntry={secureTextEntry}
       textStyle={textStyle}
       placeholderStyle={placeholderStyle}
       selectionColor={selectionColor}

@@ -32,6 +32,7 @@ export default class ShProductAddPage extends Component {
       count: '',
       price: '',
       tabList: [],
+      categoryId: 0,
     };
   }
 
@@ -84,6 +85,7 @@ export default class ShProductAddPage extends Component {
       // objType: 1,
     };
     const onSuccess = (res) => {
+      console.log(res);
       this.setState({
         tabList: res.list,
         categoryId: res.list[0]?.id,
@@ -96,11 +98,11 @@ export default class ShProductAddPage extends Component {
     });
   };
   create = () => {
-    const {name, payType, expenseType, count, price} = this.state;
+    const {name, payType, expenseType, count, price, imgList} = this.state;
     const path = '/app-api/product/spu/addSpuForAPP';
     const params = {
       name,
-      picUrls: ['1', '2'],
+      picUrls: imgList,
       categoryId: 10,
       buyMode: payType + 1,
       consumeMode: expenseType + 1,
@@ -122,7 +124,7 @@ export default class ShProductAddPage extends Component {
   openChange = () => {
     const {tabList} = this.state;
     let list = [];
-    for(let i in tabList) {
+    for (let i in tabList) {
       list.push({
         text: tabList[i].name,
         color: '#0091FF',
@@ -189,49 +191,60 @@ export default class ShProductAddPage extends Component {
       </View>
     );
   };
-  handleOpenImageLibrary = ({index}) => {
-    Utils.upLoadImg((uri) => {
-      console.log(uri);
-      const {imgList} = this.state;
-      let arr = _.cloneDeep(imgList);
-      if (typeof index === 'number') {
-        arr.splice(index, 1, uri);
-      } else {
-        arr.push(uri);
-      }
-      this.setState({
-        list: arr,
-      });
-      // this.refChangePic.closeModal();
-    });
-  };
   renderImg = () => {
+    const {imgList} = this.state;
     return (
       <View style={styles.renderImg}>
-        <View style={styles.infoBox}>
+        <View
+          style={[
+            styles.infoBox,
+            {flexDirection: 'column', alignItems: 'flex-start'},
+          ]}>
           <View style={styles.titleBox}>
             <Text style={styles.title}>商品图片</Text>
             <Text style={styles.xing}>*</Text>
           </View>
-          <TouchableOpacity
-            activeOpacity={1}
-            style={{width: 100, height: 100, backgroundColor: 'red'}}
-            onPress={this.handleOpenImageLibrary.bind(this, {})}
-          />
+          <View style={{flexDirection: 'row'}}>
+            {imgList?.map((item, index) => {
+              return (
+                <FMImage
+                  source={{uri: item}}
+                  style={{
+                    height: 100,
+                    width: 100,
+                  }}
+                />
+              );
+            })}
+            <TouchableOpacity
+              activeOpacity={1}
+              style={{width: 100, height: 100, backgroundColor: 'red'}}
+              onPress={this.handleOpenImageLibrary.bind(this, {})}
+            />
+          </View>
         </View>
       </View>
     );
   };
   renderClassify = () => {
-    const {classify} = this.state;
+    const {categoryId, tabList} = this.state;
     return (
       <View style={styles.infoBox}>
         <View style={styles.titleBox}>
           <Text style={styles.title}>商品分类</Text>
           <Text style={styles.xing}>*</Text>
         </View>
-        <TouchableOpacity onPress={this.openChange} style={styles.classifyBox}>
-          <Text style={styles.classify}>食品</Text>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={this.openChange}
+          style={styles.classifyBox}>
+          <Text style={styles.classify}>
+            {tabList.map((item, index) => {
+              if (item.id === categoryId) {
+                return item.name;
+              }
+            })}
+          </Text>
           <FMImage source={Images.toBottomBlack} style={styles.toBottomBlack} />
         </TouchableOpacity>
       </View>
@@ -372,16 +385,16 @@ export default class ShProductAddPage extends Component {
       mediaType: 'photo',
     };
     Utils.upLoadImg((uri) => {
-      const {list} = this.state;
-      let arr = _.cloneDeep(list);
+      const {imgList} = this.state;
+      let arr = _.cloneDeep(imgList);
       if (typeof index === 'number') {
         arr.splice(index, 1, uri);
       } else {
         arr.push(uri);
       }
-
+      console.log(arr);
       this.setState({
-        list: arr,
+        imgList: arr,
       });
       // this.refChangePic.closeModal();
     });

@@ -141,49 +141,51 @@ export default class MineOrderPage extends Component {
 
   render() {
     const {navigation, index} = this.props;
-    const {categoryId} = this.state;
+    const {categoryId, tabList} = this.state;
     return (
       <View style={[styles.container]}>
         {this.renderBanner()}
         {this.renderSearch()}
         {this.renderTab()}
         <View style={styles.list}>
-          <FMFlatList
-            ref={(ref) => (this.refList = ref)}
-            isApiPostJson
-            style={{flex: 1, width: Utils.getScreenSize().width}}
-            requestPath="/app-api/product/merchant/auth/queryProductSpuPage"
-            requestParams={{
-              type: index + 2,
-              // categoryId,
-            }}
-            keyExtractor={(item) => item?.id}
-            numColumns={2}
-            renderItem={({item, index}) => {
-              return (
-                <ShopIndexItem
-                  key={index + 'item'}
-                  item={item}
-                  style={{
-                    marginLeft: index % 2 ? Utils.properWidth(8) : 0,
-                  }}
-                  onPress={() => {
-                    // navigation.navigate('ProductDetailPage', {
-                    //   id: item.spuId,
-                    // });
-                    navigation.navigate('IndexNav', {
-                      screen: 'ProductDetailPage',
-                      params: {id: item.spuId},
-                    });
-                  }}
-                />
-              );
-            }}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingBottom: 20,
-            }}
-          />
+          {!!tabList.length && (
+            <FMFlatList
+              ref={(ref) => (this.refList = ref)}
+              isApiPostJson
+              style={{flex: 1, width: Utils.getScreenSize().width}}
+              requestPath="/app-api/product/merchant/auth/queryProductSpuPage"
+              requestParams={{
+                type: index + 2,
+                categoryId,
+              }}
+              keyExtractor={(item, i) => i}
+              numColumns={2}
+              renderItem={({item, index}) => {
+                return (
+                  <ShopIndexItem
+                    // key={index + 'item'}
+                    item={item}
+                    style={{
+                      marginLeft: index % 2 ? Utils.properWidth(10) : 0,
+                    }}
+                    onPress={() => {
+                      // navigation.navigate('ProductDetailPage', {
+                      //   id: item.spuId,
+                      // });
+                      navigation.navigate('IndexNav', {
+                        screen: 'ProductDetailPage',
+                        params: {id: item.spuId},
+                      });
+                    }}
+                  />
+                );
+              }}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingBottom: 250,
+              }}
+            />
+          )}
         </View>
       </View>
     );

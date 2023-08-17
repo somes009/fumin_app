@@ -22,8 +22,8 @@ buildscript {
 //            // Android JSC is installed from npm
 //            url("$rootDir/../node_modules/jsc-android/dist")
 //        }
-//        maven { url 'https://maven.aliyun.com/repository/google' }
-//        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
 //        maven { url "https://jitpack.io" }
     }
     dependencies {
@@ -48,7 +48,12 @@ allprojects {
 
         google()
         jcenter()
+        flatDir {
+            dirs 'libs'
+        }
         maven { url 'https://www.jitpack.io' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
         exclusiveContent {
             // We get React Native's Android binaries exclusively through npm,
             // from a local Maven repo inside node_modules/react-native/.

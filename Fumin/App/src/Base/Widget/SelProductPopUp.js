@@ -26,11 +26,13 @@ export default class FMSelPayWayPopUp extends Component {
       price: '',
       amount: '',
       type: 0,
+      skuId: '',
+      objType: 1,
     };
     this.refAndroid = {};
   }
-  openModal = () => {
-    // this.setState({handlePay, selType, price});
+  openModal = (objType) => {
+    this.setState({objType});
     isAndroid ? this.refAndroid.handleShow() : this.refIos.handleShow();
   };
 
@@ -128,7 +130,8 @@ export default class FMSelPayWayPopUp extends Component {
   };
 
   renderContent = () => {
-    const {handleBuy, data, buyCount, place} = this.props;
+    const {handleBuy, data, buyCount, place, addCart} = this.props;
+    const {objType, skuId} = this.state;
     return (
       <View style={styles.popUp}>
         <View style={styles.topBox}>
@@ -147,7 +150,11 @@ export default class FMSelPayWayPopUp extends Component {
                   text: '请添加收货地址',
                 });
               }
-              handleBuy?.(+buyCount);
+              if (objType === 1) {
+                handleBuy?.(skuId);
+              } else {
+                addCart?.(skuId);
+              }
             }}
             activeOpacity={1}
             style={styles.buyBtn}>
@@ -160,20 +167,20 @@ export default class FMSelPayWayPopUp extends Component {
   };
 
   renderClassifyBox = () => {
-    const {type} = this.state;
-    const list = ['白色', '粉色', '蓝色', '绿色'];
+    const {type, skuId} = this.state;
+    const {data} = this.props;
     return (
       <View style={styles.flBox}>
         <Text style={styles.flTitle}>分类</Text>
         <View style={styles.flList}>
-          {list.map((item, index) => {
-            const isSel = type === index;
+          {data?.skuList?.map((item, index) => {
+            const isSel = skuId === item.id;
             return (
               <TouchableOpacity
                 key={index}
                 onPress={() => {
                   this.setState({
-                    type: index,
+                    skuId: item.id,
                   });
                 }}
                 style={[
@@ -183,7 +190,7 @@ export default class FMSelPayWayPopUp extends Component {
                 activeOpacity={1}>
                 <Text
                   style={[styles.flText, {color: isSel ? '#fff' : '#6D7278'}]}>
-                  {item}
+                  {item?.name}
                 </Text>
               </TouchableOpacity>
             );

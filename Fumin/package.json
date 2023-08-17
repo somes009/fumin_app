@@ -28,6 +28,7 @@
     "@react-navigation/bottom-tabs": "^5.11.6",
     "@react-navigation/native": "^5.7.6",
     "@react-navigation/stack": "^5.9.3",
+    "@uiw/react-native-alipay": "^3.0.0",
     "aliyun-oss-react-native": "^1.0.0-alpha.7",
     "apisauce": "^2.0.1",
     "json-bigint": "^1.0.0",
@@ -61,8 +62,7 @@
     "react-navigation": "^4.4.3",
     "react-redux": "^8.1.0",
     "redux": "^4.2.1",
-    "teaset": "^0.7.4",
-    "@uiw/react-native-alipay": "^3.0.0"
+    "teaset": "^0.7.4"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.13.0",
