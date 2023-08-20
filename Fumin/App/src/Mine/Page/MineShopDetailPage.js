@@ -58,7 +58,8 @@ export default class MineShopDetailPage extends Component {
   }
 
   create = () => {
-    const {name, phone, yewu, count, picList, imgList, place, isEntity} = this.state;
+    const {name, phone, yewu, count, picList, imgList, place, isEntity} =
+      this.state;
     const path =
       '/app-api/member/user-apply-merchant-record/auth/applyUserMerchantForAPP';
     const params = {
