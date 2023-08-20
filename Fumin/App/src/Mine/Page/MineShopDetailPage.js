@@ -18,7 +18,7 @@ import CommonButtonsPopUp from '../../Base/Widget/CommonButtonsPopUp';
 import _ from 'lodash';
 import Images from '../../../Images';
 import FMButton from '../../Base/Widget/FMButton';
-export default class SetShopDetailPage extends Component {
+export default class MineShopDetailPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,6 +34,7 @@ export default class SetShopDetailPage extends Component {
       place: '',
       picList: [],
       categoryId: 0,
+      isEntity: 0,
     };
   }
 
@@ -54,43 +55,21 @@ export default class SetShopDetailPage extends Component {
   }
   componentDidMount() {
     this.requestCarmeraPermission();
-    const {id} = this.state;
-    if (id) {
-      this.getData();
-    }
   }
-  getData = () => {
-    const {id} = this.state;
-    const path = '/app-api/product/merchant/auth/getProductMerchantSpuDetail';
-    const params = {
-      id,
-      // objType: 1,
-    };
-    const onSuccess = (res) => {
-      this.setState({
-        data: res,
-        name: res.name,
-        price: res.amount + '',
-      });
-    };
-    ApiPostJson({
-      path,
-      params,
-      onSuccess,
-    });
-  };
+
   create = () => {
-    const {name, payType, expenseType, count, price, imgList} = this.state;
-    const path = '/app-api/product/spu/addSpuForAPP';
+    const {name, phone, yewu, count, picList, imgList, place, isEntity} = this.state;
+    const path =
+      '/app-api/member/user-apply-merchant-record/auth/applyUserMerchantForAPP';
     const params = {
       name,
-      picUrls: imgList,
-      categoryId: 10,
-      buyMode: payType + 1,
-      consumeMode: expenseType + 1,
-      totalStock: count,
-      marketPrice: price * 100,
-      status: 1,
+      businessLicense: imgList,
+      frontPhoto: picList,
+      phone,
+      mainBusiness: yewu,
+      storeInformation: count,
+      shopAddress: place,
+      isEntity,
     };
     const onSuccess = (res) => {
       this.setState({
@@ -268,30 +247,6 @@ export default class SetShopDetailPage extends Component {
       </View>
     );
   };
-  renderClassify = () => {
-    const {categoryId, tabList} = this.state;
-    return (
-      <View style={styles.infoBox}>
-        <View style={styles.titleBox}>
-          <Text style={styles.title}>商品分类</Text>
-          <Text style={styles.xing}>*</Text>
-        </View>
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={this.openChange}
-          style={styles.classifyBox}>
-          <Text style={styles.classify}>
-            {tabList.map((item, index) => {
-              if (item.id === categoryId) {
-                return item.name;
-              }
-            })}
-          </Text>
-          <FMImage source={Images.toBottomBlack} style={styles.toBottomBlack} />
-        </TouchableOpacity>
-      </View>
-    );
-  };
   renderCount = () => {
     const {count} = this.state;
     return (
@@ -382,6 +337,30 @@ export default class SetShopDetailPage extends Component {
       // this.refChangePic.closeModal();
     });
   };
+
+  renderBottom = () => {
+    const {isEntity} = this.state;
+    return (
+      <View style={styles.loginBottom}>
+        <TouchableOpacity
+          style={styles.loginBottomIn}
+          onPress={() => {
+            this.setState(
+              {
+                isEntity: !isEntity,
+              },
+              this.check,
+            );
+          }}
+          activeOpacity={1}>
+          <View style={styles.selBox}>
+            {!!isEntity && <View style={styles.isSelCri} />}
+          </View>
+          <Text style={styles.loginBottomText}>是否为实体店</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   render() {
     const {navigation, safeAreaInsets} = this.props;
     return (
@@ -399,6 +378,7 @@ export default class SetShopDetailPage extends Component {
         {this.renderCount()}
         {this.renderImg()}
         {this.renderPic()}
+        {this.renderBottom()}
         <FMButton
           text="提交"
           textStyle={styles.add}
@@ -490,15 +470,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  selBox: {
-    // width: 13,
-    // height: 13,
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: '#6D7278',
-    marginRight: 7,
-    padding: 2,
-  },
   listText: {
     fontSize: 14,
     fontFamily: Fonts.PingFangSC_Regular,
@@ -522,5 +493,29 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     color: '#fff',
     fontFamily: Fonts.PingFangSC_Regular,
+  },
+  loginBottom: {
+    marginTop: 30,
+    alignItems: 'flex-end',
+    width: '100%',
+    marginRight: 22,
+  },
+  loginBottomIn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  selBox: {
+    width: 14,
+    height: 14,
+    borderRadius: 3,
+    borderWidth: 1,
+    marginRight: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  isSelCri: {
+    width: 9,
+    height: 9,
+    backgroundColor: 'orange',
   },
 });

@@ -164,7 +164,7 @@ function HomeTabs() {
           },
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Task"
         component={TaskIndexPageWithNavigation}
         options={{
@@ -178,7 +178,7 @@ function HomeTabs() {
             );
           },
         }}
-      /> */}
+      />
       <Tab.Screen
         name="Mine"
         component={MineIndexPageWithNavigation}

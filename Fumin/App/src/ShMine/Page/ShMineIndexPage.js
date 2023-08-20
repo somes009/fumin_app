@@ -132,7 +132,7 @@ class ShMineIndexPage extends Component {
       {
         name: '门店信息管理',
         fun: () => {
-          navigation.navigate('ShShopNav', {
+          navigation.navigate('ShMineNav', {
             screen: 'SetShopDetailPage',
           });
         },

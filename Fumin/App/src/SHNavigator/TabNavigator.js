@@ -33,6 +33,7 @@ import {ShMineInnerNavigator} from '../ShMine/Navigator/ShMineNavigator';
 import {ShShopInnerNavigator} from '../ShShop/Navigator/ShShopNavigator';
 import {ShProductInnerNavigator} from '../ShProduct/Navigator/ShProductNavigator';
 import {ShOrderInnerNavigator} from '../ShOrder/Navigator/ShOrderNavigator';
+import {MineInnerNavigator} from '../Mine/Navigator/MineNavigator';
 
 import CustomTabbar from './CustomTabbar';
 
@@ -249,6 +250,14 @@ const TabNavigatorInner = ({initialRouteName}) => {
       <Stack.Screen
         name="LoginNav"
         component={LoginInnerNavigator}
+        options={{
+          header: () => null,
+          gestureEnabled: false,
+        }}
+      />
+      <Stack.Screen
+        name="MineNav"
+        component={MineInnerNavigator}
         options={{
           header: () => null,
           gestureEnabled: false,

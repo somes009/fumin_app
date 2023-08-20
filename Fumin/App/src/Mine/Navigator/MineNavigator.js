@@ -16,6 +16,7 @@ import MineOrderDetailPage from '../Page/MineOrderDetailPage';
 import MineApplyLSPage from '../Page/MineApplyLSPage';
 import MineApplyJLPage from '../Page/MineApplyJLPage';
 import MinebindInfoPage from '../Page/MinebindInfoPage';
+import MineShopDetailPage from '../Page/MineShopDetailPage';
 import {Platform} from 'react-native';
 import {
   NavigationContainer,
@@ -252,6 +253,19 @@ const MinebindInfoPageWithNavigation = (props) => {
     />
   );
 };
+const MineShopDetailPageWithNavigation = (props) => {
+  const isFocused = useIsFocused();
+  const routesLength = useNavigationState((state) => state.routes.length);
+  const insets = useSafeAreaInsets();
+  return (
+    <MineShopDetailPage
+      {...props}
+      routesLength={routesLength}
+      safeAreaInsets={insets}
+      isFocused={isFocused}
+    />
+  );
+};
 
 export const MineInnerNavigator = ({initialRouteName}) => (
   <Stack.Navigator
@@ -381,6 +395,13 @@ export const MineInnerNavigator = ({initialRouteName}) => (
     <Stack.Screen
       name="MinebindInfoPage"
       component={MinebindInfoPageWithNavigation}
+      options={{
+        header: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="MineShopDetailPage"
+      component={MineShopDetailPageWithNavigation}
       options={{
         header: () => null,
       }}

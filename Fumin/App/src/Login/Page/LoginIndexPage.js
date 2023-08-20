@@ -274,6 +274,25 @@ export default class LoginIndexPage extends Component {
       needShowMsg: true,
     });
   };
+  checkPassword = (str) => {
+    // 匹配6-20个英文字母、数字或符号(除空格)
+    //必须是6-20个英文字母、数字或符号(除空格)，且字母、数字和标点符号至少包含两种
+    const regex = /^(?=.*[a-zA-Z])(?=.*\d|(?=.*[\W_]))[a-zA-Z\d\W_]{6,20}$/;
+    // 判断字符串是否符合要求
+    if (regex.test(str)) {
+      // 字母、数字和标点符号至少包含两种
+      const charCount = {};
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charAt(i);
+        if (!charCount[char]) {
+          charCount[char] = true;
+        }
+      }
+      return Object.keys(charCount).length >= 2;
+    } else {
+      return false;
+    }
+  };
   checkInfo = () => {
     const {value, code, type, password, isSel} = this.state;
     if (!Utils.checkPhone(value)) {

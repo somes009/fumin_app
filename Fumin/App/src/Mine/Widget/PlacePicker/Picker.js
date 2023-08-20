@@ -6,18 +6,18 @@ export default class Picker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValue: props?.id || props?.items[0]?.value || 1,
+      selectedValue: props?.id || props?.items[0]?.value || null,
     };
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (!nextProps?.items?.length && !!this.props?.items?.length) {
-      this.setState({
-        selectedValue: 0,
-      });
-    }
-    return true;
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   if (!nextProps?.items?.length && !!this.props?.items?.length) {
+  //     this.setState({
+  //       selectedValue: 0,
+  //     });
+  //   }
+  //   return true;
+  // }
 
   render() {
     const {items, onValueChange, placeholder} = this.props;
@@ -27,6 +27,7 @@ export default class Picker extends Component {
         <RNPickerSelect
           value={selectedValue}
           onValueChange={(value) => {
+            console.log(value);
             onValueChange(value);
             this.setState({
               selectedValue: value,

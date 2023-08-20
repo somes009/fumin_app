@@ -44,10 +44,16 @@ export default class MineCreatePlacePage extends Component {
       // objType: 1,
     };
     const onSuccess = (res) => {
-      console.log(res);
+      let list = [...res];
+      list.unshift({
+        name: '无',
+        id: null,
+        children: [],
+      });
+      console.log(list);
       this.setState(
         {
-          placeList: res,
+          placeList: list,
         },
         this.getData,
       );

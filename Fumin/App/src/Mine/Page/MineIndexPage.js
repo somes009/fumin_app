@@ -138,7 +138,7 @@ class MineIndexPage extends Component {
           </View>
         </View>
         <View style={styles.infoBoxRight}>
-          {/* <TouchableOpacity
+          <TouchableOpacity
             onPress={() => {
               navigation.navigate('MineNav', {
                 screen: 'MineCartPage',
@@ -148,7 +148,7 @@ class MineIndexPage extends Component {
             style={styles.changeTypeBox}>
             <FMImage style={styles.changeTypeImg} />
             <Text style={styles.changeTypeText}>购物车</Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={this.openChange}
             activeOpacity={0.8}
@@ -305,10 +305,14 @@ class MineIndexPage extends Component {
           });
         },
       },
-      // {
-      //   name: '我要开店',
-      //   fun: () => {},
-      // },
+      {
+        name: '我要开店',
+        fun: () => {
+          navigation.navigate('MineNav', {
+            screen: 'MineShopDetailPage',
+          });
+        },
+      },
       // {
       //   name: '我要投诉',
       //   fun: () => {},
@@ -387,7 +391,7 @@ class MineIndexPage extends Component {
             {this.renderInfo()}
             {this.renderBanner()}
             {this.renderAsset()}
-            {/* {this.renderOrder()} */}
+            {this.renderOrder()}
             {this.renderMineBottom()}
           </View>
         </ScrollView>

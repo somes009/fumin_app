@@ -312,7 +312,7 @@ export default class ShopDetailPage extends Component {
             </View>
           </ScrollView>
         </View>
-        {/* <View style={styles.bottomBox}>
+        <View style={styles.bottomBox}>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('MineNav', {
@@ -339,7 +339,7 @@ export default class ShopDetailPage extends Component {
             style={styles.buyBtn}>
             <Text style={styles.buyText}>立即购买</Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
         <FMSelPayWayPopUp
           handleBuy={this.createOrder}
           ref={(ref) => (this.refSelPay = ref)}
