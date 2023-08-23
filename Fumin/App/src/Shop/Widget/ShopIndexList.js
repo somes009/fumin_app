@@ -160,14 +160,15 @@ export default class MineOrderPage extends Component {
               }}
               keyExtractor={(item, i) => i}
               numColumns={2}
-              renderItem={({item, index}) => {
+              renderItem={({item, i}) => {
                 return (
                   <ShopIndexItem
                     // key={index + 'item'}
                     item={item}
                     style={{
-                      marginLeft: index % 2 ? Utils.properWidth(10) : 0,
+                      marginLeft: i % 2 ? 0 : Utils.properWidth(10),
                     }}
+                    type={index}
                     onPress={() => {
                       // navigation.navigate('ProductDetailPage', {
                       //   id: item.spuId,

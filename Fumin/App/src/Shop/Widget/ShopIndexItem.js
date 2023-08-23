@@ -4,7 +4,7 @@ import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import FMImage from '../../Base/Widget/FMImage';
 import Fonts from '../../../Common/Fonts';
 import Utils from '../../../Utils';
-const ShopIndexItem = ({item, onPress, style}) => {
+const ShopIndexItem = ({item, onPress, style, type}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -16,7 +16,11 @@ const ShopIndexItem = ({item, onPress, style}) => {
           {item.spuName}
         </Text>
         <View style={styles.bottom}>
-          <Text style={styles.price}>{item.marketPrice}</Text>
+          <Text style={styles.price}>
+            {!type
+              ? `${item.redEnvelopeCount} + ¥${item.marketPrice}`
+              : `${item.fortuneBeanCount}`}
+          </Text>
           <Text style={styles.count}>{item.salesCount}人付款</Text>
         </View>
       </View>
