@@ -151,22 +151,20 @@ export default class AliyunTools {
       }`;
       // const filename = `${uuid()}${fileType || '.jpg'}`;
       // console.log(AliyunOSS.asyncUpload());
-      AliyunOSS?.asyncUpload?.(
-        // '',
-        BUCKET_NAME,
-        `${tempObject}/${filename}`,
-        filePath,
-      )
+      AliyunOSS.asyncUpload(BUCKET_NAME, `${tempObject}/${filename}`, filePath)
         .then((res) => {
           resolve(FILE_URL + filename);
           AliyunOSS.removeEventListener('uploadProgress');
-          console.log('aliyunoss res', res?.httpResponseHeaderFields);
+          console.log('aliyunoss res', res);
         })
         .catch((error) => {
           reject(error);
           // 移除上传进度监听
           AliyunOSS.removeEventListener('uploadProgress');
           console.log('aliyunoss error', error);
+          Utils.Toast({
+            text: '图片上传失败',
+          });
         });
     });
   }

@@ -104,7 +104,7 @@ class ShMineIndexPage extends Component {
       title: '',
       list: [
         {
-          text: '切换理事',
+          text: '切换商家',
           color: '#0091FF',
           fun: () => {
             EventBus.post(EventBusName.CHANGE_USER_TYPE, {

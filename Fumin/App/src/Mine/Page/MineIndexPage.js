@@ -29,6 +29,7 @@ class MineIndexPage extends Component {
       selPayList: [],
       selDelList: [],
       banners: [],
+      isShangJia: false,
     };
     this.orderIcon = {
       0: Images.waitPayIcon,
@@ -63,6 +64,7 @@ class MineIndexPage extends Component {
     const onSuccess = (res) => {
       this.setState({
         data: res,
+        isShangJia: !!res.isShangJia,
       });
     };
     ApiPostJson({
@@ -94,7 +96,7 @@ class MineIndexPage extends Component {
       title: '',
       list: [
         {
-          text: '切换理事',
+          text: '切换商家',
           color: '#0091FF',
           fun: () => {
             EventBus.post(EventBusName.CHANGE_USER_TYPE, {
@@ -119,7 +121,7 @@ class MineIndexPage extends Component {
 
   renderInfo = () => {
     const {navigation} = this.props;
-    const {data} = this.state;
+    const {data, isShangJia} = this.state;
     return (
       <View style={[styles.infoBox]}>
         <View style={styles.infoBoxLeft}>
@@ -149,13 +151,18 @@ class MineIndexPage extends Component {
             <FMImage style={styles.changeTypeImg} />
             <Text style={styles.changeTypeText}>购物车</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={this.openChange}
-            activeOpacity={0.8}
-            style={styles.changeTypeBox}>
-            <FMImage source={{uri: Images.logo}} style={styles.changeTypeImg} />
-            <Text style={styles.changeTypeText}>切换身份</Text>
-          </TouchableOpacity>
+          {!!isShangJia && (
+            <TouchableOpacity
+              onPress={this.openChange}
+              activeOpacity={0.8}
+              style={styles.changeTypeBox}>
+              <FMImage
+                source={{uri: Images.logo}}
+                style={styles.changeTypeImg}
+              />
+              <Text style={styles.changeTypeText}>切换身份</Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={() => {
               // navigation.navigate('MineNav', {

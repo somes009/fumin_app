@@ -111,12 +111,12 @@ Utils.upLoadImg = (successCallback, fail) => {
   const option = {
     mediaType: 'photo',
   };
-  // const callback = (res) => {
-  //   console.log(res);
-  const callback = ({assets: [{fileName}]}) => {
-    if (fileName) {
-      uploadImg(fileName, (uri) => {
-        successCallback(uri);
+  // const callback = ({assets: [{uri}]}) => {
+  const callback = ({assets: [{uri}]}) => {
+    // console.log(res);
+    if (uri) {
+      uploadImg(uri, (url) => {
+        successCallback(url);
       });
     } else {
       fail?.();
@@ -194,13 +194,13 @@ Utils.Toast = ({
 };
 
 Utils.getLocalImagePathAndroid = (item) => {
-  if (Utils.isAndroid) {
-    if (item?.indexOf('content://') !== -1) {
-      return item;
-    } else {
-      return 'file://' + item;
-    }
-  }
+  // if (Utils.isAndroid) {
+  //   if (item?.indexOf('content://') !== -1) {
+  //     return item;
+  //   } else {
+  //     return 'file:///' + item;
+  //   }
+  // }
   return item;
 };
 
