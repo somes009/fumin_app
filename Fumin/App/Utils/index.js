@@ -110,9 +110,10 @@ Utils.checkPhone = (phone) => {
 Utils.upLoadImg = (successCallback, fail) => {
   const option = {
     mediaType: 'photo',
+    quality: 0.3,
   };
-  // const callback = ({assets: [{uri}]}) => {
   const callback = ({assets: [{uri}]}) => {
+  // const callback = (res) => {
     // console.log(res);
     if (uri) {
       uploadImg(uri, (url) => {

@@ -78,18 +78,18 @@ export default class MineOrderPage extends Component {
           }}
           keyExtractor={(item) => item?.id}
           renderItem={({item}) => {
-            const isSel = selList.indexOf(item.pmId) !== -1;
+            const isSel = selList.indexOf(item.orderId) !== -1;
             return (
               <MineObligationItem
                 isSel={isSel}
                 handleSel={() => {
                   if (isSel) {
                     this.setState({
-                      selList: selList.filter((data) => data !== item.pmId),
+                      selList: selList.filter((data) => data !== item.orderId),
                     });
                   } else {
                     this.setState({
-                      selList: [...selList, item.pmId],
+                      selList: [...selList, item.orderId],
                     });
                   }
                 }}

@@ -31,6 +31,12 @@ export default class FMSelPayWayPopUp extends Component {
     };
     this.refAndroid = {};
   }
+  componentDidMount() {
+    const {data} = this.props;
+    this.setState({
+      skuId: data.skuList?.[0]?.id,
+    });
+  }
   openModal = (objType) => {
     this.setState({objType});
     isAndroid ? this.refAndroid.handleShow() : this.refIos.handleShow();
@@ -158,8 +164,14 @@ export default class FMSelPayWayPopUp extends Component {
             }}
             activeOpacity={1}
             style={styles.buyBtn}>
-            <Text style={styles.buyText}>立即支付</Text>
-            <Text style={styles.buyPrice}>¥{data.amount * +buyCount}</Text>
+            {objType === 2 ? (
+              <Text style={styles.buyText}>确定</Text>
+            ) : (
+              <>
+                <Text style={styles.buyText}>立即支付</Text>
+                <Text style={styles.buyPrice}>¥{data.amount * +buyCount}</Text>
+              </>
+            )}
           </TouchableOpacity>
         </View>
       </View>

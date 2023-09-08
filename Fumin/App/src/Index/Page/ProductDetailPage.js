@@ -25,7 +25,7 @@ export default class ShopDetailPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {},
+      data: null,
       lookList: [],
       sortType: 0,
       id: props.route.params.id,
@@ -46,22 +46,26 @@ export default class ShopDetailPage extends Component {
       id,
     };
     const onSuccess = (res) => {
-      this.refScroll.scrollTo({
-        x: 0,
-        y: 0,
-        animated: false,
-      });
       let pics = [];
       for (let i in res.prcUrls) {
         pics.push({
           pic: res.prcUrls[i],
         });
       }
-      this.setState({
-        data: res,
-        lookList: res.lookList,
-        topPics: pics,
-      });
+      this.setState(
+        {
+          data: res,
+          lookList: res.lookList,
+          topPics: pics,
+        },
+        () => {
+          this.refScroll.scrollTo({
+            x: 0,
+            y: 0,
+            animated: false,
+          });
+        },
+      );
     };
     const onFailure = () => {};
     ApiPostJson({path, params, onSuccess, onFailure});
@@ -234,6 +238,12 @@ export default class ShopDetailPage extends Component {
 
   addCart = (skuId) => {
     const {id} = this.state;
+    if (!skuId) {
+      Utils.Toast({
+        text: '请选择要购买的规格',
+      });
+      return;
+    }
     const path = '/app-api/trade/cart/addMyCart';
     const params = {
       id,
@@ -248,7 +258,9 @@ export default class ShopDetailPage extends Component {
   render() {
     const {safeAreaInsets, navigation, isFocused} = this.props;
     const {data, lookList, buyCount, place, topPics} = this.state;
-
+    if (!data) {
+      return <View />;
+    }
     return (
       <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
         {/* <FMImage style={styles.topImg} /> */}
