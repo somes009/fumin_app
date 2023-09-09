@@ -125,6 +125,7 @@ export default class MineCreatePlacePage extends Component {
       <View style={styles.infoBox}>
         <Text style={styles.title}>手机号</Text>
         <FMTextInput
+          keyboardType="numeric"
           placeholder="请输入收货人手机号"
           maxLength={11}
           value={phone}

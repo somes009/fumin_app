@@ -84,6 +84,7 @@ export default class MineApplyJLPage extends Component {
         <FMTextInput
           placeholder="请输入手机号"
           maxLength={11}
+          keyboardType="numeric"
           value={phone}
           onChangeText={(text) => {
             this.setState(

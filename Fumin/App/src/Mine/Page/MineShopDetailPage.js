@@ -137,6 +137,7 @@ export default class MineShopDetailPage extends Component {
           <Text style={styles.xing}>*</Text>
         </View>
         <FMTextInput
+          keyboardType="numeric"
           placeholder="请输入手机号码"
           maxLength={11}
           value={phone}
